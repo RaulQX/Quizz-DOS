@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace quizzdos_EFCore.Entities.BaseEntity
+namespace quizzdos_EFCore.Entities.BaseEntities
 {
     public class BaseEntity
     {
