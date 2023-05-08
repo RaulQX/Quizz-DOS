@@ -1,23 +1,25 @@
 import { createStackNavigator } from "@react-navigation/stack"
-import { QueryClient } from "@tanstack/react-query"
 import React from "react"
 import { StyleSheet } from "react-native"
 import Welcome from "./screens/common/Welcome"
-import { NavigationContainer } from "@react-navigation/native"
+import { NavigationContainer, DarkTheme } from "@react-navigation/native"
 import { COLORS } from "./palette/colors"
+import Login from "screens/common/Login"
+import SignUp from "screens/common/SignUp"
 
-const querryClient = new QueryClient()
 const Stack = createStackNavigator()
 
 export default function App() {
 	return (
-		<NavigationContainer>
+		<NavigationContainer theme={DarkTheme}>
 			<Stack.Navigator
 				screenOptions={{
 					headerShown: false,
 					cardStyle: styles.cardStyle,
 				}}
 			>
+				<Stack.Screen name="Login" component={Login} />
+				<Stack.Screen name="SignUp" component={SignUp} />
 				<Stack.Screen name="Welcome" component={Welcome} />
 			</Stack.Navigator>
 		</NavigationContainer>
