@@ -31,18 +31,20 @@ const Welcome = ({ navigation }: any) => {
 				style={{
 					display: "flex",
 					flexDirection: "column",
-					alignItems: "center",
-					width: "100%",
+					alignItems: "stretch",
+					width: "85%",
 				}}
+				spacing={10}
 			>
 				<TextButton
 					text="Login"
+					icon="login"
 					onPress={() => navigation.navigate("Login")}
-					marginBottom={7}
 				/>
 				<TextButton
-					text="Register"
-					onPress={() => navigation.navigate("Register")}
+					text="Sign Up"
+					icon="account-plus"
+					onPress={() => navigation.navigate("SignUp")}
 				/>
 			</VStack>
 		</View>
