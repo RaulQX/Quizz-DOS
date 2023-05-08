@@ -1,20 +1,30 @@
-import { StatusBar } from "expo-status-bar"
-import { StyleSheet, Text, View } from "react-native"
+import { createStackNavigator } from "@react-navigation/stack"
+import { QueryClient } from "@tanstack/react-query"
+import React from "react"
+import { StyleSheet } from "react-native"
+import Welcome from "./screens/common/Welcome"
+import { NavigationContainer } from "@react-navigation/native"
+import { COLORS } from "./palette/colors"
+
+const querryClient = new QueryClient()
+const Stack = createStackNavigator()
 
 export default function App() {
 	return (
-		<View style={styles.container}>
-			<Text>Open up App.tsx to start working on your app!</Text>
-			<StatusBar style="auto" />
-		</View>
+		<NavigationContainer>
+			<Stack.Navigator
+				screenOptions={{
+					headerShown: false,
+					cardStyle: styles.cardStyle,
+				}}
+			>
+				<Stack.Screen name="Welcome" component={Welcome} />
+			</Stack.Navigator>
+		</NavigationContainer>
 	)
 }
-
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: "fff",
-		alignItems: "center",
-		justifyContent: "center",
+	cardStyle: {
+		backgroundColor: COLORS.dark,
 	},
 })
