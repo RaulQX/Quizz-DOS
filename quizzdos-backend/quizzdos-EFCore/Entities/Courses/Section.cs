@@ -28,13 +28,8 @@ namespace quizzdos_EFCore.Entities.Courses
 
         [Required]
         [MaxLength(200)]
-        [Column(TypeName = "nvarchar(200)")]
+        [Column(TypeName = "nvarchar(50)")]
         public string Summary { get; set; } = string.Empty;
-
-        [Required]
-        [MaxLength(200)]
-        [Column(TypeName = "nvarchar(300)")]
-        public string? MaterialsUrl { get; set; }
 
         public ICollection<Quiz> Quizzes { get; set; } = new HashSet<Quiz>();
     }
