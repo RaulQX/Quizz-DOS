@@ -44,7 +44,7 @@ interface TextButtonProps {
 	buttonColor?: string
 	labelStyle?: StyleProp<TextStyle>
 	style?: StyleProp<ViewStyle>
-	onPress?: () => void
+	onPress: () => void
 	text: string
 }
 export default TextButton
