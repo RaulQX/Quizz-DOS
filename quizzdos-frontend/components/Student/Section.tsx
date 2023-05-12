@@ -53,7 +53,7 @@ const Section = ({ section }: SectionProps) => {
 					} else if (quiz.status === 1) {
 						return {
 							icon: "progress-check",
-							color: "yellow",
+							color: COLORS.paleYellow,
 						}
 					} else {
 						return {
