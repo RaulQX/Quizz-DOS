@@ -9,6 +9,7 @@ import SignUp from "screens/common/SignUp"
 import FirstTimeSignIn from "screens/common/FirstTimeSignIn"
 import Course from "./screens/Student/Course"
 import { StatusBar } from "expo-status-bar"
+import StudentHome from "screens/Student/StudentHome"
 
 const Stack = createStackNavigator()
 
@@ -22,6 +23,7 @@ export default function App() {
 					cardStyle: styles.cardStyle,
 				}}
 			>
+				<Stack.Screen name="StudentHome" component={StudentHome} />
 				<Stack.Screen name="Course" component={Course} />
 				<Stack.Screen
 					name="FirstTimeSignIn"
