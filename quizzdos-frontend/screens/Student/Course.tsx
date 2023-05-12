@@ -1,21 +1,12 @@
-import { Flex, VStack, HStack } from "@react-native-material/core"
+import { VStack, HStack } from "@react-native-material/core"
 import Section from "components/Student/Section"
 import { COLORS } from "palette/colors"
 import React from "react"
 import { Linking, ScrollView, Text, View } from "react-native"
 import { Divider } from "react-native-flex-layout"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
-
-import {
-	Appbar,
-	Button,
-	IconButton,
-	List,
-	ProgressBar,
-} from "react-native-paper"
+import { IconButton, List, ProgressBar } from "react-native-paper"
 import Icon from "react-native-vector-icons/Feather"
-import { StyleSheet } from "react-native"
-import BottomAppbar from "components/common/BottomAppbar"
+import BottomAppbarLayout from "components/common/BottomAppbarLayout"
 const constProps = {
 	name: "Course Name With Many Letters And Words",
 	shortName: "CNWMLAW",
@@ -118,10 +109,9 @@ const constProps = {
 
 const Course = ({ navigation }: any) => {
 	const marginLeft = 10
-	const { bottom } = useSafeAreaInsets()
 
 	return (
-		<Flex justify="between" style={{ height: "100%" }}>
+		<BottomAppbarLayout navigation={navigation}>
 			<ScrollView>
 				<VStack
 					style={{
@@ -277,8 +267,7 @@ const Course = ({ navigation }: any) => {
 					</List.AccordionGroup>
 				</View>
 			</ScrollView>
-			<BottomAppbar navigation={navigation} />
-		</Flex>
+		</BottomAppbarLayout>
 	)
 }
 
