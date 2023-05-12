@@ -34,5 +34,6 @@ namespace quizzdos_EFCore.Entities.Notifications
         [Column(TypeName = "nvarchar(100)")]
         public string Text { get; set; } = String.Empty;
         public DateTime DateReceived { get; set; } = DateTime.Now;
+        public bool Read { get; set; } = false;
     }
 }

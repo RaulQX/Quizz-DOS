@@ -37,5 +37,7 @@ namespace quizzdos_EFCore.Entities.Courses
         [Column(TypeName = "nvarchar(300)")]
         public string? MaterialsUrl { get; set; }
         public ICollection<Section> Sections { get; set; } = new HashSet<Section>();
+        public string? Icon { get; set; } = string.Empty;
+        public string? Code { get; set; } = string.Empty;
     }
 }
