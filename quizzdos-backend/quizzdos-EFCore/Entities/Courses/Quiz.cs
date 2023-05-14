@@ -31,5 +31,7 @@ namespace quizzdos_EFCore.Entities.Courses
         public QuizStatus Status { get; set; }
 
         public ICollection<Question> Questions { get; set; } = new HashSet<Question>();
+        public ushort Grade { get; set; }
+
     }
 }
