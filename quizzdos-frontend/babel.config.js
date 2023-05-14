@@ -21,7 +21,7 @@ module.exports = function (api) {
 						"@components": "./components",
 						"@screens": "./screens",
 						"@assets": "./assets",
-            "@palette": "./palette",
+						"@palette": "./palette",
 					},
 				},
 			],
