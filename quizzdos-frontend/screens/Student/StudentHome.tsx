@@ -2,18 +2,17 @@ import { HStack, Icon, VStack } from "@react-native-material/core"
 import BottomAppbarLayout from "components/common/BottomAppbarLayout"
 import { COLORS } from "palette/colors"
 import React from "react"
-import { Pressable, ScrollView, View } from "react-native"
+import { ScrollView, View } from "react-native"
 import { Text } from "react-native"
 import {
 	Avatar,
 	Button,
 	IconButton,
 	ProgressBar,
-	Surface,
 	TouchableRipple,
 } from "react-native-paper"
+// import { ToastAndroid } from "react-native"
 import * as Clipboard from "expo-clipboard"
-import { ToastAndroid } from "react-native"
 
 const studentHomeConstProps = {
 	courses: [
@@ -180,14 +179,15 @@ const StudentHome = ({ navigation }: any) => {
 								}
 								onLongPress={() => {
 									console.log("Course long pressed")
-									Clipboard.setStringAsync(course.code).then(
-										(content) => {
-											ToastAndroid.show(
-												"Course code copied to clipboard",
-												ToastAndroid.SHORT
-											)
-										}
-									)
+									Clipboard.setStringAsync(course.code)
+									// .then(
+									// 	(content) => {
+									// 		ToastAndroid.show(
+									// 			"Course code copied to clipboard",
+									// 			ToastAndroid.SHORT
+									// 		)
+									// 	}
+									// )
 								}}
 							>
 								<VStack
