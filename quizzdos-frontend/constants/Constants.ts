@@ -10,3 +10,8 @@ export const GENDERS = {
 	female: 2,
 } as const
 
+export const QUIZ_STATUS = {
+	unopened: 0,
+	inProgress: 1,
+	done: 2,
+}
