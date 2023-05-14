@@ -8,13 +8,12 @@ interface BottomAppbarProps {
 	children: React.ReactNode
 }
 const BottomAppbarLayout = ({ navigation, children }: BottomAppbarProps) => {
-
 	const [unreadNotifications, setUnreadNotifications] = React.useState(false)
-
 
 	return (
 		<Flex justify="between" style={{ height: "100%" }}>
 			{children}
+			<View style={{ height: 0 }} />
 			<View style={{ marginTop: 64 }}>
 				<Appbar style={[styles.AppBar]} elevated={true}>
 					<Appbar.Action
