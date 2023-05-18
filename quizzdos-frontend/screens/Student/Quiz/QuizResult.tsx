@@ -97,11 +97,19 @@ const QuizResult = ({ navigation }: any) => {
 						color: COLORS.white,
 						fontSize: 15,
 						textAlign: "center",
+						marginTop: 30,
 					}}
 				>
-					You have answered {constProps.result.correctQuestions}{" "}
-					questions correctly out of{" "}
-					{constProps.result.totalQuestions} questions.
+					You have answered correctly{" "}
+					<Text style={{ fontWeight: "bold", color: COLORS.blue }}>
+						{constProps.result.correctQuestions}
+					</Text>{" "}
+					/
+					<Text style={{ fontWeight: "bold", color: COLORS.blue }}>
+						{" "}
+						{constProps.result.totalQuestions}{" "}
+					</Text>
+					questions.
 				</Text>
 			</VStack>
 		</BottomAppbarLayout>
