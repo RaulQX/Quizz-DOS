@@ -12,7 +12,11 @@ import Course from "./screens/Student/Course"
 import StudentHome from "screens/Student/StudentHome"
 import StudentStatistics from "screens/Student/StudentStatistics"
 import Notifications from "screens/common/Notifications"
-import QuizStart from "screens/Student/QuizStart"
+import QuizStart from "screens/Student/Quiz/QuizStart"
+import QuizQuestions from "screens/Student/Quiz/QuizQuestion"
+import QuizQuestion from "screens/Student/Quiz/QuizQuestion"
+import Quiz from "screens/Student/Quiz/Quiz"
+import QuizResult from "screens/Student/Quiz/QuizResult"
 
 const Stack = createStackNavigator()
 
@@ -26,9 +30,11 @@ export default function App() {
 					cardStyle: styles.cardStyle,
 				}}
 			>
+				<Stack.Screen name="QuizResult" component={QuizResult} />
+				<Stack.Screen name="Quiz" component={Quiz} />
 				<Stack.Screen name="QuizStart" component={QuizStart} />
-
 				<Stack.Screen name="Course" component={Course} />
+
 				<Stack.Screen name="Notifications" component={Notifications} />
 				<Stack.Screen
 					name="StudentStatistics"

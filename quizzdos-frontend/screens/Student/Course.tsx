@@ -7,6 +7,7 @@ import { Divider } from "react-native-flex-layout"
 import { IconButton, List, ProgressBar } from "react-native-paper"
 import Icon from "react-native-vector-icons/Feather"
 import BottomAppbarLayout from "components/common/BottomAppbarLayout"
+import TopTextInArch from "components/common/TopTextInArch"
 const constProps = {
 	name: "Course Name With Many Letters And Words",
 	shortName: "CNWMLAW",
@@ -113,38 +114,10 @@ const Course = ({ navigation }: any) => {
 	return (
 		<BottomAppbarLayout navigation={navigation}>
 			<ScrollView>
-				<VStack
-					style={{
-						alignItems: "center",
-						justifyContent: "flex-end",
-						backgroundColor: COLORS.charcoal,
-						borderBottomEndRadius: 50,
-						borderBottomStartRadius: 50,
-						paddingBottom: 15,
-					}}
-				>
-					<VStack spacing={10}>
-						<Text
-							style={{
-								fontSize: 30,
-								marginTop: 30,
-								textAlign: "center",
-								color: COLORS.white,
-							}}
-						>
-							{constProps.name}
-						</Text>
-						<Text
-							style={{
-								fontSize: 20,
-								textAlign: "center",
-								color: COLORS.blue,
-							}}
-						>
-							{constProps.shortName}
-						</Text>
-					</VStack>
-				</VStack>
+				<TopTextInArch
+					firstLine={constProps.name}
+					secondLine={constProps.shortName}
+				/>
 				<VStack
 					style={{ marginHorizontal: 2 * marginLeft, marginTop: 20 }}
 					spacing={5}

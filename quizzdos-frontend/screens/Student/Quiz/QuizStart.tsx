@@ -1,6 +1,7 @@
 import { Flex, HStack, VStack } from "@react-native-material/core"
 import BottomAppbarLayout from "components/common/BottomAppbarLayout"
 import TextButton from "components/common/TextButton"
+import TopTextInArch from "components/common/TopTextInArch"
 import { QUIZ_STATUS } from "constants/Constants"
 import AnimatedLottieView from "lottie-react-native"
 import { COLORS } from "palette/colors"
@@ -14,8 +15,54 @@ const constProps = {
 		title: "Quiz 1",
 		status: QUIZ_STATUS.unopened,
 		sectionName: "Section 1",
-		questions: 7,
+		questionsNumber: 3,
 		grade: 0,
+		questions: [
+			{
+				id: "01",
+				prompt: "What is the capital of France?",
+				questionScore: 4,
+				tipAllowed: true,
+				options: [
+					{ id: "a", text: "Paris", isCorrect: true, optionScore: 4 },
+					{
+						id: "b",
+						text: "London",
+						isCorrect: false,
+						optionScore: 0,
+					},
+					{ id: "c", text: "Rome", isCorrect: false, optionScore: 0 },
+					{
+						id: "d",
+						text: "Madrid",
+						isCorrect: false,
+						optionScore: 0,
+					},
+				],
+			},
+			{
+				id: "02",
+				prompt: "What is the answer to x^2 - 1 = 0?",
+				questionScore: 4,
+				tipAllowed: true,
+				options: [
+					{ id: "a", text: "1", isCorrect: false, optionScore: 2 },
+					{ id: "b", text: "2", isCorrect: false, optionScore: 0 },
+					{ id: "c", text: "0", isCorrect: true, optionScore: 0 },
+					{ id: "d", text: "-1", isCorrect: false, optionScore: 2 },
+				],
+			},
+			{
+				id: "03",
+				prompt: "Is this a question?",
+				questionScore: 2,
+				tipAllowed: false,
+				options: [
+					{ id: "a", text: "Yes", isCorrect: true, optionScore: 2 },
+					{ id: "b", text: "No", isCorrect: false, optionScore: 0 },
+				],
+			},
+		],
 	},
 }
 
@@ -32,17 +79,8 @@ interface IQuizStartProps {
 const QuizStart = ({ navigation }: any) => {
 	return (
 		<BottomAppbarLayout navigation={navigation}>
-			<Text
-				style={{
-					color: COLORS.white,
-					fontSize: 27,
-					textAlign: "center",
-					marginTop: 40,
-					fontWeight: "bold",
-				}}
-			>
-				Quiz Time!
-			</Text>
+			<TopTextInArch firstLine="Quiz Time!" />
+
 			<Surface
 				style={{
 					backgroundColor: COLORS.charcoal,
@@ -140,7 +178,7 @@ const QuizStart = ({ navigation }: any) => {
 										textAlign: "center",
 									}}
 								>
-									{constProps.quiz.questions}
+									{constProps.quiz.questionsNumber}
 								</Text>
 							</HStack>
 							<HStack style={{ justifyContent: "space-between" }}>
