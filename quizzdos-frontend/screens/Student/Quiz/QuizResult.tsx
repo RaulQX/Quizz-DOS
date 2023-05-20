@@ -8,7 +8,7 @@ import { Text } from "react-native"
 const constProps = {
 	result: {
 		quizGrade: 2,
-		correctQuestions: 3,
+		correctQuestions: 1,
 		totalQuestions: 3,
 	},
 }

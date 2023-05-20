@@ -17,6 +17,7 @@ import QuizQuestions from "screens/Student/Quiz/QuizQuestion"
 import QuizQuestion from "screens/Student/Quiz/QuizQuestion"
 import Quiz from "screens/Student/Quiz/Quiz"
 import QuizResult from "screens/Student/Quiz/QuizResult"
+import StudentSettings from "screens/Student/StudentSettings"
 
 const Stack = createStackNavigator()
 
@@ -30,6 +31,7 @@ export default function App() {
 					cardStyle: styles.cardStyle,
 				}}
 			>
+				<Stack.Screen name="StudentSettings" component={StudentSettings} />
 				<Stack.Screen name="QuizResult" component={QuizResult} />
 				<Stack.Screen name="Quiz" component={Quiz} />
 				<Stack.Screen name="QuizStart" component={QuizStart} />
