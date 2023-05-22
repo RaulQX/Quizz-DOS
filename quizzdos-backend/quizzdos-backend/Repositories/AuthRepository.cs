@@ -63,12 +63,15 @@ namespace quizzdos_backend.Repositories
 
         public string CreateToken(User user)
         {
+            var role = (_context.People.FirstOrDefault(p => p.UserId == user.Id)?.Role) ?? throw new Exception("User has no role");
+
             List<Claim> claims = new()
             {
                 new Claim(ClaimTypes.Name, user.Username),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.MobilePhone, user.PhoneNumber),
                 new Claim(ClaimTypes.Sid, user.Id.ToString()),
+                new Claim(ClaimTypes.Role, role.ToString()),
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
