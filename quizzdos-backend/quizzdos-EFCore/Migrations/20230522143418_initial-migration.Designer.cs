@@ -12,7 +12,7 @@ using quizzdos_EFCore;
 namespace quizzdos_EFCore.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20230506145943_initial-migration")]
+    [Migration("20230522143418_initial-migration")]
     partial class initialmigration
     {
         /// <inheritdoc />
@@ -31,13 +31,28 @@ namespace quizzdos_EFCore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid>("CreatorId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Icon")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MaterialsUrl")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(300)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ShortName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Summary")
                         .IsRequired()
@@ -150,11 +165,6 @@ namespace quizzdos_EFCore.Migrations
                     b.Property<long>("Index")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("MaterialsUrl")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(300)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -163,7 +173,7 @@ namespace quizzdos_EFCore.Migrations
                     b.Property<string>("Summary")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -183,6 +193,9 @@ namespace quizzdos_EFCore.Migrations
 
                     b.Property<Guid>("PersonId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Read")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Text")
                         .IsRequired()
@@ -269,10 +282,12 @@ namespace quizzdos_EFCore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CourseId")
+                    b.Property<Guid?>("CourseId")
+                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("PersonId")
+                    b.Property<Guid?>("PersonId")
+                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -293,10 +308,11 @@ namespace quizzdos_EFCore.Migrations
                     b.Property<double>("GradeValue")
                         .HasColumnType("float");
 
-                    b.Property<Guid>("PersonId")
+                    b.Property<Guid?>("PersonId")
+                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("QuizId")
+                    b.Property<Guid?>("QuizId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("QuizzId")
@@ -306,7 +322,7 @@ namespace quizzdos_EFCore.Migrations
 
                     b.HasIndex("PersonId");
 
-                    b.HasIndex("QuizzId");
+                    b.HasIndex("QuizId");
 
                     b.ToTable("Grades");
                 });
@@ -392,16 +408,18 @@ namespace quizzdos_EFCore.Migrations
             modelBuilder.Entity("quizzdos_EFCore.Relations.ManyToMany.CourseAppartenence", b =>
                 {
                     b.HasOne("quizzdos_EFCore.Entities.Courses.Course", "Course")
-                        .WithMany()
+                        .WithMany("CourseAppartenences")
                         .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
+                        .HasConstraintName("FK_CourseAppartenences_Courses_CourseId");
 
                     b.HasOne("quizzdos_EFCore.Entities.Users.Person", "Person")
-                        .WithMany()
+                        .WithMany("CourseAppartenences")
                         .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
+                        .HasConstraintName("FK_CourseAppartenences_People_PersonId");
 
                     b.Navigation("Course");
 
@@ -411,16 +429,15 @@ namespace quizzdos_EFCore.Migrations
             modelBuilder.Entity("quizzdos_EFCore.Relations.ManyToMany.Grade", b =>
                 {
                     b.HasOne("quizzdos_EFCore.Entities.Users.Person", "Person")
-                        .WithMany()
+                        .WithMany("Grades")
                         .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("quizzdos_EFCore.Entities.Courses.Quiz", "Quiz")
-                        .WithMany()
-                        .HasForeignKey("QuizzId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Grades")
+                        .HasForeignKey("QuizId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Person");
 
@@ -429,6 +446,8 @@ namespace quizzdos_EFCore.Migrations
 
             modelBuilder.Entity("quizzdos_EFCore.Entities.Courses.Course", b =>
                 {
+                    b.Navigation("CourseAppartenences");
+
                     b.Navigation("Sections");
                 });
 
@@ -439,6 +458,8 @@ namespace quizzdos_EFCore.Migrations
 
             modelBuilder.Entity("quizzdos_EFCore.Entities.Courses.Quiz", b =>
                 {
+                    b.Navigation("Grades");
+
                     b.Navigation("Questions");
                 });
 
@@ -449,7 +470,11 @@ namespace quizzdos_EFCore.Migrations
 
             modelBuilder.Entity("quizzdos_EFCore.Entities.Users.Person", b =>
                 {
+                    b.Navigation("CourseAppartenences");
+
                     b.Navigation("Courses");
+
+                    b.Navigation("Grades");
 
                     b.Navigation("Notifications");
                 });

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using quizzdos_EFCore.Entities.BaseEntities;
 using quizzdos_EFCore.Entities.Courses;
 using quizzdos_EFCore.Entities.Notifications;
+using quizzdos_EFCore.Relations.ManyToMany;
 
 namespace quizzdos_EFCore.Entities.Users
 {
@@ -20,13 +21,12 @@ namespace quizzdos_EFCore.Entities.Users
         {
             Courses = new HashSet<Course>();
             Notifications = new HashSet<Notification>();
+            CourseAppartenences = new HashSet<CourseAppartenence>();
+            Grades = new HashSet<Grade>();
         }
-        public Person(User user)
+        public Person(User user) : this()
         {
-            Courses = new HashSet<Course>();
-            Notifications = new HashSet<Notification>();
             this.UserId = user.Id;
-            this.User = user;
         }
         [Required]
         [Column(TypeName = "nvarchar(100)")]
@@ -38,8 +38,11 @@ namespace quizzdos_EFCore.Entities.Users
         [Required]
         public ERole Role { get; set; } = ERole.Student;
         public EGender Gender { get; set; } = EGender.NotSpecified;
+        public ICollection<CourseAppartenence> CourseAppartenences { get; set; }
         public ICollection<Course> Courses { get; set; }
         public ICollection<Notification> Notifications { get; set; }
+        public ICollection<Grade> Grades { get; set; }
+
 
         [Required]
         public Guid UserId { get; set; }

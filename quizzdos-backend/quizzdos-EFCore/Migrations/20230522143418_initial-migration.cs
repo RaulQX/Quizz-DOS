@@ -62,7 +62,11 @@ namespace quizzdos_EFCore.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Summary = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false)
+                    ShortName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Summary = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    MaterialsUrl = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Icon = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -83,7 +87,8 @@ namespace quizzdos_EFCore.Migrations
                     PersonId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(50)", nullable: false),
                     Text = table.Column<string>(type: "nvarchar(100)", nullable: false),
-                    DateReceived = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    DateReceived = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Read = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -112,13 +117,13 @@ namespace quizzdos_EFCore.Migrations
                         column: x => x.CourseId,
                         principalTable: "Courses",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_CourseAppartenences_People_PersonId",
                         column: x => x.PersonId,
                         principalTable: "People",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -129,8 +134,7 @@ namespace quizzdos_EFCore.Migrations
                     CourseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Index = table.Column<long>(type: "bigint", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Summary = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    MaterialsUrl = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false)
+                    Summary = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -170,9 +174,9 @@ namespace quizzdos_EFCore.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PersonId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    QuizId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    QuizzId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    GradeValue = table.Column<double>(type: "float", nullable: false)
+                    QuizId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    GradeValue = table.Column<double>(type: "float", nullable: false),
+                    QuizzId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -182,13 +186,13 @@ namespace quizzdos_EFCore.Migrations
                         column: x => x.PersonId,
                         principalTable: "People",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
-                        name: "FK_Grades_Quizzes_QuizzId",
-                        column: x => x.QuizzId,
+                        name: "FK_Grades_Quizzes_QuizId",
+                        column: x => x.QuizId,
                         principalTable: "Quizzes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -256,9 +260,9 @@ namespace quizzdos_EFCore.Migrations
                 column: "PersonId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Grades_QuizzId",
+                name: "IX_Grades_QuizId",
                 table: "Grades",
-                column: "QuizzId");
+                column: "QuizId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Notifications_PersonId",

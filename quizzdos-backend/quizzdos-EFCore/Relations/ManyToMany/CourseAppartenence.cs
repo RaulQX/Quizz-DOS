@@ -14,14 +14,12 @@ namespace quizzdos_EFCore.Relations.ManyToMany
     public class CourseAppartenence : BaseEntity
     {
      
-        [Required]
-        public Guid PersonId { get; set; }
+        public Guid? PersonId { get; set; }
 
         [ForeignKey("PersonId")]
         public Person Person { get; set; } = null!;
 
-        [Required]
-        public Guid CourseId { get; set; }
+        public Guid? CourseId { get; set; }
         [ForeignKey("CourseId")]
         public Course Course { get; set; } = null!;
     }

@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Collections.Specialized.BitVector32;
 using quizzdos_EFCore.Entities.Users;
+using quizzdos_EFCore.Relations.ManyToMany;
 
 namespace quizzdos_EFCore.Entities.Courses
 {
@@ -37,6 +38,7 @@ namespace quizzdos_EFCore.Entities.Courses
         [Column(TypeName = "nvarchar(300)")]
         public string? MaterialsUrl { get; set; }
         public ICollection<Section> Sections { get; set; } = new HashSet<Section>();
+        public ICollection<CourseAppartenence> CourseAppartenences { get; set; } = new HashSet<CourseAppartenence>();
         public string? Icon { get; set; } = string.Empty;
         public string? Code { get; set; } = string.Empty;
     }

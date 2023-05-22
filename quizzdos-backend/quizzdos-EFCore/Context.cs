@@ -31,12 +31,41 @@ namespace quizzdos_EFCore
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Option>()
-               .HasOne(o => o.Question)
-               .WithMany(q => q.Options)
-               .HasForeignKey(o => o.QuestionId)
-               .OnDelete(DeleteBehavior.Restrict)
-               .HasConstraintName("FK_Options_Questions_QuestionId_FK1");
-            ;
+                .HasOne(o => o.Question)
+                .WithMany(q => q.Options)
+                .HasForeignKey(o => o.QuestionId)
+                .OnDelete(DeleteBehavior.Restrict)
+                .HasConstraintName("FK_Options_Questions_QuestionId_FK1");
+
+
+            modelBuilder.Entity<CourseAppartenence>()
+                .HasOne(ca => ca.Person)
+                .WithMany(p => p.CourseAppartenences)
+                .HasForeignKey(ca => ca.PersonId)
+                .OnDelete(DeleteBehavior.NoAction)
+                .HasConstraintName("FK_CourseAppartenences_People_PersonId")
+                .IsRequired();
+
+            modelBuilder.Entity<CourseAppartenence>()
+                .HasOne(ca => ca.Course)
+                .WithMany(c => c.CourseAppartenences)
+                .HasForeignKey(ca => ca.CourseId)
+                .OnDelete(DeleteBehavior.NoAction)
+                .HasConstraintName("FK_CourseAppartenences_Courses_CourseId")
+                .IsRequired();
+
+            modelBuilder.Entity<Grade>()
+               .HasOne(g => g.Person)
+               .WithMany(p => p.Grades)
+               .HasForeignKey(g => g.PersonId)
+               .OnDelete(DeleteBehavior.NoAction);
+
+
+            modelBuilder.Entity<Grade>()
+                .HasOne(g => g.Quiz)
+                .WithMany(q => q.Grades)
+                .HasForeignKey(g => g.QuizId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
 
     }

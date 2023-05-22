@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using quizzdos_EFCore.Enums;
 using quizzdos_EFCore.Entities.BaseEntities;
+using quizzdos_EFCore.Relations.ManyToMany;
 
 namespace quizzdos_EFCore.Entities.Courses
 {
@@ -31,7 +32,7 @@ namespace quizzdos_EFCore.Entities.Courses
         public QuizStatus Status { get; set; }
 
         public ICollection<Question> Questions { get; set; } = new HashSet<Question>();
-        public ushort Grade { get; set; }
+        public ICollection<Grade> Grades { get; set; } = new HashSet<Grade>();
 
     }
 }

@@ -14,13 +14,11 @@ namespace quizzdos_EFCore.Relations.ManyToMany
     [Table("Grades")]
     public class Grade : BaseEntity
     {
-        [Required]
-        public Guid PersonId { get; set; }
+        public Guid? PersonId { get; set; }
         [ForeignKey("PersonId")]
         public Person Person { get; set; } = null!;
 
-        [Required]
-        public Guid QuizId { get; set; }
+        public Guid? QuizId { get; set; }
         [ForeignKey("QuizzId")]
         public Quiz Quiz { get; set; } = null!;
 
