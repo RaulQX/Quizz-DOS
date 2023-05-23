@@ -28,21 +28,21 @@ const constProps = {
 	questions: [
 		{
 			id: "01",
-			prompt: "What is the capital of France?",
+			prompt: "What does Big O notation describe?",
 			questionScore: 4,
 			tipAllowed: true,
 			options: [
-				{ id: "a", text: "Paris", isCorrect: true, optionScore: 4 },
+				{ id: "a", text: "The running time", isCorrect: true, optionScore: 4 },
 				{
 					id: "b",
-					text: "London",
+					text: "The color of the algorithm",
 					isCorrect: false,
 					optionScore: 0,
 				},
-				{ id: "c", text: "Rome", isCorrect: false, optionScore: 0 },
+				{ id: "c", text: "The number of lines", isCorrect: false, optionScore: 0 },
 				{
 					id: "d",
-					text: "Madrid",
+					text: "The number of variables",
 					isCorrect: false,
 					optionScore: 0,
 				},
@@ -51,20 +51,20 @@ const constProps = {
 		},
 		{
 			id: "02",
-			prompt: "What is the answer to x^2 - 1 = 0?",
+			prompt: "What is bigger than O(n)?",
 			questionScore: 4,
 			tipAllowed: true,
 			options: [
-				{ id: "a", text: "1", isCorrect: false, optionScore: 2 },
-				{ id: "b", text: "2", isCorrect: false, optionScore: 0 },
-				{ id: "c", text: "0", isCorrect: true, optionScore: 0 },
-				{ id: "d", text: "-1", isCorrect: false, optionScore: 2 },
+				{ id: "a", text: "O(n^2)", isCorrect: true, optionScore: 2 },
+				{ id: "b", text: "O(2n)", isCorrect: false, optionScore: 0 },
+				{ id: "c", text: "O(log(n))", isCorrect: false, optionScore: 0 },
+				{ id: "d", text: "O(2^n)", isCorrect: false, optionScore: 2 },
 			],
 			chosenOptions: [],
 		},
 		{
 			id: "03",
-			prompt: "Is this a question?",
+			prompt: "Is Big O notation useful?",
 			questionScore: 2,
 			tipAllowed: false,
 			options: [

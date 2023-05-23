@@ -7,8 +7,8 @@ import React from "react"
 import { Text } from "react-native"
 const constProps = {
 	result: {
-		quizGrade: 2,
-		correctQuestions: 1,
+		quizGrade: 10,
+		correctQuestions: 3,
 		totalQuestions: 3,
 	},
 }

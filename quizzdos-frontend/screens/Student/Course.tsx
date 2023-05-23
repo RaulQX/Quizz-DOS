@@ -9,10 +9,10 @@ import Icon from "react-native-vector-icons/Feather"
 import BottomAppbarLayout from "components/common/BottomAppbarLayout"
 import TopTextInArch from "components/common/TopTextInArch"
 const constProps = {
-	name: "Course Name With Many Letters And Words",
-	shortName: "CNWMLAW",
+	name: "Introduction to Algorithms",
+	shortName: "IA",
 	summary:
-		"Summary with lots of words that will be replaced by the summary of the course when I get it from the database using an API call.",
+		"The course covers topics such as algorithmic problem-solving, data structures, sorting and searching algorithms, graph algorithms, and dynamic programming.",
 	progress: 0.6,
 	materialsURL: "https://www.google.com",
 	sections: [
@@ -21,7 +21,7 @@ const constProps = {
 			id: "1",
 			index: 0,
 			name: "Introduction",
-			summary: "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmma",
+			summary: "Algorithm efficiency using Big O notation ",
 			quizzes: [
 				{
 					id: "2234-5678-9112-3123211",
@@ -65,21 +65,27 @@ const constProps = {
 			id: "2",
 			index: 1,
 			name: "Section 1",
-			progress: 0.2,
+			progress: 0.33,
 			summary:
-				"Introduction summary of this section with not a lot of characters",
+				"This section is about the introduction of algorithms and how to use them in real life.",
 			quizzes: [
 				{
 					id: "6234-5678-9112-3123211",
-					name: "Quiz 1",
+					name: "Lists",
 					index: 0,
 					status: 2,
 				},
 				{
 					id: "7234-5678-9112-3123212",
-					name: "Quiz 2",
+					name: "Queues",
 					index: 1,
 					status: 1,
+				},
+				{
+					id: "72A4-5678-9112-3123212",
+					name: "Trees",
+					index: 1,
+					status: 0,
 				},
 			],
 		},

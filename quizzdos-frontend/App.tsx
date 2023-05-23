@@ -25,24 +25,23 @@ const querryClient = new QueryClient()
 export default function App() {
 	return (
 		<AppContainter>
-			<Stack.Screen name="SignUp" component={SignUp} />
 			<Stack.Screen name="StudentSettings" component={StudentSettings} />
-			<Stack.Screen name="QuizResult" component={QuizResult} />
-			<Stack.Screen name="Quiz" component={Quiz} />
-			<Stack.Screen name="QuizStart" component={QuizStart} />
-			<Stack.Screen name="Course" component={Course} />
-
-			<Stack.Screen name="Notifications" component={Notifications} />
 			<Stack.Screen
 				name="StudentStatistics"
 				component={StudentStatistics}
 			/>
+			<Stack.Screen name="Notifications" component={Notifications} />
 
+			<Stack.Screen name="QuizResult" component={QuizResult} />
+			<Stack.Screen name="Quiz" component={Quiz} />
+			<Stack.Screen name="QuizStart" component={QuizStart} />
+			<Stack.Screen name="Course" component={Course} />
 			<Stack.Screen name="StudentHome" component={StudentHome} />
-
 			<Stack.Screen name="FirstTimeSignIn" component={FirstTimeSignIn} />
-			<Stack.Screen name="Login" component={Login} />
 			<Stack.Screen name="Welcome" component={Welcome} />
+			<Stack.Screen name="SignUp" component={SignUp} />
+
+			<Stack.Screen name="Login" component={Login} />
 		</AppContainter>
 	)
 }

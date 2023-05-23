@@ -12,9 +12,9 @@ import { Divider, Surface } from "react-native-paper"
 const constProps = {
 	quiz: {
 		id: "01",
-		title: "Quiz 1",
+		title: "Big O Notation",
 		status: QUIZ_STATUS.unopened,
-		sectionName: "Section 1",
+		sectionName: "Introduction",
 		questionsNumber: 3,
 		grade: 0,
 		questions: [
@@ -208,7 +208,7 @@ const QuizStart = ({ navigation }: any) => {
 						onPress={() => {
 							console.log("start quiz")
 						}}
-						text="Start Quizz!"
+						text="Start Quiz!"
 						style={{
 							width: "70%",
 							alignSelf: "center",

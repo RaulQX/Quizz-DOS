@@ -11,13 +11,13 @@ const constProps = {
 		{
 			id: "01",
 			title: "Well done!",
-			text: `You have successfully completed the section 'Section 1'`,
+			text: `You have successfully completed the section 'Introduction'`,
 			dateReceived: "2021-05-01",
 		},
 		{
 			id: "02",
 			title: "Good Job!",
-			text: `You have successfully completed the quiz 'Quiz 1'`,
+			text: `You have successfully completed the quiz 'Big O Notation'`,
 			dateReceived: "2021-05-01",
 		},
 		{

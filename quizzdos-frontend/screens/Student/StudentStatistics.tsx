@@ -13,29 +13,25 @@ const constProps = {
 	courses: [
 		{
 			id: "1",
-			shortName: "Course 1",
+			shortName: "CS 101",
 			sections: [
 				{
 					id: "sect1",
-					name: "Section 1",
+					name: "Introduction",
 					quizzes: [
 						{
 							id: "a",
-							name: "Quiz 1",
-							grade: 8,
+							name: "Big O Notation",
+							grade: 10,
 						},
 						{
 							id: "b",
-							name: "Quiz 2",
+							name: "Recursion",
 							grade: 9,
 						},
-						{
-							id: "c",
-							name: "Quiz 3",
-							grade: 10,
-						},
+						
 					],
-					average: 9,
+					average: 9.5,
 				},
 				{
 					id: "sect2",

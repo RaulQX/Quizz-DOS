@@ -5,12 +5,7 @@ import FormEnd from "components/common/FormEnd"
 import FormIntro from "components/common/FormIntro"
 import { COLORS } from "palette/colors"
 import React, { useState } from "react"
-import {
-	ScrollView,
-	KeyboardAvoidingView,
-	Text,
-	Dimensions,
-} from "react-native"
+import { ScrollView, KeyboardAvoidingView, Text } from "react-native"
 import { Modal, TextInput } from "react-native-paper"
 
 const SignUp = ({ navigation }: any) => {
