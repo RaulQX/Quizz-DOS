@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using static System.Collections.Specialized.BitVector32;
 using quizzdos_EFCore.Entities.Users;
 using quizzdos_EFCore.Relations.ManyToMany;
+using System.Text.Json.Serialization;
 
 namespace quizzdos_EFCore.Entities.Courses
 {
@@ -21,6 +22,7 @@ namespace quizzdos_EFCore.Entities.Courses
         [Required]
         public Guid CreatorId { get; set; }
         [ForeignKey("CreatorId")]
+        [JsonIgnore]
         public Person Creator { get; set; } = null!;
 
         [Required]
