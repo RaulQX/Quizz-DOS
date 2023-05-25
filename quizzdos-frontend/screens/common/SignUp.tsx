@@ -3,6 +3,7 @@ import { useMutation } from "@tanstack/react-query"
 import { findFirstError, registerUser } from "Api/Auth/Register"
 import FormEnd from "components/common/FormEnd"
 import FormIntro from "components/common/FormIntro"
+import TextButton from "components/common/TextButton"
 import { COLORS } from "palette/colors"
 import React, { useState } from "react"
 import { ScrollView, KeyboardAvoidingView, Text } from "react-native"
@@ -14,6 +15,8 @@ const SignUp = ({ navigation }: any) => {
 	const [email, setEmail] = useState("")
 	const [password, setPassword] = useState("")
 
+	const [registrationSuccessful, setRegistrationSuccessful] = useState(false)
+
 	const [modalVisible, setModalVisible] = useState(false)
 	const [modalTitle, setModalTitle] = useState("")
 	const [modalMessage, setModalMessage] = useState("")
@@ -21,15 +24,15 @@ const SignUp = ({ navigation }: any) => {
 	const reqisterUserMutation = useMutation({
 		mutationFn: (data: any) => registerUser(data),
 		onSuccess: (_: any) => {
-			console.log("data success: ", _)
 			setModalTitle("Success")
 			setModalMessage("You have successfully registered!")
+			setRegistrationSuccessful(true)
 			setModalVisible(true)
 		},
 		onError: ({ response: { data } }) => {
-			console.log("data error: ", data)
 			setModalTitle("Error")
 			setModalMessage(findFirstError(data) || "Something went wrong!")
+			setRegistrationSuccessful(false)
 			setModalVisible(true)
 		},
 		onSettled: () => {
@@ -240,6 +243,14 @@ const SignUp = ({ navigation }: any) => {
 					>
 						{modalMessage}
 					</Text>
+					<TextButton
+						text={registrationSuccessful ? "Login" : "Try Again"}
+						onPress={() => {
+							setModalVisible(false)
+							registrationSuccessful &&
+								navigation.navigate("Login")
+						}}
+					/>
 				</Modal>
 			</KeyboardAvoidingView>
 		</ScrollView>
