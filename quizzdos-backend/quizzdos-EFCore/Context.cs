@@ -66,6 +66,11 @@ namespace quizzdos_EFCore
                 .WithMany(q => q.Grades)
                 .HasForeignKey(g => g.QuizId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Course>()
+                .HasOne(p => p.Creator)
+                .WithMany(p => p.Courses)
+                .HasForeignKey(p => p.CreatorId);
         }
 
     }
