@@ -1,16 +1,55 @@
 import { HStack, VStack } from "@react-native-material/core"
+import { useMutation } from "@tanstack/react-query"
+import { EGender } from "Api/ApiInterfaces"
+import {
+	newAccountMutation,
+	updateNewAccountDetails,
+} from "Api/Auth/FirstTimeSignIn"
 import FormLayout from "components/common/FormLayout"
 import TextButton from "components/common/TextButton"
+import useUser from "contexts/user/UserContext"
 import AnimatedLottieView from "lottie-react-native"
 import { COLORS } from "palette/colors"
 import React, { useState } from "react"
 import { Text } from "react-native"
 import { Divider, RadioButton, TextInput } from "react-native-paper"
 
-const FirstTimeSignIn = ({ username }: any) => {
+interface FirstTimeSignInProps {
+	navigation: any
+}
+
+const FirstTimeSignIn = ({ navigation }: FirstTimeSignInProps) => {
 	const [firstName, setFirstName] = useState("")
 	const [lastName, setLastName] = useState("")
 	const [gender, setGender] = useState(0)
+
+	const { username, personId, updateProfile } = useUser()
+
+	const updateMutation = useMutation({
+		mutationFn: ({ personId, data }: newAccountMutation) =>
+			updateNewAccountDetails(personId, data),
+
+		onSuccess: (data) => {
+			updateProfile(data)
+			navigation.navigate("StudentHome")
+		},
+		onError: (error) => {
+			console.log(error)
+			navigation.navigate("Login")
+		},
+	})
+
+	const handleSubmit = () => {
+		updateMutation.mutate({
+			personId,
+			data: {
+				firstName,
+				lastName,
+				gender: gender as EGender,
+			},
+		})
+	}
+
 	return (
 		<FormLayout>
 			<VStack spacing={8}>
@@ -122,10 +161,7 @@ const FirstTimeSignIn = ({ username }: any) => {
 						</RadioButton.Group>
 					</VStack>
 				</HStack>
-				<TextButton
-					text="Submit"
-					onPress={() => console.log("du-ma la home")}
-				/>
+				<TextButton text="Submit" onPress={() => handleSubmit()} />
 			</VStack>
 		</FormLayout>
 	)
