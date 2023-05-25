@@ -19,22 +19,22 @@ const BottomAppbarLayout = ({ navigation, children }: BottomAppbarProps) => {
 					<Appbar.Action
 						icon="home"
 						iconColor="white"
-						onPress={() => console.log("Pressed")}
+						onPress={() => navigation.navigate("StudentHome")}
 					/>
 					<Appbar.Action
 						icon="chart-line"
 						iconColor="white"
-						onPress={() => console.log("Pressed")}
+						onPress={() => navigation.navigate("StudentStatistics")}
 					/>
 					<Appbar.Action
 						icon={!unreadNotifications ? "bell" : "bell-badge"}
 						iconColor="white"
-						onPress={() => console.log("Pressed")}
+						onPress={() => navigation.navigate("Notifications")}
 					/>
 					<Appbar.Action
 						icon="cog"
 						iconColor="white"
-						onPress={() => console.log("Pressed")}
+						onPress={() =>  navigation.navigate("StudentSettings")}
 					/>
 				</Appbar>
 			</View>
