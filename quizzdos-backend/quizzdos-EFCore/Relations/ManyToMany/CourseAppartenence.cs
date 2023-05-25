@@ -8,6 +8,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace quizzdos_EFCore.Relations.ManyToMany
 {
@@ -17,10 +18,14 @@ namespace quizzdos_EFCore.Relations.ManyToMany
         public Guid? PersonId { get; set; }
 
         [ForeignKey("PersonId")]
+        [JsonIgnore]
+
         public Person Person { get; set; } = null!;
 
         public Guid? CourseId { get; set; }
         [ForeignKey("CourseId")]
+        [JsonIgnore]
+
         public Course Course { get; set; } = null!;
     }
 }
