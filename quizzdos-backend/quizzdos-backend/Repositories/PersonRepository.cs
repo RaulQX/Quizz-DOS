@@ -9,12 +9,11 @@ namespace quizzdos_backend.Repositories
     public interface IPersonRepository
     {
         Task<Person?> GetPersonByIdAsync(Guid id);
+        Task<Person?> GetPersonByUserIdAsync(Guid userId);
         Task<Person> AddPersonAsync(User user);
         Task<Person?> UpdatePersonalDetailsByIdAsync(Guid personId, string firstName, string lastName, EGender gender);
         Task<Person?> UpdatePersonRoleByIdAsync(Guid personId, ERole role);
         Task<Person?> DeletePersonByIdAsync(Guid personId);
-
-
     }
     public class PersonRepository : IPersonRepository
     {
@@ -23,6 +22,12 @@ namespace quizzdos_backend.Repositories
         {
             _context = context;
         }
+
+        public async Task<Person?> GetPersonByUserIdAsync(Guid userId)
+        {
+            return await _context.People.FirstOrDefaultAsync(p => p.UserId == userId);
+        }
+
         public async Task<Person?> GetPersonByIdAsync(Guid personId)
         {
             return await _context.People.FindAsync(personId);
