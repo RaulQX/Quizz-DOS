@@ -1,13 +1,14 @@
 import { Flex, VStack } from "@react-native-material/core"
 import { useMutation } from "@tanstack/react-query"
 import { findFirstError, registerUser } from "Api/Auth/Register"
+import ButtonModal from "components/common/ButtonModal"
 import FormEnd from "components/common/FormEnd"
 import FormIntro from "components/common/FormIntro"
 import TextButton from "components/common/TextButton"
 import { COLORS } from "palette/colors"
 import React, { useState } from "react"
 import { ScrollView, KeyboardAvoidingView, Text } from "react-native"
-import { Modal, TextInput } from "react-native-paper"
+import { Divider, Modal, TextInput } from "react-native-paper"
 
 const SignUp = ({ navigation }: any) => {
 	const [mobileNumber, setMobileNumber] = useState("")
@@ -71,7 +72,8 @@ const SignUp = ({ navigation }: any) => {
 						>
 							Sign up to be able to access awesome quizzes!
 						</Text>
-						<VStack style={{ marginTop: 40 }} spacing={30}>
+						<Divider style={{marginTop: 10}}/>
+						<VStack style={{ marginTop: 70 }} spacing={15}>
 							<VStack spacing={8}>
 								<Text
 									style={{
@@ -209,49 +211,19 @@ const SignUp = ({ navigation }: any) => {
 						/>
 					</VStack>
 				</Flex>
-				<Modal
-					visible={modalVisible}
-					onDismiss={() => setModalVisible(false)}
-					style={{ zIndex: 1000 }}
-					contentContainerStyle={{
-						backgroundColor: COLORS.dark,
-						height: 200,
-						width: 300,
-						position: "absolute",
-						top: 200,
-						left: 50,
-						padding: 20,
+				<ButtonModal
+					modalVisible={modalVisible}
+					setModalVisible={setModalVisible}
+					modalTitle={modalTitle}
+					modalMessage={modalMessage}
+					modalButtonText={
+						registrationSuccessful ? "Login" : "Try Again"
+					}
+					onPress={() => {
+						setModalVisible(false)
+						registrationSuccessful && navigation.navigate("Login")
 					}}
-				>
-					<Text
-						style={{
-							color: COLORS.blue,
-							fontSize: 20,
-							fontWeight: "bold",
-							textAlign: "center",
-						}}
-					>
-						{modalTitle}
-					</Text>
-					<Text
-						style={{
-							textAlign: "center",
-							color: COLORS.white,
-							fontSize: 15,
-							marginTop: 20,
-						}}
-					>
-						{modalMessage}
-					</Text>
-					<TextButton
-						text={registrationSuccessful ? "Login" : "Try Again"}
-						onPress={() => {
-							setModalVisible(false)
-							registrationSuccessful &&
-								navigation.navigate("Login")
-						}}
-					/>
-				</Modal>
+				/>
 			</KeyboardAvoidingView>
 		</ScrollView>
 	)
