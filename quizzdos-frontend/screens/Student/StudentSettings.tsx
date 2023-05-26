@@ -187,7 +187,7 @@ const StudentSettings = ({ navigation }: any) => {
 				</HStack>
 				<Divider />
 				<TextButton text="Save" onPress={() => {}} />
-				<TextButton text="Logout" onPress={() => {}} />
+				<TextButton text="Logout" onPress={() => navigation.navigate('Login')} />
 			</VStack>
 		</BottomAppbarLayout>
 	)
