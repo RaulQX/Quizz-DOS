@@ -16,3 +16,12 @@ export interface ICourse {
 	shortName: string
 	sections: ISection[]
 }
+
+export interface IDisplayCourses {
+	id: string
+	shortName: string
+	sectionsNumber: number
+	progress: number
+	icon: string
+	code: string
+}
