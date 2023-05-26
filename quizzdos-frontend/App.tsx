@@ -11,13 +11,15 @@ import Login from "screens/common/Login"
 import SignUp from "screens/common/SignUp"
 import FirstTimeSignIn from "screens/common/FirstTimeSignIn"
 import Course from "./screens/Student/Course"
-import StudentHome from "screens/Student/StudentHome"
 import StudentStatistics from "screens/Student/StudentStatistics"
 import Notifications from "screens/common/Notifications"
 import QuizStart from "screens/Student/Quiz/QuizStart"
 import Quiz from "screens/Student/Quiz/Quiz"
 import QuizResult from "screens/Student/Quiz/QuizResult"
 import StudentSettings from "screens/Student/StudentSettings"
+import Home from "screens/common/Home"
+import CommonHome from "screens/common/CommonHome"
+import CreateCourse from "screens/Professor/CreateCourse"
 
 const Stack = createStackNavigator()
 const querryClient = new QueryClient()
@@ -25,6 +27,12 @@ const querryClient = new QueryClient()
 export default function App() {
 	return (
 		<AppContainter>
+			<Stack.Screen name="CreateCourse" component={CreateCourse} />
+			<Stack.Screen name="Welcome" component={Welcome} />
+			<Stack.Screen name="Login" component={Login} />
+			<Stack.Screen name="CommonHome" component={CommonHome} />
+			<Stack.Screen name="Home" component={Home} />
+			<Stack.Screen name="SignUp" component={SignUp} />
 			<Stack.Screen name="StudentSettings" component={StudentSettings} />
 			<Stack.Screen
 				name="StudentStatistics"
@@ -36,12 +44,7 @@ export default function App() {
 			<Stack.Screen name="Quiz" component={Quiz} />
 			<Stack.Screen name="QuizStart" component={QuizStart} />
 			<Stack.Screen name="Course" component={Course} />
-			<Stack.Screen name="StudentHome" component={StudentHome} />
 			<Stack.Screen name="FirstTimeSignIn" component={FirstTimeSignIn} />
-			<Stack.Screen name="Welcome" component={Welcome} />
-			<Stack.Screen name="SignUp" component={SignUp} />
-
-			<Stack.Screen name="Login" component={Login} />
 		</AppContainter>
 	)
 }
