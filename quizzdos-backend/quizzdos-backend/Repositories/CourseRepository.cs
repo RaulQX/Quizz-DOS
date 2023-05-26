@@ -4,6 +4,7 @@ using quizzdos_backend.Paging;
 using quizzdos_EFCore;
 using quizzdos_EFCore.Entities.Courses;
 using quizzdos_EFCore.Entities.Users;
+using quizzdos_EFCore.Enums;
 using quizzdos_EFCore.Relations.ManyToMany;
 
 namespace quizzdos_backend.Repositories
@@ -15,7 +16,7 @@ namespace quizzdos_backend.Repositories
         public Task<Course?> UpdateCourseAsync(Guid courseId, CourseDTO updatedCourse);
         public Task<PaginatedResponse<Course>> GetCreatedCoursesPaged(Guid creatorId, int page, int pageSize);
         public Task<bool> AddPersonToCourse(string code, Guid personId);
-        public Task<PaginatedResponse<Course>?> GetJoinedCoursesPaginated(Guid personId, int page, int pageSize);
+        public Task<PaginatedResponse<DiplayCourseDTO>?> GetJoinedCoursesPaginated(Guid personId, int page, int pageSize);
     }
     public class CourseRepository : ICourseRepository
     {
@@ -110,30 +111,55 @@ namespace quizzdos_backend.Repositories
                 PersonId = person.Id,
             };
 
+            bool hasPersonJoinedCourse = await _context.CourseAppartenences
+                .Include(ca => ca.Course)
+                .AnyAsync(ca => ca.Course.Code == code);
+
+            if (hasPersonJoinedCourse)
+                return false;
+
             await _context.CourseAppartenences.AddAsync(courseAppartenence);
             await _context.SaveChangesAsync();
             return true;
         }
 
-        public async Task<PaginatedResponse<Course>?> GetJoinedCoursesPaginated(Guid personId, int page, int pageSize)
+        public async Task<PaginatedResponse<DiplayCourseDTO>?> GetJoinedCoursesPaginated(Guid personId, int page, int pageSize)
         {
             var person = await _context.People
                .Include(p => p.CourseAppartenences)
                .ThenInclude(ca => ca.Course)
+               .ThenInclude(c => c.Sections)
+               .ThenInclude(s => s.Quizzes)
                .FirstOrDefaultAsync(p => p.Id == personId);
 
             if (person == null)
                 return null;
 
             var joinedCourses = person.CourseAppartenences
-                .Select(ca => ca.Course)
+                 .Select(ca => new DiplayCourseDTO
+                 {
+                     Id = ca.CourseId.GetValueOrDefault(),
+                     ShortName = ca.Course.ShortName,
+                     SectionsNumber = ca.Course.Sections.Count,
+                     Progress = GetQuizProgress(ca.Course),
+                     Icon = ca.Course.Icon,
+                     Code = ca.Course.Code
+                 })
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();
 
             var totalJoinedCourses = person.CourseAppartenences.Count;
 
-            return new PaginatedResponse<Course>(page, pageSize, totalJoinedCourses, joinedCourses);
+            return new PaginatedResponse<DiplayCourseDTO>(page, pageSize, totalJoinedCourses, joinedCourses);
+        }
+        private static int GetQuizProgress(Course course)
+        {
+            int completedSections = course.Sections
+                .Where(section => section.Quizzes.All(quiz => quiz.Status == QuizStatus.Done))
+                .Count();
+
+            return completedSections;
         }
     }
 }
