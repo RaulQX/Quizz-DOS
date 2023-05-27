@@ -19,7 +19,7 @@ const BottomAppbarLayout = ({ navigation, children }: BottomAppbarProps) => {
 					<Appbar.Action
 						icon="home"
 						iconColor="white"
-						onPress={() => navigation.navigate("StudentHome")}
+						onPress={() => navigation.navigate("Home")}
 					/>
 					<Appbar.Action
 						icon="chart-line"
@@ -34,7 +34,7 @@ const BottomAppbarLayout = ({ navigation, children }: BottomAppbarProps) => {
 					<Appbar.Action
 						icon="cog"
 						iconColor="white"
-						onPress={() =>  navigation.navigate("StudentSettings")}
+						onPress={() => navigation.navigate("StudentSettings")}
 					/>
 				</Appbar>
 			</View>

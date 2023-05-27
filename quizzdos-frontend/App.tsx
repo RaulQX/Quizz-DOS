@@ -10,7 +10,7 @@ import Welcome from "./screens/common/Welcome"
 import Login from "screens/common/Login"
 import SignUp from "screens/common/SignUp"
 import FirstTimeSignIn from "screens/common/FirstTimeSignIn"
-import Course from "./screens/Student/Course"
+import Course from "./screens/common/Course"
 import StudentStatistics from "screens/Student/StudentStatistics"
 import Notifications from "screens/common/Notifications"
 import QuizStart from "screens/Student/Quiz/QuizStart"
@@ -27,9 +27,10 @@ const querryClient = new QueryClient()
 export default function App() {
 	return (
 		<AppContainter>
+			<Stack.Screen name="Course" component={Course} />
+			<Stack.Screen name="Login" component={Login} />
 			<Stack.Screen name="CreateCourse" component={CreateCourse} />
 			<Stack.Screen name="Welcome" component={Welcome} />
-			<Stack.Screen name="Login" component={Login} />
 			<Stack.Screen name="CommonHome" component={CommonHome} />
 			<Stack.Screen name="Home" component={Home} />
 			<Stack.Screen name="SignUp" component={SignUp} />
@@ -43,7 +44,6 @@ export default function App() {
 			<Stack.Screen name="QuizResult" component={QuizResult} />
 			<Stack.Screen name="Quiz" component={Quiz} />
 			<Stack.Screen name="QuizStart" component={QuizStart} />
-			<Stack.Screen name="Course" component={Course} />
 			<Stack.Screen name="FirstTimeSignIn" component={FirstTimeSignIn} />
 		</AppContainter>
 	)

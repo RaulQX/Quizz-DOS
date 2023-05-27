@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using quizzdos_EFCore.Entities.BaseEntities;
+using System.Text.Json.Serialization;
 
 namespace quizzdos_EFCore.Entities.Courses
 {
@@ -16,11 +17,8 @@ namespace quizzdos_EFCore.Entities.Courses
         [Required]
         public Guid CourseId { get; set; }
         [ForeignKey("CourseId")]
+        [JsonIgnore]
         public Course Course { get; set; } = null!;
-
-        [Required]
-        public uint Index { get; set; }
-
         [Required]
         [MaxLength(50)]
         [Column(TypeName = "nvarchar(50)")]

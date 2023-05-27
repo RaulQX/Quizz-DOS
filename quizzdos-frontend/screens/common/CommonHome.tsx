@@ -8,7 +8,7 @@ import { ROLES } from "constants/Constants"
 import useUser from "contexts/user/UserContext"
 import { IDisplayCourses } from "interfaces/CourseRelated"
 import { COLORS } from "palette/colors"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { ScrollView, Text, ToastAndroid, View } from "react-native"
 import {
 	Avatar,
@@ -20,9 +20,11 @@ import {
 	TouchableRipple,
 } from "react-native-paper"
 import * as Clipboard from "expo-clipboard"
-import { pageSize } from "constants/ApiConstants"
+import { pageSize } from "Api/ApiConstants"
 
 const CommonHome = ({ navigation }: any) => {
+	const [courses, setCourses] = useState<IDisplayCourses[]>([])
+
 	const { personId, role, firstName } = useUser()
 	const [courseFullWidth, setCourseFullWidth] = useState(false)
 
@@ -39,7 +41,7 @@ const CommonHome = ({ navigation }: any) => {
 	const [refreshCourses, setRefreshCourses] = useState(false)
 
 	const {
-		data: courses,
+		data: pages,
 		fetchNextPage,
 		hasNextPage,
 	} = useInfiniteQuery(
@@ -48,14 +50,34 @@ const CommonHome = ({ navigation }: any) => {
 			fetchFunction({
 				personId,
 				creatorId: personId,
-				page: pageParam,
+				pageParam,
 				pageSize,
 			}),
 		{
-			getNextPageParam: (lastPage) => lastPage.nextPage,
+			getNextPageParam: (lastPage, pages) => {
+				console.log("lp: ", lastPage.page)
+				console.log("lp2: ", lastPage.totalPages)
+				console.log("pages: ", pages)
+				//console.log(pages)
+				if (lastPage.page != lastPage.totalPages) {
+					return lastPage.page + 1
+				}
+				return false
+			},
+
 			enabled: true,
 		}
 	)
+
+	useEffect(() => {
+		console.log("pages", pages?.pages)
+		if (pages) {
+			const newCourses = pages.pages.flatMap((page) => page.data)
+			setCourses(newCourses)
+		}
+	}, [pages])
+
+	//console.log(hasNextPage)
 	const joinCourseMutation = useMutation({
 		mutationFn: (data: any) => joinCourse(data),
 		onSuccess: () => {
@@ -63,7 +85,7 @@ const CommonHome = ({ navigation }: any) => {
 			setRefreshCourses(!refreshCourses)
 		},
 		onError: (data) => {
-            console.log("error", data)
+			//console.log("error", data)
 			setJoinCourseModalError(true)
 		},
 	})
@@ -88,7 +110,7 @@ const CommonHome = ({ navigation }: any) => {
 							fetchNextPage()
 						}
 					}}
-					scrollEventThrottle={16}
+					scrollEventThrottle={0}
 				>
 					<HStack
 						style={{ marginHorizontal: 5, marginTop: 20 }}
@@ -161,101 +183,95 @@ const CommonHome = ({ navigation }: any) => {
 							</Button>
 						</HStack>
 						<HStack justify="between" wrap="wrap">
-							{courses?.pages.flatMap((page) =>
-								page.data.map((course: IDisplayCourses) => (
-									<TouchableRipple
-										key={course.id}
+							{courses.map((course) => (
+								<TouchableRipple
+									key={course.id}
+									style={{
+										backgroundColor: COLORS.blue,
+										width: courseFullWidth ? "100%" : "47%",
+										height: 150,
+										borderRadius: 20,
+										marginTop: 15,
+										flexDirection: "row",
+										elevation: 5,
+										shadowColor: COLORS.black,
+										shadowOffset: {
+											width: 3,
+											height: 2,
+										},
+										shadowOpacity: 0.55,
+										shadowRadius: 3.84,
+									}}
+									onPress={() =>
+										navigation.navigate("Course", {
+											courseId: course.id,
+										})
+									}
+									onLongPress={() => {
+										Clipboard.setStringAsync(
+											course.code
+										).then((content) => {
+											ToastAndroid.show(
+												"Course code copied to clipboard",
+												ToastAndroid.SHORT
+											)
+										})
+									}}
+								>
+									<VStack
 										style={{
-											backgroundColor: COLORS.blue,
-											width: courseFullWidth
-												? "100%"
-												: "47%",
-											height: 150,
-											borderRadius: 20,
-											marginTop: 15,
-											flexDirection: "row",
-											elevation: 5,
-											shadowColor: COLORS.black,
-											shadowOffset: {
-												width: 3,
-												height: 2,
-											},
-											shadowOpacity: 0.55,
-											shadowRadius: 3.84,
-										}}
-										onPress={() =>
-											// navigation.navigate("Course", {
-											// 	courseId: course.id,
-											// })
-											console.log("Course pressed")
-										}
-										onLongPress={() => {
-											console.log("Course long pressed")
-											Clipboard.setStringAsync(
-												course.code
-											).then((content) => {
-												ToastAndroid.show(
-													"Course code copied to clipboard",
-													ToastAndroid.SHORT
-												)
-											})
+											marginTop: 10,
+											width: "100%",
 										}}
 									>
-										<VStack
+										<View
 											style={{
-												marginTop: 10,
-												width: "100%",
+												alignSelf: "center",
 											}}
 										>
-											<View
+											<IconButton
+												mode="contained"
+												icon={course.icon}
+												size={40}
 												style={{
-													alignSelf: "center",
-												}}
-											>
-												<IconButton
-													mode="contained"
-													icon={course.icon}
-													size={40}
-													style={{
-														backgroundColor:
-															COLORS.white,
-														borderRadius: 20,
-													}}
-													iconColor={COLORS.charcoal}
-												/>
-											</View>
-											<Text
-												style={{
-													color: COLORS.white,
-													fontSize: 20,
-													fontWeight: "bold",
-													textAlign: "center",
-												}}
-											>
-												{course.shortName}
-											</Text>
-											<Text
-												style={{
-													color: COLORS.white,
-													fontSize: 16,
-													textAlign: "center",
-												}}
-											>
-												{course.sectionsNumber} sections
-											</Text>
-											<ProgressBar
-												progress={course.progress}
-												style={{
-													width: "80%",
-													alignSelf: "center",
-													marginTop: 6,
+													backgroundColor:
+														COLORS.white,
 													borderRadius: 20,
 												}}
+												iconColor={COLORS.charcoal}
 											/>
-										</VStack>
-									</TouchableRipple>
-								))
-							)}
+										</View>
+										<Text
+											style={{
+												color: COLORS.white,
+												fontSize: 20,
+												fontWeight: "bold",
+												textAlign: "center",
+											}}
+										>
+											{course.shortName}
+										</Text>
+										<Text
+											style={{
+												color: COLORS.white,
+												fontSize: 16,
+												textAlign: "center",
+											}}
+										>
+											{course.sectionsNumber} sections
+										</Text>
+										<ProgressBar
+											progress={course.progress}
+											style={{
+												width: "80%",
+												alignSelf: "center",
+												marginTop: 6,
+												borderRadius: 20,
+											}}
+										/>
+									</VStack>
+								</TouchableRipple>
+							))}
 						</HStack>
 					</VStack>
 				</ScrollView>
@@ -338,7 +354,13 @@ const CommonHome = ({ navigation }: any) => {
 					</Text>
 					<HStack justify="around">
 						<TextButton
-							onPress={() => navigation.navigate("CreateCourse")}
+							onPress={() => {
+								navigation.navigate("CreateCourse", {
+									setRefreshCourses: setRefreshCourses,
+									refreshCourses: refreshCourses,
+								})
+								setCreateCourseModalVisible(false)
+							}}
 							text="Yes"
 						/>
 						<TextButton

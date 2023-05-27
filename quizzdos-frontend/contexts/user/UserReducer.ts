@@ -2,8 +2,8 @@ import { GENDERS, ROLES } from "constants/Constants"
 
 export const initialState = {
 	personId: "",
-	role: ROLES.student,
-	gender: GENDERS.male,
+	role: 0,
+	gender: 1,
 	firstName: "",
 	lastName: "",
 

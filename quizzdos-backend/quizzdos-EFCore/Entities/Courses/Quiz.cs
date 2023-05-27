@@ -21,9 +21,6 @@ namespace quizzdos_EFCore.Entities.Courses
         public Section Section { get; set; } = null!;
 
         [Required]
-        public uint Index { get; set; }
-
-        [Required]
         [MaxLength(50)]
         [Column(TypeName = "nvarchar(50)")]
         public string Name { get; set; } = string.Empty;

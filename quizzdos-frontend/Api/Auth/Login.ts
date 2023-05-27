@@ -1,5 +1,5 @@
 import axios from "axios"
-import { ApiEndpoints } from "constants/ApiConstants"
+import { ApiEndpoints } from "Api/ApiConstants"
 
 export const loginUser = async (userPayload: any) => {
 	let { data: response } = await axios.post(ApiEndpoints.Auth.login, {
@@ -17,13 +17,13 @@ export const loginUser = async (userPayload: any) => {
 		},
 	})
 
-    console.log("user: " , user)
+	console.log("user: ", user)
 
 	const encodedValue = encodeURIComponent(user.id)
 	let { data: person } = await axios.get(
 		`${ApiEndpoints.Person.personByUserId}/${encodedValue}`
 	)
-    console.log("person: " , person)
+	console.log("person: ", person)
 
 	return {
 		username: user.username,

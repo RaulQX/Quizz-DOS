@@ -19,4 +19,12 @@
         public string? Icon { get; set; } = string.Empty;
         public string? Code { get; set; } = string.Empty;
     }
+    public class AccessedCourseDTO
+    {
+        public string Name { get; set; } = string.Empty;
+        public string ShortName { get; set; } = string.Empty;
+        public string Summary { get; set; } = string.Empty;
+        public string? MaterialsUrl { get; set; } = string.Empty;
+        public List<AccessedSectionsDTO> Sections { get; set; } = new List<AccessedSectionsDTO>();
+    }
 }

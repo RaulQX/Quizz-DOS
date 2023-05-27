@@ -59,6 +59,8 @@ builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 builder.Services.AddScoped<IValidationRepository, ValidationRepository>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
+builder.Services.AddScoped<ISectionRepository, SectionRepository>();
+builder.Services.AddScoped<IQuizRepository, QuizRepository>();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddCors(options =>

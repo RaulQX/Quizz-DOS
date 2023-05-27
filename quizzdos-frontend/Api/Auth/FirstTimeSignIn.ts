@@ -1,6 +1,6 @@
 import { NewAccountDetails } from "Api/ApiInterfaces"
 import axios from "axios"
-import { ApiEndpoints } from "constants/ApiConstants"
+import { ApiEndpoints } from "Api/ApiConstants"
 
 export interface newAccountMutation {
 	personId: string

@@ -1,6 +1,6 @@
 import { User } from "Api/ApiInterfaces"
 import axios from "axios"
-import { ApiEndpoints } from "constants/ApiConstants"
+import { ApiEndpoints } from "Api/ApiConstants"
 
 export const registerUser = async (payload: User) => {
 	const res = await axios.post(ApiEndpoints.Auth.register, payload)

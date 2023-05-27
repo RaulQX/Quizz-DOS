@@ -14,7 +14,8 @@ namespace quizzdos_backend.Repositories
         public Task<Course?> AddCourseAsync(CourseDTO addingCourse);
         public Task<Course?> DeleteCourseAsync(Guid courseId);
         public Task<Course?> UpdateCourseAsync(Guid courseId, CourseDTO updatedCourse);
-        public Task<PaginatedResponse<Course>> GetCreatedCoursesPaged(Guid creatorId, int page, int pageSize);
+        public Task<AccessedCourseDTO?> GetCourseByIdAsync(Guid courseId);
+        public Task<PaginatedResponse<DiplayCourseDTO>> GetCreatedCoursesPaged(Guid creatorId, int page, int pageSize);
         public Task<bool> AddPersonToCourse(string code, Guid personId);
         public Task<PaginatedResponse<DiplayCourseDTO>?> GetJoinedCoursesPaginated(Guid personId, int page, int pageSize);
     }
@@ -41,7 +42,7 @@ namespace quizzdos_backend.Repositories
                 Summary = addingCourse.Summary,
                 MaterialsUrl = addingCourse.MaterialsUrl,
                 Icon = addingCourse.Icon,
-                Code = Guid.NewGuid().ToString("N")[8..]
+                Code = Guid.NewGuid().ToString("N")[..8]
             };
 
             creator.Courses.Add(newCourse);
@@ -86,15 +87,25 @@ namespace quizzdos_backend.Repositories
             return await _context.Courses.FindAsync(courseId);
         }
 
-        public async Task<PaginatedResponse<Course>> GetCreatedCoursesPaged(Guid creatorId, int page, int pageSize)
+        public async Task<PaginatedResponse<DiplayCourseDTO>> GetCreatedCoursesPaged(Guid creatorId, int page, int pageSize)
         {
             page = (page < 1) ? 1 : page; 
             pageSize = (pageSize < 1) ? 1 : pageSize;
 
             var courses = await _context.Courses.Where(c => c.CreatorId == creatorId).Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+            var coursesDTO = courses.Select(c => new DiplayCourseDTO
+            {
+                ShortName = c.ShortName,
+                Icon = c.Icon,
+                Code = c.Code,
+                Id = c.Id,
+                SectionsNumber = c.Sections.Count,
+                Progress = c.Sections.Count == 0 ? 0 : 
+                c.Sections.Select(s => s.Quizzes.Count(q => q.Status == QuizStatus.Done)).Sum() / (double)c.Sections.Select(s => s.Quizzes.Count).Sum()
+            }).ToList();
             var totalCourses = await _context.Courses.Where(c => c.CreatorId == creatorId).CountAsync();
 
-            return new PaginatedResponse<Course>(page, pageSize, totalCourses, courses);
+            return new PaginatedResponse<DiplayCourseDTO>(page, pageSize, totalCourses, coursesDTO);
         }
 
         public async Task<bool> AddPersonToCourse(string code, Guid personId)
@@ -160,6 +171,43 @@ namespace quizzdos_backend.Repositories
                 .Count();
 
             return completedSections;
+        }
+
+        public async Task<AccessedCourseDTO?> GetCourseByIdAsync(Guid courseId)
+        {
+            var course = await _context.Courses
+                .Include(c => c.Sections)
+                .ThenInclude(s => s.Quizzes)
+                .FirstOrDefaultAsync(c => c.Id == courseId);
+
+
+            if (course == null)
+                return null;
+
+            var sections = course.Sections;
+
+            var accessedCourse = new AccessedCourseDTO
+            {
+                MaterialsUrl = course.MaterialsUrl,
+                Name = course.Name,
+                ShortName = course.ShortName,
+                Summary = course.Summary,
+                Sections = course.Sections.Select(s => new AccessedSectionsDTO
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Summary = s.Summary,
+                    Progress = s.Quizzes.Count(q => q.Status == QuizStatus.Done) / ((double)s.Quizzes.Count == 0 ? 1 : (double)s.Quizzes.Count),
+                    Quizzes = s.Quizzes.Select(q => new AccessedQuizDTO
+                    {
+                        Id = q.Id,
+                        Name = q.Name,
+                        Status = q.Status
+                    }).ToList()
+                }).ToList()
+            };
+
+            return accessedCourse;
         }
     }
 }

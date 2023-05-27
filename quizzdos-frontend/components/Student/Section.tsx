@@ -1,11 +1,13 @@
 import { COLORS } from "palette/colors"
 import React from "react"
-import { List } from "react-native-paper"
-
+import { Button, List } from "react-native-paper"
+import { Text } from "react-native"
+import TextButton from "components/common/TextButton"
+import useUser from "contexts/user/UserContext"
+import { ROLES } from "constants/Constants"
 export interface SectionProps {
 	section: {
 		id: string
-		index: number
 		name: string
 		progress: number
 		summary: string
@@ -16,11 +18,12 @@ export interface SectionProps {
 export interface QuizProps {
 	id: string
 	name: string
-	index: number
 	status: number
 }
 
 const Section = ({ section }: SectionProps) => {
+	const {role} = useUser()
+	const isProfessor = role === ROLES.professor
 	return (
 		<List.Accordion
 			key={section.id}
@@ -43,6 +46,23 @@ const Section = ({ section }: SectionProps) => {
 			descriptionNumberOfLines={2}
 			descriptionStyle={{ color: COLORS.gray }}
 		>
+			{isProfessor && (
+						<Button
+							icon="plus-circle-outline"
+							contentStyle={{
+								backgroundColor: COLORS.blue,
+								flexDirection: "row-reverse",
+							}}
+							mode="contained"
+							onPress={() => {
+								console.log("Add Quiz")
+							}}
+							style={{ alignSelf: "flex-end" }}
+						>
+							{"Add Quiz"}
+						</Button>
+					)}
+			{section.quizzes.length === 0 && <Text style={{color: COLORS.white, fontSize: 17, textAlign:'center'}}>No quizzes yet</Text>}
 			{section.quizzes.map((quiz: QuizProps) => {
 				const statusIcon = () => {
 					if (quiz.status === 0) {

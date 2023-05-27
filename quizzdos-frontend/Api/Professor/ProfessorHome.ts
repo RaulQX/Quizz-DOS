@@ -1,22 +1,24 @@
 import axios from "axios"
-import { ApiEndpoints } from "constants/ApiConstants"
+import { ApiEndpoints } from "Api/ApiConstants"
 
 export interface ICreatedCourseQuery {
-	page: number
+	pageParam: number
 	pageSize: number
 	creatorId: string
 }
 
 export const fetchCreatedCourses = async ({
 	creatorId,
-	page,
+	pageParam,
 	pageSize,
 }: ICreatedCourseQuery) => {
+
 	const response = await axios.get(
 		`${ApiEndpoints.Course.createdCourses}/${creatorId}`,
 		{
-			params: { page, pageSize },
+			params: { pageParam, pageSize },
 		}
 	)
+	console.log(response.data)
 	return response.data
 }
