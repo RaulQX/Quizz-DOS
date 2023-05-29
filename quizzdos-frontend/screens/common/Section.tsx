@@ -19,6 +19,7 @@ export interface SectionProps {
 	}
 	refreshCourse: boolean
 	setRefreshCourse: (value: boolean) => void
+	navigation: any
 }
 
 export interface QuizProps {
@@ -31,6 +32,7 @@ const Section = ({
 	refreshCourse,
 	setRefreshCourse,
 	section,
+	navigation
 }: SectionProps) => {
 	const { role } = useUser()
 	const isProfessor = role === ROLES.professor
@@ -197,6 +199,9 @@ const Section = ({
 							// navigation.navigate("Quiz", {
 							// 	quizId: quiz.id,
 							// })
+							isProfessor && navigation.navigate("CreateQuiz", {
+								quizId: quiz.id,
+							})
 						}}
 						right={(props) => (
 							<List.Icon {...props} icon={icon} color={color} />

@@ -230,6 +230,7 @@ const CreateQuestion = ({
 					return (
 						<HStack>
 							<TextInput
+                                key={index.toString()}
 								style={{
 									color: COLORS.white,
 									fontSize: 20,

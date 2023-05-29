@@ -2,13 +2,7 @@ import { VStack, HStack } from "@react-native-material/core"
 import Section from "screens/common/Section"
 import { COLORS } from "palette/colors"
 import React, { useState } from "react"
-import {
-	KeyboardAvoidingView,
-	Linking,
-	ScrollView,
-	Text,
-	View,
-} from "react-native"
+import { Linking, ScrollView, Text, View } from "react-native"
 import { Divider } from "react-native-flex-layout"
 import {
 	Button,
@@ -49,11 +43,9 @@ const Course = ({ route, navigation }: any) => {
 		materialsUrl: "",
 		sections: [],
 	})
-	useQuery(
-		["course", courseId, refreshCourse],
-		() => fetchCourse(courseId),
-		{ onSuccess: (data) => setCourse(data) }
-	)
+	useQuery(["course", courseId, refreshCourse], () => fetchCourse(courseId), {
+		onSuccess: (data) => setCourse(data),
+	})
 
 	console.log("c", course)
 
@@ -220,7 +212,12 @@ const Course = ({ route, navigation }: any) => {
 									key={section.id + " VStack"}
 									id={section.id + " VStack"}
 								>
-									<Section section={section} refreshCourse={refreshCourse} setRefreshCourse={setRefreshCourse} />
+									<Section
+										section={section}
+										refreshCourse={refreshCourse}
+										setRefreshCourse={setRefreshCourse}
+										navigation={navigation}
+									/>
 									<ProgressBar
 										key={section.id + " pb"}
 										id={section.id + " pb"}

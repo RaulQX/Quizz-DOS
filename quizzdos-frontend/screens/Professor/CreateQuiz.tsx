@@ -22,12 +22,12 @@ const CreateQuiz = ({ navigation }: any) => {
 					scorePercentage: 100,
 				},
 				{
-					questionId: "1",
+					questionId: "2",
 					text: "Marseille",
 					scorePercentage: 0,
 				},
 				{
-					questionId: "1",
+					questionId: "3",
 					text: "Lyon",
 					scorePercentage: 0,
 				},
@@ -142,7 +142,6 @@ const CreateQuiz = ({ navigation }: any) => {
 						/>
 					)),
 					<UpdateQuiz
-						key="update-quiz"
 						totalQuestions={questions.length}
 						totalScore={questions.reduce(
 							(acc, curr) =>
