@@ -2,8 +2,6 @@ import { VStack, Flex } from "@react-native-material/core"
 import PaginatedHorizontalList from "components/common/PaginatedHorizontalList"
 import { COLORS } from "palette/colors"
 import React, { useEffect, useState } from "react"
-import { Text } from "react-native"
-import QuizQuestions from "./QuizQuestion"
 import QuizQuestion from "./QuizQuestion"
 import QuizEnd from "./QuizEnd"
 import TopTextInArch from "components/common/TopTextInArch"
@@ -20,7 +18,6 @@ export interface IQuestion {
 interface IOption {
 	id: string
 	text: string
-	isCorrect: boolean
 	optionScore: number
 }
 const constProps = {
@@ -32,18 +29,16 @@ const constProps = {
 			questionScore: 4,
 			tipAllowed: true,
 			options: [
-				{ id: "a", text: "The running time", isCorrect: true, optionScore: 4 },
+				{ id: "a", text: "The running time", optionScore: 4 },
 				{
 					id: "b",
 					text: "The color of the algorithm",
-					isCorrect: false,
 					optionScore: 0,
 				},
-				{ id: "c", text: "The number of lines", isCorrect: false, optionScore: 0 },
+				{ id: "c", text: "The number of lines", optionScore: 0 },
 				{
 					id: "d",
 					text: "The number of variables",
-					isCorrect: false,
 					optionScore: 0,
 				},
 			],
@@ -55,10 +50,10 @@ const constProps = {
 			questionScore: 4,
 			tipAllowed: true,
 			options: [
-				{ id: "a", text: "O(n^2)", isCorrect: true, optionScore: 2 },
-				{ id: "b", text: "O(2n)", isCorrect: false, optionScore: 0 },
-				{ id: "c", text: "O(log(n))", isCorrect: false, optionScore: 0 },
-				{ id: "d", text: "O(2^n)", isCorrect: false, optionScore: 2 },
+				{ id: "a", text: "O(n^2)", optionScore: 2 },
+				{ id: "b", text: "O(2n)", optionScore: 0 },
+				{ id: "c", text: "O(log(n))", optionScore: 0 },
+				{ id: "d", text: "O(2^n)", optionScore: 2 },
 			],
 			chosenOptions: [],
 		},
@@ -68,8 +63,8 @@ const constProps = {
 			questionScore: 2,
 			tipAllowed: false,
 			options: [
-				{ id: "a", text: "Yes", isCorrect: true, optionScore: 2 },
-				{ id: "b", text: "No", isCorrect: false, optionScore: 0 },
+				{ id: "a", text: "Yes", optionScore: 2 },
+				{ id: "b", text: "No", optionScore: 0 },
 			],
 			chosenOptions: [],
 		},
@@ -88,13 +83,14 @@ const Quiz = ({ navigation }: any) => {
 	}, [refresh])
 
 	const handleQuestionAnswer = (questionId: string, optionId: string) => {
-		
-
 		const newQuestions = questions.map((question: IQuestion) => {
 			if (question.id === questionId) {
 				const newChosenOptions = question.chosenOptions
 				if (newChosenOptions.includes(optionId)) {
-					newChosenOptions.splice(newChosenOptions.indexOf(optionId), 1)
+					newChosenOptions.splice(
+						newChosenOptions.indexOf(optionId),
+						1
+					)
 				} else {
 					newChosenOptions.push(optionId)
 				}
@@ -110,7 +106,10 @@ const Quiz = ({ navigation }: any) => {
 
 	return (
 		<VStack justify="between" style={{ height: "100%" }}>
-			<TopTextInArch firstLine={constProps.name} secondLine={constProps.questions.length + ' questions'}/>
+			<TopTextInArch
+				firstLine={constProps.name}
+				secondLine={constProps.questions.length + " questions"}
+			/>
 
 			<PaginatedHorizontalList
 				navItems={[
@@ -128,7 +127,7 @@ const Quiz = ({ navigation }: any) => {
 							/>
 						)
 					}),
-					<QuizEnd questions={questions}/>,
+					<QuizEnd questions={questions} />,
 				]}
 			/>
 		</VStack>

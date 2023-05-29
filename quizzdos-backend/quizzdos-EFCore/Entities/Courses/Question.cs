@@ -19,9 +19,6 @@ namespace quizzdos_EFCore.Entities.Courses
         public Quiz Quiz { get; set; } = null!;
 
         [Required]
-        public uint Index { get; set; }
-
-        [Required]
         [MaxLength(200)]
         [Column(TypeName = "nvarchar(200)")]
         public string Prompt { get; set; } = string.Empty;

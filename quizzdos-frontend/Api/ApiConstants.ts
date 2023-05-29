@@ -6,7 +6,7 @@ function makeRoute<B extends string, R extends string>(
 }
 export const pageSize = 8
 
-const baseUrl = "http://192.168.100.19:5000/api"
+const baseUrl = "http://192.168.1.168:5000/api"
 
 const controllers = {
 	auth: makeRoute(baseUrl, "auth"),
@@ -14,6 +14,7 @@ const controllers = {
 	person: makeRoute(baseUrl, "person"),
 	course: makeRoute(baseUrl, "course"),
 	section: makeRoute(baseUrl, "section"),
+	quiz: makeRoute(baseUrl, "quiz"),
 } as const
 
 export const ApiEndpoints = {
@@ -33,9 +34,12 @@ export const ApiEndpoints = {
 		createdCourses: controllers.course,
 		joinCourse: controllers.course,
 		addCourse: controllers.course,
-		getCourse: makeRoute(controllers.course, "courses")
+		getCourse: makeRoute(controllers.course, "courses"),
 	},
 	Section: {
 		addSection: controllers.section,
+	},
+	Quiz: {
+		addQuiz: controllers.quiz,
 	},
 } as const

@@ -1,8 +1,14 @@
 import { VStack, HStack } from "@react-native-material/core"
-import Section from "components/Student/Section"
+import Section from "screens/common/Section"
 import { COLORS } from "palette/colors"
 import React, { useState } from "react"
-import { Linking, ScrollView, Text, View } from "react-native"
+import {
+	KeyboardAvoidingView,
+	Linking,
+	ScrollView,
+	Text,
+	View,
+} from "react-native"
 import { Divider } from "react-native-flex-layout"
 import {
 	Button,
@@ -18,100 +24,10 @@ import TopTextInArch from "components/common/TopTextInArch"
 import TextButton from "components/common/TextButton"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { ICourse, createSection, fetchCourse } from "Api/Professor/Course"
-const constProps = {
-	name: "Introduction to Algorithms",
-	shortName: "IA",
-	summary:
-		"The course covers topics such as algorithmic problem-solving, data structures, sorting and searching algorithms, graph algorithms, and dynamic programming.",
-	materialsURL: "https://www.google.com",
-	sections: [
-		{
-			progress: 0.5,
-			id: "1",
-			name: "Introduction",
-			summary: "Algorithm efficiency using Big O notation ",
-			quizzes: [
-				{
-					id: "2234-5678-9112-3123211",
-					name: "Quiz 1",
-					status: 2,
-				},
-				{
-					id: "3234-5678-9112-3123212",
-					name: "Quiz 2",
-					status: 1,
-				},
-				{
-					id: "4234-5678-9112-3123213",
-					name: "Quiz 3",
-					status: 0,
-				},
-				{
-					id: "2234-5678-9112-1123211",
-					name: "Quiz 4",
-					status: 2,
-				},
-				{
-					id: "3234-5678-9112-3113212",
-					name: "Quiz 5",
-					status: 1,
-				},
-				{
-					id: "4234-5678-9112-3143213",
-					name: "Quiz 6",
-					status: 0,
-				},
-			],
-		},
-		{
-			id: "2",
-			name: "Section 1",
-			progress: 0.33,
-			summary:
-				"This section is about the introduction of algorithms and how to use them in real life.",
-			quizzes: [
-				{
-					id: "6234-5678-9112-3123211",
-					name: "Lists",
-					status: 2,
-				},
-				{
-					id: "7234-5678-9112-3123212",
-					name: "Queues",
-					status: 1,
-				},
-				{
-					id: "72A4-5678-9112-3123212",
-					name: "Trees",
-					status: 0,
-				},
-			],
-		},
-		{
-			id: "3",
-			name: "Section 2",
-			progress: 1,
-			summary:
-				"Introduction summary of this section with a medium set of characters, not a lot of characters, not too little characters.",
-			quizzes: [
-				{
-					id: "9234-5678-9112-3123211",
-					name: "Quiz 1",
-					status: 0,
-				},
-				{
-					id: "1034-5678-9112-3123212",
-					name: "Quiz 2",
-					status: 0,
-				},
-			],
-		},
-	],
-}
 
 const Course = ({ route, navigation }: any) => {
-	//const { courseId } = route.params
-	const courseId = "7AE4652A-BEC6-4BFB-8B12-93E4C5908370"
+	const { courseId } = route.params
+	//const courseId = "7AE4652A-BEC6-4BFB-8B12-93E4C5908370"
 
 	const marginLeft = 10
 	const isProfessor = true
@@ -133,13 +49,13 @@ const Course = ({ route, navigation }: any) => {
 		materialsUrl: "",
 		sections: [],
 	})
-	const { isLoading, error, data, isFetched } = useQuery(
+	useQuery(
 		["course", courseId, refreshCourse],
 		() => fetchCourse(courseId),
 		{ onSuccess: (data) => setCourse(data) }
 	)
 
-	console.log('c', course)
+	console.log("c", course)
 
 	const handleAddSection = () => {
 		addSectionName.length === 0
@@ -179,7 +95,10 @@ const Course = ({ route, navigation }: any) => {
 					secondLine={course.shortName}
 				/>
 				<VStack
-					style={{ marginHorizontal: 2 * marginLeft, marginTop: 20 }}
+					style={{
+						marginHorizontal: 2 * marginLeft,
+						marginTop: 20,
+					}}
 					spacing={5}
 				>
 					<Text
@@ -301,7 +220,7 @@ const Course = ({ route, navigation }: any) => {
 									key={section.id + " VStack"}
 									id={section.id + " VStack"}
 								>
-									<Section section={section} />
+									<Section section={section} refreshCourse={refreshCourse} setRefreshCourse={setRefreshCourse} />
 									<ProgressBar
 										key={section.id + " pb"}
 										id={section.id + " pb"}
@@ -327,7 +246,7 @@ const Course = ({ route, navigation }: any) => {
 					backgroundColor: COLORS.dark,
 					borderRadius: 20,
 					position: "absolute",
-					top: 150,
+					top: 50,
 					left: 50,
 					padding: 20,
 				}}

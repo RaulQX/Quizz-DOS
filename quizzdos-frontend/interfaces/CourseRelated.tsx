@@ -25,3 +25,17 @@ export interface IDisplayCourses {
 	icon: string
 	code: string
 }
+
+export interface IQuestion {
+	id: string;
+	prompt: string;
+	questionScore: number;
+	tipAllowed: boolean;
+	options: IOption[];
+  }
+  
+export interface IOption {
+	questionId: string;
+	text: string;
+	scorePercentage: number;
+  }

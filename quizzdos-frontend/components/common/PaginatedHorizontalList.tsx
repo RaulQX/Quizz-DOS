@@ -1,7 +1,15 @@
-import React, { useRef, useState, FC } from "react"
+import React, {
+	useRef,
+	useState,
+	FC,
+	useImperativeHandle,
+	forwardRef,
+	useEffect,
+} from "react"
 import { View, Text, StyleSheet, ScrollView, Pressable } from "react-native"
 import { COLORS } from "palette/colors"
 import { Dimensions } from "react-native"
+import { ActivityIndicator } from "react-native-paper"
 
 interface MenuItemProps {
 	children: JSX.Element
@@ -34,56 +42,75 @@ interface Props {
 	navItems: JSX.Element[]
 }
 
-const PaginatedHorizontalList: FC<Props> = ({ children, navItems }) => {
-	const [activeIndex, setActiveIndex] = useState(0)
-	const scrollRef = useRef<any>()
+const PaginatedHorizontalList = forwardRef<any, Props>(
+	({ children, navItems }, ref) => {
+		const [activeIndex, setActiveIndex] = useState(0)
+		const [isScrolling, setIsScrolling] = useState(false)
+		const scrollRef = useRef<ScrollView>(null)
 
-	const onPress = (targetIndex: number) => () => {
-		scrollRef.current?.scrollTo({
-			x: Dimensions.get("window").width * targetIndex,
-		})
-		setActiveIndex(targetIndex)
-	}
+		const onPress = (targetIndex: number) => () => {
+			scrollRef.current?.scrollTo({
+				x: Dimensions.get("window").width * targetIndex,
+				animated: true,
+			})
+			setActiveIndex(targetIndex)
+		}
 
-	const onMomentumScrollEnd = (e: any) => {
-		const { nativeEvent } = e
-		const index = Math.round(
-			nativeEvent.contentOffset.x / Dimensions.get("window").width
-		)
-		if (index !== activeIndex) setActiveIndex(index)
-	}
+		const onMomentumScrollEnd = (e: any) => {
+			const { nativeEvent } = e
+			const index = Math.round(
+				nativeEvent.contentOffset.x / Dimensions.get("window").width
+			)
+			setActiveIndex(index)
+			setIsScrolling(false)
+		}
 
-	return (
-		<View style={styles.container}>
-			<View style={styles.navContainer}>
-				{navItems.map((icon, index) => (
-					<MenuItem
-						children={icon}
-						active={activeIndex === index}
-						onPress={onPress(index)}
-						key={index}
-					/>
-				))}
+		useImperativeHandle(ref, () => ({
+			scrollTo: (x: number) => {
+				console.log("Scrolling to:", x)
+
+				setIsScrolling(true)
+				scrollRef.current?.scrollTo({
+					x: x,
+					animated: true,
+				})
+				setActiveIndex(Math.round(x / Dimensions.get("window").width))
+			},
+		}))
+
+		return (
+			<View style={styles.container}>
+				<View style={styles.navContainer}>
+					{navItems.map((icon, index) => (
+						<MenuItem
+							children={icon}
+							active={activeIndex === index}
+							onPress={onPress(index)}
+							key={index}
+						/>
+					))}
+				</View>
+				<ScrollView
+					horizontal
+					pagingEnabled
+					nestedScrollEnabled
+					onMomentumScrollEnd={onMomentumScrollEnd}
+					showsHorizontalScrollIndicator={false}
+					showsVerticalScrollIndicator={false}
+					ref={scrollRef}
+				>
+					{children.map((child, index) => (
+						<View style={styles.childrenContainer} key={index}>
+							{child}
+						</View>
+					))}
+				</ScrollView>
 			</View>
-			<ScrollView
-				horizontal
-				pagingEnabled
-				nestedScrollEnabled
-				onMomentumScrollEnd={onMomentumScrollEnd}
-				showsHorizontalScrollIndicator={false}
-				showsVerticalScrollIndicator={false}
-				ref={scrollRef}
-			>
-				{children.map((child, index) => (
-					<View style={styles.childrenContainer} key={index}>
-						{child}
-					</View>
-				))}
-			</ScrollView>
-		</View>
-	)
-}
+		)
+	}
+)
 
+export default PaginatedHorizontalList
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
@@ -108,4 +135,3 @@ const styles = StyleSheet.create({
 		letterSpacing: 1,
 	},
 })
-export default PaginatedHorizontalList
