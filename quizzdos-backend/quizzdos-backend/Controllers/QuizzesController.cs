@@ -9,11 +9,11 @@ namespace quizzdos_backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class QuizController : ControllerBase
+    public class QuizzesController : ControllerBase
     {
         private readonly IQuizRepository quizRepository;
 
-        public QuizController (IQuizRepository quizRepository)
+        public QuizzesController (IQuizRepository quizRepository)
         {
             this.quizRepository = quizRepository;
         }
@@ -64,6 +64,27 @@ namespace quizzdos_backend.Controllers
             return Ok(qz);
         }
 
+        [HttpPut("{quizId:Guid}/questions")]
+        [ProducesResponseType(typeof(List<QuizQuestionDTO>), 200)]
+        [ProducesResponseType(typeof(string), 404)]
+        public async Task<ActionResult> UpdateQuizQuestions(Guid quizId, List<QuizQuestionDTO> newQuestions)
+        {
+            var qz = await quizRepository.UpdateQuizQuestions(quizId, newQuestions);
+            if (qz == null)
+                return NotFound($"Quiz: {quizId} was not found!");
+
+            return Ok(qz);
+        }
+        [HttpGet("{quizzId:Guid}/questions")]
+        [ProducesResponseType(typeof(List<QuestionDTO>), 200)]
+        [ProducesResponseType(typeof(string), 404)]
+        public async Task<ActionResult> GetQuizQuestions(Guid quizzId)
+        {
+            var qz = await quizRepository.GetQuizQuestions(quizzId);
+            if (qz == null)
+                return NotFound($"Quiz: {quizzId} was not found!");
+            return Ok(qz);
+        }
 
     }
 }
