@@ -8,11 +8,11 @@ namespace quizzdos_backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PersonController : ControllerBase
+    public class PeopleController : ControllerBase
     {
         private readonly IPersonRepository _personRepository;
 
-        public PersonController(IPersonRepository personRepository)
+        public PeopleController(IPersonRepository personRepository)
         {
             _personRepository = personRepository;
         }

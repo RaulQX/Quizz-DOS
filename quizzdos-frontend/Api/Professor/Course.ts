@@ -9,7 +9,7 @@ interface ICreateSection {
 
 export const createSection = async (section: ICreateSection) => {
 	const response = await axios.post(
-		ApiEndpoints.Section.addSection,
+		ApiEndpoints.Sections.addSection,
 		section,
 		{
 			headers: {
@@ -25,7 +25,7 @@ export const fetchCourse = async (courseId: string) => {
 	console.log('cid',courseId)
 
 	const response = await axios.get(
-		`${ApiEndpoints.Course.getCourse}/${courseId}`
+		`${ApiEndpoints.Courses.getCourse}/${courseId}`
 	)
         console.log('res',response.data)
 	return response.data

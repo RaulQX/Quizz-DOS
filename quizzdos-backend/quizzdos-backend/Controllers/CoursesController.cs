@@ -9,16 +9,16 @@ namespace quizzdos_backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CourseController : ControllerBase
+    public class CoursesController : ControllerBase
     {
         private readonly ICourseRepository _courseRepository;
 
-        public CourseController(ICourseRepository courseRepository)
+        public CoursesController(ICourseRepository courseRepository)
         {
             _courseRepository = courseRepository;
         }
 
-        [HttpGet("courses/{courseId:Guid}")]
+        [HttpGet("{courseId:Guid}")]
         [ProducesResponseType(typeof(Course), 200)]
         [ProducesResponseType(typeof(string), 400)]
         public async Task<ActionResult> GetCourse(Guid courseId)
@@ -63,7 +63,7 @@ namespace quizzdos_backend.Controllers
             return Ok(crs);
         }
 
-        [HttpGet("{creatorId:Guid}")]
+        [HttpGet("creators/{creatorId:Guid}")]
         [ProducesResponseType(typeof(PaginatedResponse<DiplayCourseDTO>), 200)]
         public async Task<ActionResult> GetCreatedCoursesPaged(Guid creatorId, int pageParam = 1, int pageSize = 1)
         {

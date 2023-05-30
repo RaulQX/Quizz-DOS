@@ -14,7 +14,7 @@ export const fetchCreatedCourses = async ({
 }: ICreatedCourseQuery) => {
 
 	const response = await axios.get(
-		`${ApiEndpoints.Course.createdCourses}/${creatorId}`,
+		`${ApiEndpoints.Courses.createdCourses}/${creatorId}`,
 		{
 			params: { pageParam, pageSize },
 		}

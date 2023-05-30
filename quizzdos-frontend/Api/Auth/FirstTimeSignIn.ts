@@ -12,7 +12,7 @@ export const updateNewAccountDetails = async (
 	personData: NewAccountDetails
 ) => {
 	const response = await axios.put(
-		`${ApiEndpoints.Person.personById}/${personId}`,
+		`${ApiEndpoints.People.personById}/${personId}`,
 		null,
 		{
 			params: {

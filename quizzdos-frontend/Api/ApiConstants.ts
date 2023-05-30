@@ -10,11 +10,11 @@ const baseUrl = "http://192.168.1.168:5000/api"
 
 const controllers = {
 	auth: makeRoute(baseUrl, "auth"),
-	user: makeRoute(baseUrl, "user"),
-	person: makeRoute(baseUrl, "person"),
-	course: makeRoute(baseUrl, "course"),
-	section: makeRoute(baseUrl, "section"),
-	quiz: makeRoute(baseUrl, "quiz"),
+	user: makeRoute(baseUrl, "users"),
+	person: makeRoute(baseUrl, "people"),
+	course: makeRoute(baseUrl, "courses"),
+	section: makeRoute(baseUrl, "sections"),
+	quiz: makeRoute(baseUrl, "quizzes"),
 } as const
 
 export const ApiEndpoints = {
@@ -22,24 +22,24 @@ export const ApiEndpoints = {
 		login: makeRoute(controllers.auth, "login"),
 		register: makeRoute(controllers.auth, "register"),
 	},
-	Person: {
+	People: {
 		personByUserId: makeRoute(controllers.person, "userId"),
 		personById: controllers.person,
 	},
-	User: {
+	Users: {
 		currentUser: makeRoute(controllers.user, "current-user"),
 	},
-	Course: {
+	Courses: {
 		joinedCourses: controllers.course,
 		createdCourses: controllers.course,
 		joinCourse: controllers.course,
 		addCourse: controllers.course,
-		getCourse: makeRoute(controllers.course, "courses"),
+		getCourse: makeRoute(controllers.course, "creators"),
 	},
-	Section: {
+	Sections: {
 		addSection: controllers.section,
 	},
-	Quiz: {
+	Quizzes: {
 		addQuiz: controllers.quiz,
 	},
 } as const

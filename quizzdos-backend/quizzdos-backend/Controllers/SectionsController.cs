@@ -8,11 +8,11 @@ namespace quizzdos_backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SectionController : ControllerBase
+    public class SectionsController : ControllerBase
     {
         private readonly ISectionRepository _sectionRepository;
 
-        public SectionController(ISectionRepository sectionRepository)
+        public SectionsController(ISectionRepository sectionRepository)
         {
             _sectionRepository = sectionRepository;
         }

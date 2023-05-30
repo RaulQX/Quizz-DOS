@@ -7,7 +7,7 @@ interface ICreateQuiz {
 }
 
 export const createQuiz = async (quiz: ICreateQuiz) => {
-	const response = await axios.post(ApiEndpoints.Quiz.addQuiz, quiz, {
+	const response = await axios.post(ApiEndpoints.Quizzes.addQuiz, quiz, {
 		headers: {
 			"Content-Type": "application/json",
 		},

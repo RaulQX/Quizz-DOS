@@ -9,7 +9,7 @@ export const loginUser = async (userPayload: any) => {
 		password: userPayload.password,
 	})
 
-	const { data: user } = await axios.get(ApiEndpoints.User.currentUser, {
+	const { data: user } = await axios.get(ApiEndpoints.Users.currentUser, {
 		headers: {
 			Accept: "text/plain",
 			"Content-Type": "application/json",
@@ -21,7 +21,7 @@ export const loginUser = async (userPayload: any) => {
 
 	const encodedValue = encodeURIComponent(user.id)
 	let { data: person } = await axios.get(
-		`${ApiEndpoints.Person.personByUserId}/${encodedValue}`
+		`${ApiEndpoints.People.personByUserId}/${encodedValue}`
 	)
 	console.log("person: ", person)
 
