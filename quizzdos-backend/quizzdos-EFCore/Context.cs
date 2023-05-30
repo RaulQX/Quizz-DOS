@@ -34,7 +34,7 @@ namespace quizzdos_EFCore
                 .HasOne(o => o.Question)
                 .WithMany(q => q.Options)
                 .HasForeignKey(o => o.QuestionId)
-                .OnDelete(DeleteBehavior.Restrict)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_Options_Questions_QuestionId_FK1");
 
 

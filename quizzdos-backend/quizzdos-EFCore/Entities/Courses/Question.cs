@@ -24,7 +24,7 @@ namespace quizzdos_EFCore.Entities.Courses
         public string Prompt { get; set; } = string.Empty;
 
         [Required]
-        public int QuestionScore { get; set; }
+        public double QuestionScore { get; set; }
 
         [Required]
         public bool TipAllowed { get; set; } = false;

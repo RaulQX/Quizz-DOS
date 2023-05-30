@@ -15,7 +15,7 @@ namespace quizzdos_EFCore.Entities.Courses
     {
         public Guid QuestionId { get; set; }
         public Question Question { get; set; } = null!;
-        public int ScorePercentage { get; set; }
+        public double ScorePercentage { get; set; }
 
         [Required]
         [MaxLength(100)]
