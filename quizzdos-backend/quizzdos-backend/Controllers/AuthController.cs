@@ -13,18 +13,15 @@ namespace quizzdos_backend.Controllers
     {
         private readonly IAuthRepository _authRepository;
         private readonly IValidationRepository _validationRepository;
-        private readonly IPersonRepository _personRepository;
         private readonly IUserRepository _userRepository;
 
         public AuthController(
             IAuthRepository authRepository,
             IValidationRepository validationRepository,
-            IPersonRepository personRepository,
             IUserRepository userRepository)
         {
             _authRepository = authRepository;
             _validationRepository = validationRepository;
-            _personRepository = personRepository;
             _userRepository = userRepository;
         }
 
