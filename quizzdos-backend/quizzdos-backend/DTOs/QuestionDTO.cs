@@ -11,7 +11,6 @@
 
     public class QuizQuestionDTO
     {
-        public Guid QuizId { get; set; }
         public Guid Id { get; set; }
         public string Prompt { get; set; } = string.Empty;
         public double QuestionScore { get; set; }
