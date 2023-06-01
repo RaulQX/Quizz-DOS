@@ -22,12 +22,12 @@ export const createSection = async (section: ICreateSection) => {
 }
 
 export const fetchCourse = async (courseId: string) => {
-	console.log('cid',courseId)
-
+	console.log("cid", courseId)
+	console.log("url", `${ApiEndpoints.Courses.getCourse}/${courseId}`)
 	const response = await axios.get(
 		`${ApiEndpoints.Courses.getCourse}/${courseId}`
 	)
-        console.log('res',response.data)
+	console.log("res", response.data)
 	return response.data
 }
 
