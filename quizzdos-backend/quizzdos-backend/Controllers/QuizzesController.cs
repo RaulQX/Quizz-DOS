@@ -85,6 +85,18 @@ namespace quizzdos_backend.Controllers
                 return NotFound($"Quiz: {quizzId} was not found!");
             return Ok(qz);
         }
+        [HttpGet("{personId:Guid}/{quizzId:Guid}")]
+        [ProducesResponseType(typeof(StartQuizDTO), 200)]
+        [ProducesResponseType(typeof(string), 404)]
+        public async Task<ActionResult> StartQuiz(Guid quizzId, Guid personId)
+        {
+            var qz = await quizRepository.GetQuizForStudent(quizzId, personId);
+            
+            if (qz == null)
+                return NotFound($"Quiz: {quizzId} was not found!");
+
+            return Ok(qz);
+        }
 
     }
 }

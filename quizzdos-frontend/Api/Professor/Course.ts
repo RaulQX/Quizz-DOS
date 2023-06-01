@@ -21,13 +21,10 @@ export const createSection = async (section: ICreateSection) => {
 	return response.data
 }
 
-export const fetchCourse = async (courseId: string) => {
-	console.log("cid", courseId)
-	console.log("url", `${ApiEndpoints.Courses.getCourse}/${courseId}`)
+export const fetchCourse = async (courseId: string, personId: string) => {
 	const response = await axios.get(
-		`${ApiEndpoints.Courses.getCourse}/${courseId}`
+		`${ApiEndpoints.Courses.getCourse}/${personId}/${courseId}`
 	)
-	console.log("res", response.data)
 	return response.data
 }
 

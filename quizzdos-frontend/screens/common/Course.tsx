@@ -25,7 +25,7 @@ const Course = ({ route, navigation }: any) => {
 	const { courseId } = route.params
 
 	const marginLeft = 10
-	const { role } = useUser()
+	const { role, personId } = useUser()
 	const isProfessor = role === ROLES.professor
 
 	const [addSectionVisible, setAddSectionVisible] = useState(false)
@@ -45,12 +45,11 @@ const Course = ({ route, navigation }: any) => {
 		materialsUrl: "",
 		sections: [],
 	})
-	useQuery(["course", courseId, refreshCourse], () => fetchCourse(courseId), {
+	useQuery(["course", courseId, refreshCourse], () => fetchCourse(courseId, personId), {
 		onSuccess: (data) => setCourse(data),
 		onError: (error) => console.log(error),
 	})
 
-	console.log("c", course)
 
 	const handleAddSection = () => {
 		addSectionName.length === 0

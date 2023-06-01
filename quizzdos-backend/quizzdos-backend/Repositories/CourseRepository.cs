@@ -14,7 +14,7 @@ namespace quizzdos_backend.Repositories
         public Task<Course?> AddCourseAsync(CourseDTO addingCourse);
         public Task<Course?> DeleteCourseAsync(Guid courseId);
         public Task<Course?> UpdateCourseAsync(Guid courseId, CourseDTO updatedCourse);
-        public Task<AccessedCourseDTO?> GetCourseByIdAsync(Guid courseId);
+        public Task<AccessedCourseDTO?> GetCourseByIdAsync(Guid courseId, Guid personId);
         public Task<PaginatedResponse<DiplayCourseDTO>> GetCreatedCoursesPaged(Guid creatorId, int page, int pageSize);
         public Task<bool> AddPersonToCourse(string code, Guid personId);
         public Task<PaginatedResponse<DiplayCourseDTO>?> GetJoinedCoursesPaginated(Guid personId, int page, int pageSize);
@@ -152,7 +152,7 @@ namespace quizzdos_backend.Repositories
                      Id = ca.CourseId.GetValueOrDefault(),
                      ShortName = ca.Course.ShortName,
                      SectionsNumber = ca.Course.Sections.Count,
-                     Progress = GetQuizProgress(ca.Course),
+                     Progress = GetSectionProgress(ca.Course),
                      Icon = ca.Course.Icon,
                      Code = ca.Course.Code
                  })
@@ -164,20 +164,23 @@ namespace quizzdos_backend.Repositories
 
             return new PaginatedResponse<DiplayCourseDTO>(page, pageSize, totalJoinedCourses, joinedCourses);
         }
-        private static int GetQuizProgress(Course course)
+        private static double GetSectionProgress(Course course)
         {
-            int completedSections = course.Sections
+
+            double totalSections = course.Sections.Count;
+            double completedSections = course.Sections
                 .Where(section => section.Quizzes.All(quiz => quiz.Status == EQuizStatus.Done))
                 .Count();
 
-            return completedSections;
+            return totalSections == 0 ? 0 : completedSections / totalSections;
         }
 
-        public async Task<AccessedCourseDTO?> GetCourseByIdAsync(Guid courseId)
+        public async Task<AccessedCourseDTO?> GetCourseByIdAsync(Guid courseId, Guid personId)
         {
             var course = await _context.Courses
                 .Include(c => c.Sections)
                 .ThenInclude(s => s.Quizzes)
+                .ThenInclude(q => q.Grades)
                 .FirstOrDefaultAsync(c => c.Id == courseId);
 
 
@@ -197,17 +200,35 @@ namespace quizzdos_backend.Repositories
                     Id = s.Id,
                     Name = s.Name,
                     Summary = s.Summary,
-                    Progress = s.Quizzes.Count(q => q.Status == EQuizStatus.Done) / ((double)s.Quizzes.Count == 0 ? 1 : (double)s.Quizzes.Count),
+                    Progress = CalculateSectionProgress(s.Quizzes.ToList()),
                     Quizzes = s.Quizzes.Select(q => new AccessedQuizDTO
                     {
                         Id = q.Id,
                         Name = q.Name,
-                        Status = q.Status
+                        Status = GetQuizStatus(q, personId)
                     }).ToList()
                 }).ToList()
             };
 
             return accessedCourse;
+        }
+
+        private static double CalculateSectionProgress(List<Quiz> quizzes)
+        {
+            double totalQuizzes = quizzes.Count;
+            double completedQuizzes = quizzes.Count(q => q.Status == EQuizStatus.Done);
+            return totalQuizzes == 0 ? 0 : completedQuizzes / totalQuizzes;
+        }
+
+        private static EQuizStatus GetQuizStatus(Quiz q, Guid personId)
+        {
+            Grade? grade = q.Grades.FirstOrDefault(g => g.PersonId == personId);
+            return grade switch
+            {
+                null => EQuizStatus.Unopened,
+                Grade g when g.GradeValue == 10 => EQuizStatus.Done,
+                _ => EQuizStatus.InProgress,
+            };
         }
     }
 }

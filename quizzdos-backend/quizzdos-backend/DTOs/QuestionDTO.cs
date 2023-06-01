@@ -18,4 +18,12 @@
         public List<QuestionOptionDTO> Options { get; set;  } = new List<QuestionOptionDTO>();
     }
 
+    public class QuestionWithAnswersDTO
+    {
+        public List<Guid> ChosenOptions { get; set; } = new List<Guid>();
+        public Guid Id { get; set; }
+        public List<OptionDTO> Options { get; set; } = new List<OptionDTO>();
+        public double QuestionScore { get; set; }
+    }
+
 }

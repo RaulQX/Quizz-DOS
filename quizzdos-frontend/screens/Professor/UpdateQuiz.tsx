@@ -2,7 +2,7 @@ import { HStack, VStack } from "@react-native-material/core"
 import { COLORS } from "palette/colors"
 import React from "react"
 import { Dimensions } from "react-native"
-import { Checkbox, Divider, Surface } from "react-native-paper"
+import { Button, Checkbox, Divider, Surface } from "react-native-paper"
 import { Text } from "react-native"
 import TextButton from "components/common/TextButton"
 import AnimatedLottieView from "lottie-react-native"
@@ -14,6 +14,7 @@ interface UpdateQuizProps {
 	onSubmit: () => void
 	autoScore: boolean
 	setAutoScore: (value: boolean) => void
+	addNewQuestion: () => void
 }
 
 const UpdateQuiz = ({
@@ -23,6 +24,7 @@ const UpdateQuiz = ({
 	setQuestionScoreEqual,
 	autoScore,
 	setAutoScore,
+	addNewQuestion,
 }: UpdateQuizProps) => {
 	return (
 		<Surface
@@ -46,8 +48,24 @@ const UpdateQuiz = ({
 						textAlign: "center",
 					}}
 				>
-					Are you sure you want to update this quiz?
+					{totalQuestions != 0
+						? "Are you sure you want to update this quiz?"
+						: "Please enter at least one question"}
 				</Text>
+				<Button
+					icon="plus-circle-outline"
+					contentStyle={{
+						backgroundColor: COLORS.blue,
+						flexDirection: "row-reverse",
+					}}
+					mode="contained"
+					onPress={() => {
+						addNewQuestion()
+					}}
+					style={{ alignSelf: "center", margin: 10 }}
+				>
+					{"Add New Question"}
+				</Button>
 				<HStack
 					justify="around"
 					style={{ width: "100%", paddingHorizontal: 0 }}
@@ -107,6 +125,7 @@ const UpdateQuiz = ({
 						onSubmit()
 					}}
 					text="Submit"
+					disabled={totalQuestions === 0}
 				/>
 			</VStack>
 		</Surface>

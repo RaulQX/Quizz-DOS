@@ -18,12 +18,12 @@ namespace quizzdos_backend.Controllers
             _courseRepository = courseRepository;
         }
 
-        [HttpGet("{courseId:Guid}")]
+        [HttpGet("{personId:Guid}/{courseId:Guid}")]
         [ProducesResponseType(typeof(Course), 200)]
-        [ProducesResponseType(typeof(string), 400)]
-        public async Task<ActionResult> GetCourse(Guid courseId)
+        [ProducesResponseType(typeof(string), 404)]
+        public async Task<ActionResult> GetCourse(Guid courseId, Guid personId)
         {
-            var course = await _courseRepository.GetCourseByIdAsync(courseId);
+            var course = await _courseRepository.GetCourseByIdAsync(courseId, personId);
             if (course == null)
                 return NotFound($"Course: {courseId} was not found!");
             return Ok(course);
@@ -83,7 +83,7 @@ namespace quizzdos_backend.Controllers
             return Ok("Person successfully added.");
         }
 
-        [HttpGet("{personId}/joined-courses")]
+        [HttpGet("{personId}")]
         [ProducesResponseType(typeof(PaginatedResponse<DiplayCourseDTO>), 200)]
         [ProducesResponseType(typeof(string), 400)]
         public async Task<ActionResult> GetJoinedCoursesPaged(Guid personId, int pageParam = 1, int pageSize = 1)

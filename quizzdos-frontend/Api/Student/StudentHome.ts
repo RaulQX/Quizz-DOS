@@ -18,7 +18,7 @@ export const fetchJoinedCourses = async ({
 	pageSize,
 }: IJoinedCourseQuery) => {
 	const response = await axios.get(
-		`${ApiEndpoints.Courses.joinedCourses}/${personId}/joined-courses`,
+		`${ApiEndpoints.Courses.joinedCourses}/${personId}`,
 		{
 			params: { pageParam, pageSize },
 		}

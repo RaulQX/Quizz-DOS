@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react"
 import QuizQuestion from "./QuizQuestion"
 import QuizEnd from "./QuizEnd"
 import TopTextInArch from "components/common/TopTextInArch"
+import { StartQuestion } from "./QuizStart"
 
 export interface IQuestion {
 	id: string
@@ -18,116 +19,73 @@ export interface IQuestion {
 interface IOption {
 	id: string
 	text: string
-	optionScore: number
-}
-const constProps = {
-	name: "Quiz 1",
-	questions: [
-		{
-			id: "01",
-			prompt: "What does Big O notation describe?",
-			questionScore: 4,
-			tipAllowed: true,
-			options: [
-				{ id: "a", text: "The running time", optionScore: 4 },
-				{
-					id: "b",
-					text: "The color of the algorithm",
-					optionScore: 0,
-				},
-				{ id: "c", text: "The number of lines", optionScore: 0 },
-				{
-					id: "d",
-					text: "The number of variables",
-					optionScore: 0,
-				},
-			],
-			chosenOptions: [],
-		},
-		{
-			id: "02",
-			prompt: "What is bigger than O(n)?",
-			questionScore: 4,
-			tipAllowed: true,
-			options: [
-				{ id: "a", text: "O(n^2)", optionScore: 2 },
-				{ id: "b", text: "O(2n)", optionScore: 0 },
-				{ id: "c", text: "O(log(n))", optionScore: 0 },
-				{ id: "d", text: "O(2^n)", optionScore: 2 },
-			],
-			chosenOptions: [],
-		},
-		{
-			id: "03",
-			prompt: "Is Big O notation useful?",
-			questionScore: 2,
-			tipAllowed: false,
-			options: [
-				{ id: "a", text: "Yes", optionScore: 2 },
-				{ id: "b", text: "No", optionScore: 0 },
-			],
-			chosenOptions: [],
-		},
-	],
+	scorePercentage: number
 }
 
-const Quiz = ({ navigation }: any) => {
+const Quiz = ({ route, navigation }: any) => {
+	const { quizName, propsQuestions } = route.params
+
 	const [refresh, setRefresh] = useState(false)
 	const [questions, setQuestions] = useState<IQuestion[]>(
-		constProps.questions
+		propsQuestions.map((question: StartQuestion) => ({
+			...question,
+			chosenOptions: [],
+		}))
 	)
-	const [chosenOptions, setChosenOptions] = useState<string[]>([])
-
-	useEffect(() => {
-		setQuestions(constProps.questions)
-	}, [refresh])
 
 	const handleQuestionAnswer = (questionId: string, optionId: string) => {
 		const newQuestions = questions.map((question: IQuestion) => {
 			if (question.id === questionId) {
 				const newChosenOptions = question.chosenOptions
-				if (newChosenOptions.includes(optionId)) {
-					newChosenOptions.splice(
-						newChosenOptions.indexOf(optionId),
-						1
-					)
+					? [...question.chosenOptions]
+					: []
+				const optionIndex = newChosenOptions.indexOf(optionId)
+
+				if (optionIndex > -1) {
+					newChosenOptions.splice(optionIndex, 1)
 				} else {
 					newChosenOptions.push(optionId)
 				}
-				return { ...question, chosenOptions: newChosenOptions }
-			} else {
-				return question
-			}
-		})
-		setQuestions(newQuestions)
 
+				return { ...question, chosenOptions: newChosenOptions }
+			}
+
+			return question
+		})
+
+		setQuestions(newQuestions)
 		setRefresh(!refresh)
 	}
 
 	return (
 		<VStack justify="between" style={{ height: "100%" }}>
 			<TopTextInArch
-				firstLine={constProps.name}
-				secondLine={constProps.questions.length + " questions"}
+				firstLine={quizName}
+				secondLine={questions.length + " questions"}
 			/>
 
 			<PaginatedHorizontalList
 				navItems={[
-					...constProps.questions.map(() => {
+					...questions.map(() => {
 						return <></>
 					}),
 					<></>,
 				]}
 				children={[
-					...constProps.questions.map((question: IQuestion) => {
+					...questions.map((question: IQuestion) => {
 						return (
 							<QuizQuestion
+								key={question.id}
 								question={question}
 								handleQuestionAnswer={handleQuestionAnswer}
 							/>
 						)
 					}),
-					<QuizEnd questions={questions} />,
+					<QuizEnd
+						questions={questions}
+						key={"qEnd"}
+						navigation={navigation}
+					/>,
 				]}
 			/>
 		</VStack>

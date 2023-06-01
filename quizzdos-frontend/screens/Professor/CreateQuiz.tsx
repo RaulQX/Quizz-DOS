@@ -193,6 +193,7 @@ const CreateQuiz = ({ route, navigation }: any) => {
 						onSubmit={() => saveQuiz()}
 						autoScore={autoScore}
 						setAutoScore={setAutoScore}
+						addNewQuestion={addNewQuestion}
 					/>,
 				]}
 			/>

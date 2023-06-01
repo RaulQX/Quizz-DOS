@@ -8,14 +8,15 @@ import TextButton from "components/common/TextButton"
 import AnimatedLottieView from "lottie-react-native"
 
 interface QuizEndProps {
+	navigation: any
 	questions: IQuestion[]
 }
 
-const QuizEnd = ({ questions }: QuizEndProps) => {
-	console.log("QuizEnd.tsx: questions: ", questions)
-	const numberOfQuestionsAnswered = questions.filter(
-		(question) => question.chosenOptions.length > 0
-	).length
+const QuizEnd = ({ questions, navigation }: QuizEndProps) => {
+	const numberOfQuestionsAnswered = questions
+		? questions.filter((question) => question.chosenOptions.length > 0)
+				.length
+		: 0
 
 	return (
 		<Surface
@@ -55,7 +56,8 @@ const QuizEnd = ({ questions }: QuizEndProps) => {
 					>
 						You have answered{" "}
 						<Text style={{ color: COLORS.blue }}>
-							{numberOfQuestionsAnswered}/{questions.length}
+							{numberOfQuestionsAnswered}/
+							{questions ? questions.length : 0}
 						</Text>{" "}
 						questions.
 					</Text>
@@ -76,8 +78,14 @@ const QuizEnd = ({ questions }: QuizEndProps) => {
 						style={{ width: 200, height: 200, marginLeft: 10 }}
 					/>
 				</VStack>
-
-				<TextButton text="Submit" onPress={() => {}} />
+				<TextButton
+					text="Submit"
+					onPress={() => {
+						navigation.navigate("QuizResult", {
+							questions: questions,
+						})
+					}}
+				/>
 			</VStack>
 		</Surface>
 	)

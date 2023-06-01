@@ -15,6 +15,8 @@ const QuizQuestion = ({
 	question,
 	handleQuestionAnswer,
 }: QuizQuestionsProps) => {
+	const chosenOptions = question.chosenOptions || [] // Null check and initialize as empty array
+
 	return (
 		<VStack>
 			<Text
@@ -33,12 +35,13 @@ const QuizQuestion = ({
 				{question.options.map((option: any) => {
 					return (
 						<Pressable
+							key={option.id}
 							style={{
-								backgroundColor:
-									question.chosenOptions.includes(option.id)
-										? COLORS.blue
-										: COLORS.white,
-
+								backgroundColor: chosenOptions.includes(
+									option.id
+								)
+									? COLORS.blue
+									: COLORS.white,
 								borderRadius: 10,
 								width: 300,
 								height: 50,

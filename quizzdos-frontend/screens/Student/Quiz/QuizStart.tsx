@@ -1,17 +1,19 @@
 import { Flex, HStack, VStack } from "@react-native-material/core"
+import { useQuery } from "@tanstack/react-query"
+import { fetchQuiz } from "Api/Student/QuizStart"
 import BottomAppbarLayout from "components/common/BottomAppbarLayout"
 import TextButton from "components/common/TextButton"
 import TopTextInArch from "components/common/TopTextInArch"
 import { QUIZ_STATUS } from "constants/Constants"
+import useUser from "contexts/user/UserContext"
 import AnimatedLottieView from "lottie-react-native"
 import { COLORS } from "palette/colors"
-import React from "react"
+import React, { useState } from "react"
 import { Text } from "react-native"
 import { Divider, Surface } from "react-native-paper"
 
 const constProps = {
 	quiz: {
-		id: "01",
 		title: "Big O Notation",
 		status: QUIZ_STATUS.unopened,
 		sectionName: "Introduction",
@@ -64,17 +66,46 @@ const constProps = {
 	},
 }
 
-interface IQuizStartProps {
-	navigation: any
-	quiz: {
-		id: string
-		title: string
-		status: number
-		sectionName: string
-	}
+interface StartQuiz {
+	title: string
+	status: number
+	sectionName: string
+	questionsNumber: number
+	grade: number
+	questions: StartQuestion[]
 }
 
-const QuizStart = ({ navigation }: any) => {
+export interface StartQuestion {
+	id: string
+	prompt: string
+	questionScore: number
+	tipAllowed: boolean
+	options: StartOption[]
+}
+
+interface StartOption {
+	id: string
+	text: string
+	optionScore: number
+}
+const initialQuiz: StartQuiz = {
+	title: "",
+	status: 0,
+	sectionName: "",
+	questionsNumber: 0,
+	grade: 0,
+	questions: [],
+}
+const QuizStart = ({ route, navigation }: any) => {
+	const { personId } = useUser()
+	const { quizId } = route.params
+	const [quiz, setQuiz] = useState<StartQuiz>(initialQuiz)
+
+	useQuery(["quiz", quizId], () => fetchQuiz({ personId, quizId }), {
+		onSuccess: (data) => setQuiz(data),
+		onError: (error) => console.log(error),
+	})
+
 	return (
 		<BottomAppbarLayout navigation={navigation}>
 			<TopTextInArch firstLine="Quiz Time!" />
@@ -103,11 +134,11 @@ const QuizStart = ({ navigation }: any) => {
 						>
 							You are about to start{" "}
 							<Text style={{ fontWeight: "bold" }}>
-								{constProps.quiz.title}
+								{quiz.title}
 							</Text>{" "}
 							from{" "}
 							<Text style={{ fontWeight: "bold" }}>
-								{constProps.quiz.sectionName}
+								{quiz.sectionName}
 							</Text>
 							.
 						</Text>
@@ -176,7 +207,7 @@ const QuizStart = ({ navigation }: any) => {
 										textAlign: "center",
 									}}
 								>
-									{constProps.quiz.questionsNumber}
+									{quiz.questionsNumber}
 								</Text>
 							</HStack>
 							<HStack style={{ justifyContent: "space-between" }}>
@@ -196,7 +227,7 @@ const QuizStart = ({ navigation }: any) => {
 										textAlign: "center",
 									}}
 								>
-									{constProps.quiz.grade}/10
+									{quiz.grade}/10
 								</Text>
 							</HStack>
 						</Surface>
@@ -204,7 +235,10 @@ const QuizStart = ({ navigation }: any) => {
 
 					<TextButton
 						onPress={() => {
-							console.log("start quiz")
+							navigation.navigate("Quiz", {
+								quizName: quiz.title,
+								propsQuestions: quiz.questions,
+							})
 						}}
 						text="Start Quiz!"
 						style={{

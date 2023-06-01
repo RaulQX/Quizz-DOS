@@ -5,28 +5,70 @@ import AnimatedLottieView from "lottie-react-native"
 import { COLORS } from "palette/colors"
 import React from "react"
 import { Text } from "react-native"
+import { IQuestion } from "./Quiz"
 
-const constProps = {
-	result: {
-		quizGrade: 10,
-		correctQuestions: 3,
-		totalQuestions: 3,
-	},
+interface QuizResult {
+	quizGrade: number
+	correctQuestions: number
+	totalQuestions: number
+}
+function calculateQuizResult(questions: IQuestion[]): QuizResult {
+	let totalScore = 0
+	let correctQuestions = 0
+
+	for (const question of questions) {
+		const chosenOptions = question.chosenOptions
+		const questionScore = question.questionScore
+
+		if (chosenOptions.length === question.options.length) continue
+
+		let scorePercentage = 0
+		let wrongOptions = 0
+
+		for (const option of question.options) {
+			const isOptionSelected = chosenOptions.includes(option.id)
+			const isOptionCorrect = option.scorePercentage > 0
+
+			if (isOptionSelected && isOptionCorrect) {
+				scorePercentage += option.scorePercentage
+			}
+			if (isOptionSelected && !isOptionCorrect) {
+				wrongOptions++
+			}
+		}
+		if (wrongOptions > 0) scorePercentage /= 2 * wrongOptions
+
+		const questionMarks = (questionScore * scorePercentage) / 100
+		totalScore += questionMarks
+
+		if (scorePercentage === 100) {
+			correctQuestions++
+		}
+	}
+
+	return {
+		quizGrade: totalScore,
+		correctQuestions,
+		totalQuestions: questions.length,
+	}
 }
 
-const QuizResult = ({ navigation }: any) => {
+const QuizResult = ({ route, navigation }: any) => {
+	const { questions } = route.params
+	const result = calculateQuizResult(questions)
+
 	return (
 		<BottomAppbarLayout navigation={navigation}>
 			<TopTextInArch
 				firstLine="Quiz Result"
 				secondLine={
-					constProps.result.quizGrade >= 4.5
+					result.quizGrade >= 4.5
 						? "Congratulations"
 						: "Next time for sure"
 				}
 			/>
 			<VStack content="center" items="center">
-				{constProps.result.quizGrade >= 4.5 ? (
+				{result.quizGrade >= 4.5 ? (
 					<Text
 						style={{
 							color: COLORS.white,
@@ -47,7 +89,7 @@ const QuizResult = ({ navigation }: any) => {
 						You have failed the quiz
 					</Text>
 				)}
-				{constProps.result.quizGrade >= 4.5 ? (
+				{result.quizGrade >= 4.5 ? (
 					<AnimatedLottieView
 						source={require("assets/animations/happyResult.json")}
 						autoPlay
@@ -90,7 +132,7 @@ const QuizResult = ({ navigation }: any) => {
 						fontWeight: "bold",
 					}}
 				>
-					{constProps.result.quizGrade}
+					{result.quizGrade}
 					<Text style={{ color: COLORS.white }}> / </Text>10
 				</Text>
 				<Text
@@ -103,12 +145,12 @@ const QuizResult = ({ navigation }: any) => {
 				>
 					You have answered correctly{" "}
 					<Text style={{ fontWeight: "bold", color: COLORS.blue }}>
-						{constProps.result.correctQuestions}
+						{result.correctQuestions}
 					</Text>{" "}
 					/
 					<Text style={{ fontWeight: "bold", color: COLORS.blue }}>
 						{" "}
-						{constProps.result.totalQuestions}{" "}
+						{result.totalQuestions}{" "}
 					</Text>
 					questions.
 				</Text>

@@ -22,10 +22,11 @@ const TextButton = (props: TextButtonProps) => {
 					borderRadius: 20,
 					marginTop: 15,
 					height: 50,
-                    width: "100%",
+					width: "100%",
 				}
 			}
 			onPress={props.onPress}
+			disabled={props.disabled}
 		>
 			{props.text}
 		</Button>
@@ -46,5 +47,6 @@ interface TextButtonProps {
 	style?: StyleProp<ViewStyle>
 	onPress: () => void
 	text: string
+	disabled?: boolean
 }
 export default TextButton
