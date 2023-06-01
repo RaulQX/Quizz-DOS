@@ -12,7 +12,7 @@ using System.Text.Json.Serialization;
 
 namespace quizzdos_EFCore.Relations.ManyToMany
 {
-    public class CourseAppartenence : BaseEntity
+    public class CourseMembership : BaseEntity
     {
      
         public Guid? PersonId { get; set; }

@@ -26,7 +26,7 @@ namespace quizzdos_EFCore.Entities.Courses
         public string Name { get; set; } = string.Empty;
 
         [Required]
-        public QuizStatus Status { get; set; }
+        public EQuizStatus Status { get; set; }
 
         public ICollection<Question> Questions { get; set; } = new HashSet<Question>();
         public ICollection<Grade> Grades { get; set; } = new HashSet<Grade>();

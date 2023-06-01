@@ -101,7 +101,7 @@ namespace quizzdos_backend.Repositories
                 Id = c.Id,
                 SectionsNumber = c.Sections.Count,
                 Progress = c.Sections.Count == 0 ? 0 : 
-                c.Sections.Select(s => s.Quizzes.Count(q => q.Status == QuizStatus.Done)).Sum() / (double)c.Sections.Select(s => s.Quizzes.Count).Sum()
+                c.Sections.Select(s => s.Quizzes.Count(q => q.Status == EQuizStatus.Done)).Sum() / (double)c.Sections.Select(s => s.Quizzes.Count).Sum()
             }).ToList();
             var totalCourses = await _context.Courses.Where(c => c.CreatorId == creatorId).CountAsync();
 
@@ -116,7 +116,7 @@ namespace quizzdos_backend.Repositories
             if (course == null || person == null)
                 return false;
 
-            var courseAppartenence = new CourseAppartenence
+            var courseAppartenence = new CourseMembership
             {
                 CourseId = course.Id,
                 PersonId = person.Id,
@@ -167,7 +167,7 @@ namespace quizzdos_backend.Repositories
         private static int GetQuizProgress(Course course)
         {
             int completedSections = course.Sections
-                .Where(section => section.Quizzes.All(quiz => quiz.Status == QuizStatus.Done))
+                .Where(section => section.Quizzes.All(quiz => quiz.Status == EQuizStatus.Done))
                 .Count();
 
             return completedSections;
@@ -197,7 +197,7 @@ namespace quizzdos_backend.Repositories
                     Id = s.Id,
                     Name = s.Name,
                     Summary = s.Summary,
-                    Progress = s.Quizzes.Count(q => q.Status == QuizStatus.Done) / ((double)s.Quizzes.Count == 0 ? 1 : (double)s.Quizzes.Count),
+                    Progress = s.Quizzes.Count(q => q.Status == EQuizStatus.Done) / ((double)s.Quizzes.Count == 0 ? 1 : (double)s.Quizzes.Count),
                     Quizzes = s.Quizzes.Select(q => new AccessedQuizDTO
                     {
                         Id = q.Id,

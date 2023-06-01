@@ -56,7 +56,7 @@ namespace quizzdos_backend.Controllers
         [HttpPut("{quizId:Guid}/{status:int}")]
         [ProducesResponseType(typeof(AccessedQuizDTO), 200)]
         [ProducesResponseType(typeof(string), 404)]
-        public async Task<ActionResult> UpdateQuizStatus(Guid quizId, QuizStatus status)
+        public async Task<ActionResult> UpdateQuizStatus(Guid quizId, EQuizStatus status)
         {
             var qz = await quizRepository.UpdateQuizStatus(quizId, status);
             if (qz == null)

@@ -20,7 +20,7 @@ namespace quizzdos_EFCore
         }
         public DbSet<User> Users { get; set; } = null!;
         public DbSet<Person> People { get; set; } = null!;
-        public DbSet<CourseAppartenence> CourseAppartenences { get; set; } = null!;
+        public DbSet<CourseMembership> CourseAppartenences { get; set; } = null!;
         public DbSet<Option> Options { get; set; } = null!;
         public DbSet<Course> Courses { get; set; } = null!;
         public DbSet<Section> Sections { get; set; } = null!;
@@ -38,7 +38,7 @@ namespace quizzdos_EFCore
                 .HasConstraintName("FK_Options_Questions_QuestionId_FK1");
 
 
-            modelBuilder.Entity<CourseAppartenence>()
+            modelBuilder.Entity<CourseMembership>()
                 .HasOne(ca => ca.Person)
                 .WithMany(p => p.CourseAppartenences)
                 .HasForeignKey(ca => ca.PersonId)
@@ -46,7 +46,7 @@ namespace quizzdos_EFCore
                 .HasConstraintName("FK_CourseAppartenences_People_PersonId")
                 .IsRequired();
 
-            modelBuilder.Entity<CourseAppartenence>()
+            modelBuilder.Entity<CourseMembership>()
                 .HasOne(ca => ca.Course)
                 .WithMany(c => c.CourseAppartenences)
                 .HasForeignKey(ca => ca.CourseId)

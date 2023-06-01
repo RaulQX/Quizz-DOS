@@ -21,7 +21,7 @@ namespace quizzdos_EFCore.Entities.Users
         {
             Courses = new HashSet<Course>();
             Notifications = new HashSet<Notification>();
-            CourseAppartenences = new HashSet<CourseAppartenence>();
+            CourseAppartenences = new HashSet<CourseMembership>();
             Grades = new HashSet<Grade>();
         }
         public Person(User user) : this()
@@ -38,7 +38,7 @@ namespace quizzdos_EFCore.Entities.Users
         [Required]
         public ERole Role { get; set; } = ERole.Student;
         public EGender Gender { get; set; } = EGender.NotSpecified;
-        public ICollection<CourseAppartenence> CourseAppartenences { get; set; }
+        public ICollection<CourseMembership> CourseAppartenences { get; set; }
         public ICollection<Course> Courses { get; set; }
         public ICollection<Notification> Notifications { get; set; }
         public ICollection<Grade> Grades { get; set; }

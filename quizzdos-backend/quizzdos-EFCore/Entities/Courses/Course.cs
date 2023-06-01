@@ -17,8 +17,6 @@ namespace quizzdos_EFCore.Entities.Courses
     [Table("Courses")]
     public class Course : BaseEntity
     {
-        public Course() { }
-
         [Required]
         public Guid CreatorId { get; set; }
         [ForeignKey("CreatorId")]
@@ -40,7 +38,7 @@ namespace quizzdos_EFCore.Entities.Courses
         [Column(TypeName = "nvarchar(300)")]
         public string? MaterialsUrl { get; set; }
         public ICollection<Section> Sections { get; set; } = new HashSet<Section>();
-        public ICollection<CourseAppartenence> CourseAppartenences { get; set; } = new HashSet<CourseAppartenence>();
+        public ICollection<CourseMembership> CourseAppartenences { get; set; } = new HashSet<CourseMembership>();
         public string? Icon { get; set; } = string.Empty;
         public string? Code { get; set; } = string.Empty;
     }

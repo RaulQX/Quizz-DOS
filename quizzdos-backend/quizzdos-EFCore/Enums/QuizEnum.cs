@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace quizzdos_EFCore.Enums
 {
-    public enum QuizStatus
+    public enum EQuizStatus
     {
         Unopened = 0,
         InProgress = 1,

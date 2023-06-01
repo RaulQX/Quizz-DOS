@@ -6,7 +6,7 @@ namespace quizzdos_backend.DTOs
     {
         public Guid Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public QuizStatus Status { get; set; }
+        public EQuizStatus Status { get; set; }
     }
 
     public class QuizDTO
@@ -18,6 +18,6 @@ namespace quizzdos_backend.DTOs
     {
         public Guid SectionId { get; set; }
         public string Name { get; set; } = string.Empty;
-        public QuizStatus Status { get; set; }
+        public EQuizStatus Status { get; set; }
     }
 }
