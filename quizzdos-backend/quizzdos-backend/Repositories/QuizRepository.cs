@@ -11,7 +11,7 @@ namespace quizzdos_backend.Repositories
         public Task<QuizDTO?> AddQuizAsync(QuizDTO addingQuiz);
         public Task<Quiz?> DeleteQuizAsync(Guid quizId);
         public Task<UpdateQuizDTO?> UpdateQuizAsync(Guid quizId, UpdateQuizDTO updatedQuiz);
-        public Task<AccessedQuizDTO?> UpdateQuizStatus(Guid quizId, QuizStatus status);
+        public Task<AccessedQuizDTO?> UpdateQuizStatus(Guid quizId, EQuizStatus status);
         public Task<List<QuestionDTO>> GetQuizQuestions(Guid quizzId);
         public Task<List<QuizQuestionDTO>?> UpdateQuizQuestions(Guid quizzId, List<QuizQuestionDTO> newQuestions);
              
@@ -28,7 +28,7 @@ namespace quizzdos_backend.Repositories
             var section = await _context.Sections.FindAsync(addingQuiz.SectionId);
             if (section == null)
                 return null; 
-            var quiz = new Quiz { Name = addingQuiz.Name, SectionId = addingQuiz.SectionId, Status = QuizStatus.Unopened };
+            var quiz = new Quiz { Name = addingQuiz.Name, SectionId = addingQuiz.SectionId, Status = EQuizStatus.Unopened };
 
             await _context.AddAsync(quiz);
             await _context.SaveChangesAsync();
@@ -84,7 +84,8 @@ namespace quizzdos_backend.Repositories
 
         public async Task<List<QuizQuestionDTO>?> UpdateQuizQuestions(Guid quizId, List<QuizQuestionDTO> updatedQuestions)
         {
-            var quiz = await _context.Quizzes.Include(q => q.Questions)
+            var quiz = await _context.Quizzes
+                .Include(q => q.Questions)
                 .ThenInclude(q => q.Options)
                 .FirstOrDefaultAsync(q => q.Id == quizId);
             if (quiz == null)
@@ -95,7 +96,7 @@ namespace quizzdos_backend.Repositories
 
             foreach (var updatedQuestion in updatedQuestions)
             {
-                var existingQuestion = quiz.Questions.FirstOrDefault(q => q.Id == updatedQuestion.Id);
+                var existingQuestion = _context.Questions.FirstOrDefault(q => q.Id == updatedQuestion.Id);
 
                 if (existingQuestion != null)
                 {
@@ -115,7 +116,10 @@ namespace quizzdos_backend.Repositories
                             ScorePercentage = option.ScorePercentage
                         }).ToList();
 
+                    _context.Options.AddRange(existingQuestion.Options);
+
                     _context.Entry(existingQuestion).State = EntityState.Modified;
+                    _context.Questions.Update(existingQuestion);
                 }
                 else
                 {
@@ -146,7 +150,7 @@ namespace quizzdos_backend.Repositories
             return updatedQuestions;
         }
     
-        public async Task<AccessedQuizDTO?> UpdateQuizStatus(Guid quizId, QuizStatus status)
+        public async Task<AccessedQuizDTO?> UpdateQuizStatus(Guid quizId, EQuizStatus status)
         {
             var quiz = await _context.Quizzes.FindAsync(quizId);
             if (quiz == null)
