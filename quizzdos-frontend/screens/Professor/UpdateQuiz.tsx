@@ -1,12 +1,11 @@
 import { HStack, VStack } from "@react-native-material/core"
 import { COLORS } from "palette/colors"
-import React, { useState } from "react"
+import React from "react"
 import { Dimensions } from "react-native"
 import { Checkbox, Divider, Surface } from "react-native-paper"
 import { Text } from "react-native"
 import TextButton from "components/common/TextButton"
 import AnimatedLottieView from "lottie-react-native"
-import { set } from "react-native-reanimated"
 
 interface UpdateQuizProps {
 	totalQuestions: number
@@ -70,7 +69,9 @@ const UpdateQuiz = ({
 						}}
 					>
 						The total score is{" "}
-						<Text style={{ color: COLORS.blue }}>{totalScore.toFixed(2)}</Text>
+						<Text style={{ color: COLORS.blue }}>
+							{totalScore.toFixed(2)}
+						</Text>
 						/10.
 					</Text>
 					<HStack justify="center">
@@ -101,7 +102,12 @@ const UpdateQuiz = ({
 					loop
 					style={{ width: 200, height: 200 }}
 				/>
-				<TextButton onPress={() => {}} text="Submit" />
+				<TextButton
+					onPress={() => {
+						onSubmit()
+					}}
+					text="Submit"
+				/>
 			</VStack>
 		</Surface>
 	)

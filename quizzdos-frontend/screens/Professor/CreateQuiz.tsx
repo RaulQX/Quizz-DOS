@@ -1,49 +1,38 @@
-import BottomAppbarLayout from "components/common/BottomAppbarLayout"
 import PaginatedHorizontalList from "components/common/PaginatedHorizontalList"
 import React, { useEffect, useRef, useState } from "react"
 import { Dimensions, ScrollView, View } from "react-native"
 import UpdateQuiz from "./UpdateQuiz"
 import { IQuestion } from "interfaces/CourseRelated"
 import CreateQuestion from "./CreateQuestion"
-import { Button, ActivityIndicator, Modal } from "react-native-paper"
+import { Button, ActivityIndicator, Modal, Snackbar } from "react-native-paper"
 import { COLORS } from "palette/colors"
+import { useMutation, useQuery } from "@tanstack/react-query"
+import {
+	ICreateQuestion,
+	IUpdateQuiz,
+	fetchQuizQuestions,
+	putQuizQuestions,
+} from "Api/Professor/CreateQuiz"
 
-const CreateQuiz = ({ navigation }: any) => {
-	let fetchedQuestions = [
-		{
-			id: "0",
-			prompt: "What is the capital of France?",
-			questionScore: 3,
-			tipAllowed: true,
-			options: [
-				{
-					questionId: "1",
-					text: "Paris",
-					scorePercentage: 100,
-				},
-				{
-					questionId: "2",
-					text: "Marseille",
-					scorePercentage: 0,
-				},
-				{
-					questionId: "3",
-					text: "Lyon",
-					scorePercentage: 0,
-				},
-			],
-		},
-	]
-	const [questions, setQuestions] = useState<IQuestion[]>(fetchedQuestions)
+const CreateQuiz = ({ route, navigation }: any) => {
+	const quizId = route.params.quizId
+
+	const [questions, setQuestions] = useState<IQuestion[]>([])
+	const [visibleSnackBar, setVisibleSnackBar] = useState(false)
 	const [autoScore, setAutoScore] = useState<boolean>(false)
 	const [isAdding, setIsAdding] = useState(false)
 	const listRef = useRef<ScrollView | null>(null)
+
+	useQuery(["questions", quizId], () => fetchQuizQuestions(quizId), {
+		onSuccess: (data) => setQuestions(data),
+		onError: (error) => console.log(error),
+	})
 
 	const addNewQuestion = () => {
 		setQuestions([
 			...questions,
 			{
-				id: questions.length.toString(),
+				id: "00000000-0000-0000-0000-000000000000",
 				prompt: "",
 				questionScore: 0,
 				tipAllowed: false,
@@ -54,7 +43,7 @@ const CreateQuiz = ({ navigation }: any) => {
 
 		setTimeout(() => {
 			setIsAdding(false)
-		}, 500) // Adjust the delay as needed
+		}, 500)
 	}
 
 	useEffect(() => {
@@ -70,9 +59,9 @@ const CreateQuiz = ({ navigation }: any) => {
 		let remaining = 10
 
 		const updatedQuestions = questions.map((question, index) => {
-			const score = Math.round(rawScore * 100) / 100 // Round to 2 decimal places
+			const score = Math.round(rawScore * 100) / 100
 			if (index === questions.length - 1) {
-				question.questionScore = Math.round(remaining * 100) / 100 // Round to 2 decimal places
+				question.questionScore = Math.round(remaining * 100) / 100
 			} else {
 				question.questionScore = score
 				remaining -= score
@@ -94,25 +83,76 @@ const CreateQuiz = ({ navigation }: any) => {
 				question.id === updatedQuestion.id ? updatedQuestion : question
 			)
 		)
+
+		console.log(questions)
+	}
+
+	const checkErrors = () => {
+		const error = questions.some((question) => {
+			const hasEmptyPrompt = question.prompt === ""
+			const hasInvalidScore =
+				question.questionScore === 0 || question.questionScore > 10
+			const hasEmptyOptions = question.options.some(
+				(option) => option.text === ""
+			)
+			const hasInvalidTotalScore =
+				questions.reduce((acc, curr) => acc + curr.questionScore, 0) !==
+				10
+			const hasInvalidOptionsScore =
+				question.options.reduce(
+					(acc, curr) => acc + curr.scorePercentage,
+					0
+				) !== 100
+			console.log(hasEmptyPrompt)
+			console.log(hasInvalidScore)
+			console.log(hasEmptyOptions)
+			console.log(hasInvalidTotalScore)
+			console.log(hasInvalidOptionsScore)
+
+			return (
+				hasEmptyPrompt ||
+				hasInvalidScore ||
+				hasEmptyOptions ||
+				hasInvalidTotalScore ||
+				hasInvalidOptionsScore
+			)
+		})
+
+		return error
+	}
+	const updateMutation = useMutation({
+		mutationFn: ({ quizId, questions }: IUpdateQuiz) =>
+			putQuizQuestions({ quizId, questions }),
+		onSuccess: () => {
+			navigation.navigate("CommonHome")
+		},
+		onError: (error) => {
+			console.log(error)
+		},
+	})
+	const saveQuiz = () => {
+		if (checkErrors()) {
+			setVisibleSnackBar(true)
+			return
+		}
+		const questionsToCreate: ICreateQuestion[] = questions.map(
+			(question) => ({
+				id: question.id,
+				prompt: question.prompt,
+				questionScore: question.questionScore,
+				tipAllowed: question.tipAllowed,
+				options: question.options.map((option) => ({
+					text: option.text,
+					scorePercentage: option.scorePercentage,
+				})),
+			})
+		)
+		updateMutation.mutate({ quizId, questions: questionsToCreate })
 	}
 
 	return (
 		<ScrollView>
 			<View style={{ height: 20 }} />
-			<Button
-				icon="plus-circle-outline"
-				contentStyle={{
-					backgroundColor: COLORS.blue,
-					flexDirection: "row-reverse",
-				}}
-				mode="contained"
-				onPress={() => {
-					addNewQuestion()
-				}}
-				style={{ alignSelf: "flex-end", margin: 10 }}
-			>
-				{"Add New Question"}
-			</Button>
 			<Modal visible={isAdding}>
 				{isAdding && (
 					<ActivityIndicator
@@ -132,13 +172,14 @@ const CreateQuiz = ({ navigation }: any) => {
 					<></>,
 				]}
 				children={[
-					...questions.map((question: IQuestion) => (
+					...questions.map((question: IQuestion, index) => (
 						<CreateQuestion
-							key={question.id}
+							key={index}
 							question={question}
 							removeQuestion={removeQuestion}
 							updateQuestion={saveQuestion}
 							autoScore={autoScore}
+							addNewQuestion={addNewQuestion}
 						/>
 					)),
 					<UpdateQuiz
@@ -149,12 +190,22 @@ const CreateQuiz = ({ navigation }: any) => {
 							0
 						)}
 						setQuestionScoreEqual={setAllQuestionsScoreEqualOutOf10}
-						onSubmit={() => console.log("sub")}
+						onSubmit={() => saveQuiz()}
 						autoScore={autoScore}
 						setAutoScore={setAutoScore}
 					/>,
 				]}
 			/>
+			<Snackbar
+				visible={visibleSnackBar}
+				duration={3000}
+				onDismiss={() => {
+					setVisibleSnackBar(false)
+				}}
+				style={{ alignItems: "center", justifyContent: "center" }}
+			>
+				{"Please fix all errors before submitting"}
+			</Snackbar>
 		</ScrollView>
 	)
 }

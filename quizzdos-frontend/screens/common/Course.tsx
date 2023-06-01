@@ -18,13 +18,15 @@ import TopTextInArch from "components/common/TopTextInArch"
 import TextButton from "components/common/TextButton"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { ICourse, createSection, fetchCourse } from "Api/Professor/Course"
+import useUser from "contexts/user/UserContext"
+import { ROLES } from "constants/Constants"
 
 const Course = ({ route, navigation }: any) => {
 	const { courseId } = route.params
-	//const courseId = "7AE4652A-BEC6-4BFB-8B12-93E4C5908370"
 
 	const marginLeft = 10
-	const isProfessor = true
+	const { role } = useUser()
+	const isProfessor = role === ROLES.professor
 
 	const [addSectionVisible, setAddSectionVisible] = useState(false)
 
@@ -45,6 +47,7 @@ const Course = ({ route, navigation }: any) => {
 	})
 	useQuery(["course", courseId, refreshCourse], () => fetchCourse(courseId), {
 		onSuccess: (data) => setCourse(data),
+		onError: (error) => console.log(error),
 	})
 
 	console.log("c", course)

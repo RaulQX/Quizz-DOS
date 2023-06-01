@@ -2,13 +2,13 @@ import { COLORS } from "palette/colors"
 import React, { useState } from "react"
 import { Button, IconButton, List, Modal, TextInput } from "react-native-paper"
 import { Text } from "react-native"
-import TextButton from "components/common/TextButton"
 import useUser from "contexts/user/UserContext"
 import { ROLES } from "constants/Constants"
 import { HStack, VStack } from "@react-native-material/core"
 import { useMutation } from "@tanstack/react-query"
 import { createQuiz } from "Api/Professor/Section"
-import { set } from "react-native-reanimated"
+
+
 export interface SectionProps {
 	section: {
 		id: string
@@ -189,16 +189,10 @@ const Section = ({
 							fontWeight: "bold",
 						}}
 						onPress={() => {
-							console.log(
-								quiz.status === 0
-									? "progress-helper"
-									: quiz.status === 1
-									? "progress-check"
-									: "check-bold"
-							)
-							// navigation.navigate("Quiz", {
-							// 	quizId: quiz.id,
-							// })
+							!isProfessor && navigation.navigate("QuizStart",{
+								quizId: quiz.id,
+							})
+							
 							isProfessor && navigation.navigate("CreateQuiz", {
 								quizId: quiz.id,
 							})

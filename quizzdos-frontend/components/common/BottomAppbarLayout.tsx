@@ -8,7 +8,6 @@ interface BottomAppbarProps {
 	children: React.ReactNode
 }
 const BottomAppbarLayout = ({ navigation, children }: BottomAppbarProps) => {
-	const [unreadNotifications, setUnreadNotifications] = React.useState(false)
 
 	return (
 		<Flex justify="between" style={{ height: "100%" }}>
@@ -27,7 +26,7 @@ const BottomAppbarLayout = ({ navigation, children }: BottomAppbarProps) => {
 						onPress={() => navigation.navigate("StudentStatistics")}
 					/>
 					<Appbar.Action
-						icon={!unreadNotifications ? "bell" : "bell-badge"}
+						icon={"bell"}
 						iconColor="white"
 						onPress={() => navigation.navigate("Notifications")}
 					/>

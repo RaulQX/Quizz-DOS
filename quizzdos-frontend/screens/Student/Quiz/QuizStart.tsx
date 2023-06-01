@@ -6,7 +6,7 @@ import { QUIZ_STATUS } from "constants/Constants"
 import AnimatedLottieView from "lottie-react-native"
 import { COLORS } from "palette/colors"
 import React from "react"
-import { View, Text } from "react-native"
+import { Text } from "react-native"
 import { Divider, Surface } from "react-native-paper"
 
 const constProps = {
@@ -24,18 +24,16 @@ const constProps = {
 				questionScore: 4,
 				tipAllowed: true,
 				options: [
-					{ id: "a", text: "Paris", isCorrect: true, optionScore: 4 },
+					{ id: "a", text: "Paris", optionScore: 4 },
 					{
 						id: "b",
 						text: "London",
-						isCorrect: false,
 						optionScore: 0,
 					},
-					{ id: "c", text: "Rome", isCorrect: false, optionScore: 0 },
+					{ id: "c", text: "Rome", optionScore: 0 },
 					{
 						id: "d",
 						text: "Madrid",
-						isCorrect: false,
 						optionScore: 0,
 					},
 				],
@@ -46,10 +44,10 @@ const constProps = {
 				questionScore: 4,
 				tipAllowed: true,
 				options: [
-					{ id: "a", text: "1", isCorrect: false, optionScore: 2 },
-					{ id: "b", text: "2", isCorrect: false, optionScore: 0 },
-					{ id: "c", text: "0", isCorrect: true, optionScore: 0 },
-					{ id: "d", text: "-1", isCorrect: false, optionScore: 2 },
+					{ id: "a", text: "1", optionScore: 2 },
+					{ id: "b", text: "2", optionScore: 0 },
+					{ id: "c", text: "0", optionScore: 0 },
+					{ id: "d", text: "-1", optionScore: 2 },
 				],
 			},
 			{
@@ -58,8 +56,8 @@ const constProps = {
 				questionScore: 2,
 				tipAllowed: false,
 				options: [
-					{ id: "a", text: "Yes", isCorrect: true, optionScore: 2 },
-					{ id: "b", text: "No", isCorrect: false, optionScore: 0 },
+					{ id: "a", text: "Yes", optionScore: 2 },
+					{ id: "b", text: "No", optionScore: 0 },
 				],
 			},
 		],

@@ -23,6 +23,7 @@ interface CreateQuestionProps {
 	removeQuestion: (questionId: string) => void
 	updateQuestion: (question: IQuestion) => void
 	autoScore: boolean
+	addNewQuestion: () => void
 }
 
 const CreateQuestion = ({
@@ -30,6 +31,7 @@ const CreateQuestion = ({
 	removeQuestion,
 	updateQuestion,
 	autoScore,
+	addNewQuestion,
 }: CreateQuestionProps) => {
 	const [prompt, setPrompt] = useState<string>(question.prompt)
 	const [options, setOptions] = useState<IOption[]>(question.options)
@@ -52,6 +54,7 @@ const CreateQuestion = ({
 		(total, option) => total + option.scorePercentage,
 		0
 	)
+
 	return (
 		<KeyboardAvoidingView
 			behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -89,13 +92,27 @@ const CreateQuestion = ({
 					textColor="white"
 					placeholder="Question Prompt"
 					placeholderTextColor={COLORS.gray}
+					error={prompt.length === 0}
 				/>
 				<HStack style={{ width: "100%" }} justify="between">
+					<Button
+						icon="plus-circle-outline"
+						contentStyle={{
+							backgroundColor: COLORS.blue,
+							flexDirection: "row-reverse",
+						}}
+						mode="contained"
+						onPress={() => {
+							addNewQuestion()
+						}}
+						style={{ alignSelf: "flex-end", margin: 10 }}
+					>
+						{"Add New Question"}
+					</Button>
 					<Button
 						icon="delete"
 						contentStyle={{
 							backgroundColor: COLORS.blue,
-							flexDirection: "row-reverse",
 						}}
 						mode="contained"
 						onPress={() => {
@@ -105,71 +122,45 @@ const CreateQuestion = ({
 					>
 						{"Remove Question"}
 					</Button>
-					<Button
-						icon="plus-circle-outline"
-						contentStyle={{
-							backgroundColor:
-								options.length >= 7 ? COLORS.gray : COLORS.blue,
-							flexDirection: "row-reverse",
-						}}
-						mode="contained"
-						onPress={() => {
-							setOptions([
-								...options,
-								{
-									questionId: question.id,
-									text: "",
-									scorePercentage: 0,
-								},
-							])
-						}}
-						style={{ alignSelf: "flex-start", margin: 10 }}
-						disabled={options.length >= 7}
-					>
-						{"Add Option"}
-					</Button>
 				</HStack>
 				<HStack
 					style={{ width: "100%", paddingRight: 15 }}
 					justify="between"
 					items="center"
 				>
-					{autoScore === false && (
-						<TextInput
-							style={{
-								color: COLORS.white,
-								fontSize: 15,
-								textAlign: "center",
-								marginTop: 10,
-								backgroundColor: "transparent",
-								width: "37%",
-								marginLeft: 10,
-								height: 40,
-							}}
-							theme={{
-								roundness: 20,
-								colors: { primary: COLORS.blue },
-							}}
-							mode="outlined"
-							onChangeText={(text) => {
-								setQuestionScore(text.replace(/[^0-9]/g, ""))
-								updateQuestion({
-									...question,
-									questionScore: parseInt(text),
-								})
-							}}
-							value={
-								questionScore != "0"
-									? questionScore.toString()
-									: ""
-							}
-							keyboardType="numeric"
-							textColor="white"
-							placeholder="Question Score"
-							placeholderTextColor={COLORS.gray}
-							error={questionScore == "0"}
-						/>
-					)}
+					<TextInput
+						style={{
+							color: COLORS.white,
+							fontSize: 15,
+							textAlign: "center",
+							marginTop: 10,
+							backgroundColor: "transparent",
+							width: "37%",
+							marginLeft: 10,
+							height: 40,
+						}}
+						theme={{
+							roundness: 20,
+							colors: { primary: COLORS.blue },
+						}}
+						mode="outlined"
+						onChangeText={(text) => {
+							setQuestionScore(text.replace(/[^0-9.]/g, ""))
+							updateQuestion({
+								...question,
+								questionScore: parseFloat(text),
+							})
+						}}
+						value={
+							questionScore != "0" ? questionScore.toString() : ""
+						}
+						keyboardType="numeric"
+						textColor="white"
+						placeholder="Question Score"
+						placeholderTextColor={COLORS.gray}
+						error={questionScore == "0"}
+						disabled={autoScore}
+					/>
 
 					<HStack
 						style={{ flexGrow: 1, marginTop: 15 }}
@@ -200,6 +191,7 @@ const CreateQuestion = ({
 						/>
 					</HStack>
 				</HStack>
+
 				<Divider style={{ margin: 10 }} />
 				<HStack
 					style={{ width: "90%", alignSelf: "center" }}
@@ -226,11 +218,12 @@ const CreateQuestion = ({
 					</Text>
 				</HStack>
 				<Divider style={{ margin: 10 }} />
+
 				{options.map((option, index) => {
 					return (
 						<HStack>
 							<TextInput
-                                key={index.toString()}
+								key={index.toString()}
 								style={{
 									color: COLORS.white,
 									fontSize: 20,
@@ -274,12 +267,12 @@ const CreateQuestion = ({
 								}}
 								mode="outlined"
 								onChangeText={(text) => {
-									let textInt = parseInt(
-										text.replace(/[^0-9]/g, "")
+									let textFloat = parseFloat(
+										text.replace(/[^0-9.]/g, "")
 									)
-                                    
 									let newOptions = [...options]
-									newOptions[index].scorePercentage = textInt
+									newOptions[index].scorePercentage =
+										textFloat
 									setOptions(newOptions)
 									updateQuestion({
 										...question,
@@ -302,12 +295,35 @@ const CreateQuestion = ({
 										options: newOptions,
 									})
 								}}
-                                iconColor={COLORS.red}
+								iconColor={COLORS.red}
 								style={{ marginTop: 20 }}
 							/>
 						</HStack>
 					)
 				})}
+				<Button
+					icon="plus-circle-outline"
+					contentStyle={{
+						backgroundColor:
+							options.length >= 6 ? COLORS.gray : COLORS.blue,
+						flexDirection: "row-reverse",
+					}}
+					mode="contained"
+					onPress={() => {
+						setOptions([
+							...options,
+							{
+								questionId: question.id,
+								text: "",
+								scorePercentage: 0,
+							},
+						])
+					}}
+					style={{ alignSelf: "center", margin: 30, width: "50%" }}
+					disabled={options.length >= 7}
+				>
+					{"Add Option"}
+				</Button>
 			</ScrollView>
 		</KeyboardAvoidingView>
 	)

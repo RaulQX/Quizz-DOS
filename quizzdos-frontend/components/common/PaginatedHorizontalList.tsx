@@ -67,8 +67,6 @@ const PaginatedHorizontalList = forwardRef<any, Props>(
 
 		useImperativeHandle(ref, () => ({
 			scrollTo: (x: number) => {
-				console.log("Scrolling to:", x)
-
 				setIsScrolling(true)
 				scrollRef.current?.scrollTo({
 					x: x,

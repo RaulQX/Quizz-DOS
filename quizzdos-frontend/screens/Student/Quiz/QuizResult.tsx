@@ -5,6 +5,7 @@ import AnimatedLottieView from "lottie-react-native"
 import { COLORS } from "palette/colors"
 import React from "react"
 import { Text } from "react-native"
+
 const constProps = {
 	result: {
 		quizGrade: 10,

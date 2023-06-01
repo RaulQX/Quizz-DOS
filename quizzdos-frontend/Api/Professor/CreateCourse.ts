@@ -11,6 +11,7 @@ interface ICreateCourse {
 }
 
 export const createCourse = async (course: ICreateCourse) => {
+
 	const response = await axios.post(ApiEndpoints.Courses.addCourse, course, {
 		headers: {
 			"Content-Type": "application/json",
@@ -18,3 +19,5 @@ export const createCourse = async (course: ICreateCourse) => {
 	})
 	return response.data
 }
+
+

@@ -58,7 +58,6 @@ const CommonHome = ({ navigation }: any) => {
 				console.log("lp: ", lastPage.page)
 				console.log("lp2: ", lastPage.totalPages)
 				console.log("pages: ", pages)
-				//console.log(pages)
 				if (lastPage.page != lastPage.totalPages) {
 					return lastPage.page + 1
 				}
@@ -77,7 +76,6 @@ const CommonHome = ({ navigation }: any) => {
 		}
 	}, [pages])
 
-	//console.log(hasNextPage)
 	const joinCourseMutation = useMutation({
 		mutationFn: (data: any) => joinCourse(data),
 		onSuccess: () => {
@@ -85,7 +83,6 @@ const CommonHome = ({ navigation }: any) => {
 			setRefreshCourses(!refreshCourses)
 		},
 		onError: (data) => {
-			//console.log("error", data)
 			setJoinCourseModalError(true)
 		},
 	})

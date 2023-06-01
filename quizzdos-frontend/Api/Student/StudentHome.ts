@@ -18,7 +18,7 @@ export const fetchJoinedCourses = async ({
 	pageSize,
 }: IJoinedCourseQuery) => {
 	const response = await axios.get(
-		`${ApiEndpoints.Course.joinedCourses}/${personId}/joined-courses`,
+		`${ApiEndpoints.Courses.joinedCourses}/${personId}/joined-courses`,
 		{
 			params: { pageParam, pageSize },
 		}
@@ -28,7 +28,7 @@ export const fetchJoinedCourses = async ({
 
 export const joinCourse = async ({ courseCode, personId }: IJoinCourse) => {
 	const response = await axios.post(
-		`${ApiEndpoints.Course.joinCourse}/${courseCode}/people/${personId}`,
+		`${ApiEndpoints.Courses.joinCourse}/${courseCode}/people/${personId}`,
 		{},
 		{
 			headers: {
