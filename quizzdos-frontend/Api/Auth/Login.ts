@@ -17,13 +17,10 @@ export const loginUser = async (userPayload: any) => {
 		},
 	})
 
-	console.log("user: ", user)
-
 	const encodedValue = encodeURIComponent(user.id)
 	let { data: person } = await axios.get(
 		`${ApiEndpoints.People.personByUserId}/${encodedValue}`
 	)
-	console.log("person: ", person)
 
 	return {
 		username: user.username,
