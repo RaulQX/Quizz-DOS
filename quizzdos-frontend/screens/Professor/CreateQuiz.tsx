@@ -4,7 +4,7 @@ import { Dimensions, ScrollView, View } from "react-native"
 import UpdateQuiz from "./UpdateQuiz"
 import { IQuestion } from "interfaces/CourseRelated"
 import CreateQuestion from "./CreateQuestion"
-import { Button, ActivityIndicator, Modal, Snackbar } from "react-native-paper"
+import { ActivityIndicator, Modal, Snackbar } from "react-native-paper"
 import { COLORS } from "palette/colors"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import {
@@ -103,18 +103,23 @@ const CreateQuiz = ({ route, navigation }: any) => {
 					(acc, curr) => acc + curr.scorePercentage,
 					0
 				) !== 100
-			console.log(hasEmptyPrompt)
-			console.log(hasInvalidScore)
-			console.log(hasEmptyOptions)
-			console.log(hasInvalidTotalScore)
-			console.log(hasInvalidOptionsScore)
+			const allOptionsAreCorrect = question.options.every(
+				(option) => option.scorePercentage > 0
+			)
+			console.log("has empty prompt", hasEmptyPrompt)
+			console.log("has invalid score", hasInvalidScore)
+			console.log("has empty options", hasEmptyOptions)
+			console.log("has invalid total score", hasInvalidTotalScore)
+			console.log("has invalid options score", hasInvalidOptionsScore)
+			console.log("all options are correct", allOptionsAreCorrect)
 
 			return (
 				hasEmptyPrompt ||
 				hasInvalidScore ||
 				hasEmptyOptions ||
 				hasInvalidTotalScore ||
-				hasInvalidOptionsScore
+				hasInvalidOptionsScore ||
+				allOptionsAreCorrect
 			)
 		})
 
