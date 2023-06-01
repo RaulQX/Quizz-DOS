@@ -31,15 +31,17 @@ export const ApiEndpoints = {
 	},
 	Courses: {
 		joinedCourses: controllers.course,
-		createdCourses: controllers.course,
+		createdCourses: makeRoute(controllers.course, "creators"),
 		joinCourse: controllers.course,
 		addCourse: controllers.course,
-		getCourse: makeRoute(controllers.course, "creators"),
+		getCourse: controllers.course,
 	},
 	Sections: {
 		addSection: controllers.section,
 	},
 	Quizzes: {
 		addQuiz: controllers.quiz,
+		fetchQuizQuestions: controllers.quiz,
+		putQuizQuestions: controllers.quiz,
 	},
 } as const
