@@ -10,9 +10,10 @@ import AnimatedLottieView from "lottie-react-native"
 interface QuizEndProps {
 	navigation: any
 	questions: IQuestion[]
+	quizId: string
 }
 
-const QuizEnd = ({ questions, navigation }: QuizEndProps) => {
+const QuizEnd = ({ questions, navigation, quizId }: QuizEndProps) => {
 	const numberOfQuestionsAnswered = questions
 		? questions.filter((question) => question.chosenOptions.length > 0)
 				.length
@@ -83,6 +84,7 @@ const QuizEnd = ({ questions, navigation }: QuizEndProps) => {
 					onPress={() => {
 						navigation.navigate("QuizResult", {
 							questions: questions,
+							quizId: quizId
 						})
 					}}
 				/>

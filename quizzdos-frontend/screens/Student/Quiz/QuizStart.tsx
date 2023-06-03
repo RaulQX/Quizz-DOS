@@ -237,6 +237,7 @@ const QuizStart = ({ route, navigation }: any) => {
 						onPress={() => {
 							navigation.navigate("Quiz", {
 								quizName: quiz.title,
+								quizId: quizId,
 								propsQuestions: quiz.questions,
 							})
 						}}

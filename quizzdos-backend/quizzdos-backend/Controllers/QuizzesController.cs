@@ -4,6 +4,7 @@ using quizzdos_backend.DTOs;
 using quizzdos_backend.Repositories;
 using quizzdos_EFCore.Entities.Courses;
 using quizzdos_EFCore.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace quizzdos_backend.Controllers
 {
@@ -28,6 +29,22 @@ namespace quizzdos_backend.Controllers
                 return BadRequest($"Failed to add quiz: {quiz.Name}");
 
             return Ok(qz);
+        }
+        [HttpPost("grade")]
+        [ProducesResponseType(typeof(bool), 200)]
+        [ProducesResponseType(typeof(string), 400)]
+        public async Task<ActionResult> GradeQuiz([FromBody] GradeQuizInput gradeDetils)
+        {
+            var successfulGraded = await quizRepository.AddQuizGrade(gradeDetils.QuizId, gradeDetils.PersonId, gradeDetils.QuizGrade);
+            if (successfulGraded == null)
+                return BadRequest($"Couldn't find a match for quizId {gradeDetils.QuizId} and personId {gradeDetils.PersonId}");
+
+            if (!successfulGraded.Value)
+            {
+                return BadRequest("Quiz must be between 0 and 10");
+            }
+
+            return Ok(successfulGraded);
         }
 
         [HttpDelete]

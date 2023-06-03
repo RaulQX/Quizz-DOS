@@ -23,7 +23,7 @@ interface IOption {
 }
 
 const Quiz = ({ route, navigation }: any) => {
-	const { quizName, propsQuestions } = route.params
+	const { quizName, propsQuestions, quizId } = route.params
 
 	const [refresh, setRefresh] = useState(false)
 	const [questions, setQuestions] = useState<IQuestion[]>(
@@ -85,6 +85,7 @@ const Quiz = ({ route, navigation }: any) => {
 						questions={questions}
 						key={"qEnd"}
 						navigation={navigation}
+						quizId={quizId}
 					/>,
 				]}
 			/>

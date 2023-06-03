@@ -16,8 +16,7 @@ namespace quizzdos_backend.Repositories
         public Task<List<QuestionDTO>> GetQuizQuestions(Guid quizzId);
         public Task<List<QuizQuestionDTO>?> UpdateQuizQuestions(Guid quizzId, List<QuizQuestionDTO> newQuestions);
         public Task<StartQuizDTO?> GetQuizForStudent(Guid quizId, Guid personId);
-        public Task<QuizResultDTO?> CalculateQuizResult(QuizWithAnswersDTO quizWithAnswers);
-        public Task<bool> AddQuizGrade (Guid quizId, Guid personId, double grade);
+        public Task<bool?> AddQuizGrade(Guid quizId, Guid personId, double grade);
              
     }
     public class QuizRepository : IQuizRepository
@@ -40,7 +39,7 @@ namespace quizzdos_backend.Repositories
             return addingQuiz;
         }
 
-        public async Task<Grade?> AddQuizGrade(Guid quizId, Guid personId, double grade)
+        public async Task<bool?> AddQuizGrade(Guid quizId, Guid personId, double grade)
         {
             var quiz = await _context.Quizzes.FindAsync(quizId);
             if (quiz == null)
@@ -50,15 +49,14 @@ namespace quizzdos_backend.Repositories
             if (person == null)
                 return null;
 
-            var addingGrade = new Grade { GradeValue = grade, PersonId = personId, QuizId = quizId }; 
+            if (grade < 0 || grade > 10)
+                return false;
+
+            var addingGrade = new Grade { GradeValue = Convert.ToDouble(String.Format("{0:0.00}", grade)), PersonId = personId, QuizId = quizId }; 
             await _context.Grades.AddAsync(addingGrade);
             await _context.SaveChangesAsync();
 
-            return addingGrade;
-        }
-
-        public Task<QuizResultDTO?> CalculateQuizResult(QuizWithAnswersDTO quizWithAnswers)
-        {
+            return true;
         }
 
         public async Task<Quiz?> DeleteQuizAsync(Guid quizId)

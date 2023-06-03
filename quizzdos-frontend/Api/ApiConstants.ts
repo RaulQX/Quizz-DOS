@@ -44,5 +44,6 @@ export const ApiEndpoints = {
 		fetchQuizQuestions: controllers.quiz,
 		putQuizQuestions: controllers.quiz,
 		getQuiz: controllers.quiz,
+		gradeQuiz: controllers.quiz,
 	},
 } as const

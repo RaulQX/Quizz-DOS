@@ -3,9 +3,13 @@ import BottomAppbarLayout from "components/common/BottomAppbarLayout"
 import TopTextInArch from "components/common/TopTextInArch"
 import AnimatedLottieView from "lottie-react-native"
 import { COLORS } from "palette/colors"
-import React from "react"
-import { Text } from "react-native"
+import React, { useEffect, useState } from "react"
+import { Text, View } from "react-native"
 import { IQuestion } from "./Quiz"
+import { useMutation } from "@tanstack/react-query"
+import { addGrade } from "Api/Student/QuizResult"
+import useUser from "contexts/user/UserContext"
+import { Snackbar } from "react-native-paper"
 
 interface QuizResult {
 	quizGrade: number
@@ -54,108 +58,148 @@ function calculateQuizResult(questions: IQuestion[]): QuizResult {
 }
 
 const QuizResult = ({ route, navigation }: any) => {
-	const { questions } = route.params
+	const [snackbarVisible, setSnackbarVisible] = useState(true)
+	const { questions, quizId } = route.params
 	const result = calculateQuizResult(questions)
+	const { personId } = useUser()
+	const reqisterUserMutation = useMutation({
+		mutationFn: (data: any) => addGrade(data),
+		onSuccess: (_: any) => {
+			console.log("Quiz result has been saved")
+			setSnackbarVisible(true)
+		},
+		onError: ({ response: { data } }) => {
+			console.log(data)
+		},
+	})
+
+	useEffect(() => {
+		reqisterUserMutation.mutate({
+			quizId: quizId,
+			grade: result.quizGrade,
+			personId: personId,
+		})
+	}, [])
 
 	return (
-		<BottomAppbarLayout navigation={navigation}>
-			<TopTextInArch
-				firstLine="Quiz Result"
-				secondLine={
-					result.quizGrade >= 4.5
-						? "Congratulations"
-						: "Next time for sure"
-				}
-			/>
-			<VStack content="center" items="center">
-				{result.quizGrade >= 4.5 ? (
-					<Text
-						style={{
-							color: COLORS.white,
-							fontSize: 20,
-							textAlign: "center",
-						}}
-					>
-						You have passed the quiz
-					</Text>
-				) : (
-					<Text
-						style={{
-							color: COLORS.white,
-							fontSize: 20,
-							textAlign: "center",
-						}}
-					>
-						You have failed the quiz
-					</Text>
-				)}
-				{result.quizGrade >= 4.5 ? (
-					<AnimatedLottieView
-						source={require("assets/animations/happyResult.json")}
-						autoPlay
-						loop
-						style={{
-							width: 200,
-							height: 200,
-							alignSelf: "center",
-							marginLeft: 10,
-						}}
-					/>
-				) : (
-					<AnimatedLottieView
-						source={require("assets/animations/badResult.json")}
-						autoPlay
-						loop
-						style={{
-							width: 200,
-							height: 200,
-							alignSelf: "center",
-							marginLeft: 10,
-						}}
-					/>
-				)}
+		<View>
+			<BottomAppbarLayout navigation={navigation}>
+				<TopTextInArch
+					firstLine="Quiz Result"
+					secondLine={
+						result.quizGrade >= 4.5
+							? "Congratulations"
+							: "Next time for sure"
+					}
+				/>
 
-				<Text
-					style={{
-						color: COLORS.white,
-						fontSize: 15,
-						textAlign: "center",
-					}}
-				>
-					You have scored
-				</Text>
-				<Text
-					style={{
-						color: COLORS.blue,
-						fontSize: 15,
-						textAlign: "center",
-						fontWeight: "bold",
-					}}
-				>
-					{result.quizGrade}
-					<Text style={{ color: COLORS.white }}> / </Text>10
-				</Text>
-				<Text
-					style={{
-						color: COLORS.white,
-						fontSize: 15,
-						textAlign: "center",
-						marginTop: 30,
-					}}
-				>
-					You have answered correctly{" "}
-					<Text style={{ fontWeight: "bold", color: COLORS.blue }}>
-						{result.correctQuestions}
-					</Text>{" "}
-					/
-					<Text style={{ fontWeight: "bold", color: COLORS.blue }}>
-						{" "}
-						{result.totalQuestions}{" "}
+				<VStack content="center" items="center">
+					{result.quizGrade >= 4.5 ? (
+						<Text
+							style={{
+								color: COLORS.white,
+								fontSize: 20,
+								textAlign: "center",
+							}}
+						>
+							You have passed the quiz
+						</Text>
+					) : (
+						<Text
+							style={{
+								color: COLORS.white,
+								fontSize: 20,
+								textAlign: "center",
+							}}
+						>
+							You have failed the quiz
+						</Text>
+					)}
+					{result.quizGrade >= 4.5 ? (
+						<AnimatedLottieView
+							source={require("assets/animations/happyResult.json")}
+							autoPlay
+							loop
+							style={{
+								width: 200,
+								height: 200,
+								alignSelf: "center",
+								marginLeft: 10,
+							}}
+						/>
+					) : (
+						<AnimatedLottieView
+							source={require("assets/animations/badResult.json")}
+							autoPlay
+							loop
+							style={{
+								width: 200,
+								height: 200,
+								alignSelf: "center",
+								marginLeft: 10,
+							}}
+						/>
+					)}
+
+					<Text
+						style={{
+							color: COLORS.white,
+							fontSize: 15,
+							textAlign: "center",
+						}}
+					>
+						You have scored
 					</Text>
-					questions.
-				</Text>
-			</VStack>
-		</BottomAppbarLayout>
+					<Text
+						style={{
+							color: COLORS.blue,
+							fontSize: 15,
+							textAlign: "center",
+							fontWeight: "bold",
+						}}
+					>
+						{result.quizGrade}
+						<Text style={{ color: COLORS.white }}> / </Text>10
+					</Text>
+					<Text
+						style={{
+							color: COLORS.white,
+							fontSize: 15,
+							textAlign: "center",
+							marginTop: 30,
+						}}
+					>
+						You have answered correctly{" "}
+						<Text
+							style={{ fontWeight: "bold", color: COLORS.blue }}
+						>
+							{result.correctQuestions}
+						</Text>{" "}
+						/
+						<Text
+							style={{ fontWeight: "bold", color: COLORS.blue }}
+						>
+							{" "}
+							{result.totalQuestions}{" "}
+						</Text>
+						questions.
+					</Text>
+				</VStack>
+			</BottomAppbarLayout>
+			<Snackbar
+				visible={snackbarVisible}
+				onDismiss={() => setSnackbarVisible(false)}
+				action={{
+					label: "See Statistics",
+					onPress: () => {
+						navigation.navigate("StudentStatistics")
+					},
+				}}
+				style={{ width: "90%", height: 30, position: "absolute", bottom: 70, alignSelf: "center" }}
+			>
+				Quiz result has been saved
+			</Snackbar>
+		</View>
 	)
 }
 
