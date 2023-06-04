@@ -41,5 +41,17 @@ namespace quizzdos_backend.Controllers
             return Ok(updatedPerson);
         }
 
+        [HttpPut("{personId:Guid}/role")]
+        [ProducesResponseType(typeof(Person), 200)]
+        [ProducesResponseType(typeof(string), 400)]
+        public async Task<ActionResult<Person>> UpdatePersonRole(Guid personId, ERole role)
+        {
+            var updatedPerson = await _personRepository.UpdatePersonRoleByIdAsync(personId, role);
+            if (updatedPerson == null)
+                return BadRequest($"Failed to update person with id: {personId}");
+
+            return Ok(updatedPerson);
+        }
+
     }
 }
