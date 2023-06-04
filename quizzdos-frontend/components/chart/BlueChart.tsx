@@ -3,12 +3,14 @@ import React from "react"
 import { View, Dimensions } from "react-native"
 import { BarChart } from "react-native-chart-kit"
 
-interface GradeChartProps {
+interface BlueChartProps {
 	labels: string[]
-	grades: number[]
+	values: number[]
+	width?: number
+	marginRight? : boolean
 }
 
-const GradeChart = ({ labels, grades }: GradeChartProps) => {
+const BlueChart = ({ labels, values, width }: BlueChartProps) => {
 	return (
 		<View
 			style={{
@@ -17,16 +19,15 @@ const GradeChart = ({ labels, grades }: GradeChartProps) => {
 				marginTop: 20,
 				marginBottom: 20,
 				paddingVertical: 15,
-				marginRight: 20,
 			}}
 		>
 			<BarChart
 				data={{
 					labels: labels,
-					datasets: [{ data: grades }],
+					datasets: [{ data: values }],
 				}}
 				style={{ height: 250, borderRadius: 20 }}
-				width={Dimensions.get("window").width - 50}
+				width={width ? width : Dimensions.get("window").width - 50}
 				height={250}
 				chartConfig={{
 					backgroundGradientFrom: COLORS.blue,
@@ -51,4 +52,4 @@ const GradeChart = ({ labels, grades }: GradeChartProps) => {
 	)
 }
 
-export default GradeChart
+export default BlueChart

@@ -222,8 +222,9 @@ namespace quizzdos_backend.Repositories
 
         private static EQuizStatus GetQuizStatus(Quiz q, Guid personId)
         {
-            Grade? grade = q.Grades.FirstOrDefault(g => g.PersonId == personId);
-            return grade switch
+
+            Grade? maxGrade = q.Grades.Where(g => g.PersonId == personId).OrderByDescending(g => g.GradeValue).FirstOrDefault();
+            return maxGrade switch
             {
                 null => EQuizStatus.Unopened,
                 Grade g when g.GradeValue == 10 => EQuizStatus.Done,

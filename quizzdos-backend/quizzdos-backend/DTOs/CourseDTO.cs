@@ -9,7 +9,6 @@
         public string MaterialsUrl { get; set; } = string.Empty;
         public string Icon { get; set; } = string.Empty;
     }
-
     public class DiplayCourseDTO
     {
         public Guid Id { get; set; }
@@ -27,4 +26,6 @@
         public string? MaterialsUrl { get; set; } = string.Empty;
         public List<AccessedSectionsDTO> Sections { get; set; } = new List<AccessedSectionsDTO>();
     }
+    
+
 }

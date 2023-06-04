@@ -14,4 +14,5 @@
         public double Progress { get; set; }
         public List<AccessedQuizDTO> Quizzes { get; set; } = new List<AccessedQuizDTO>();
     }
+   
 }

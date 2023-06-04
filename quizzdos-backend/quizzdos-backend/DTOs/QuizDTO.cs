@@ -36,11 +36,6 @@ namespace quizzdos_backend.DTOs
         public List<QuestionWithAnswersDTO> Questions { get; set; } = new List<QuestionWithAnswersDTO>();
     }
 
-    public class QuizResultDTO
-    {
-        public double QuizGrade { get; set; }
-        public uint CorrectQuestions { get; set; }
-        public uint TotalQuestions { get; set; }
-    }
+  
 
 }

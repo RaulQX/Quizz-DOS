@@ -1,92 +1,16 @@
 import { HStack, VStack } from "@react-native-material/core"
-import GradeChart from "components/chart/GradeChart"
+import { useQuery } from "@tanstack/react-query"
+import { fetchStudentStatistics } from "Api/Student/StudentStatistics"
+import BlueChart from "components/chart/BlueChart"
 import BottomAppbarLayout from "components/common/BottomAppbarLayout"
 import BlueListAccordion from "components/list/BlueListAccordion"
 import { listStyles } from "components/list/ListStyles"
+import useUser from "contexts/user/UserContext"
 import { ICourse, ISection } from "interfaces/CourseRelated"
 import { COLORS } from "palette/colors"
 import React, { useState } from "react"
 import { ScrollView, Text, View } from "react-native"
 import { Avatar, Divider, List } from "react-native-paper"
-
-const constProps = {
-	courses: [
-		{
-			id: "1",
-			shortName: "CS 101",
-			sections: [
-				{
-					id: "sect1",
-					name: "Introduction",
-					quizzes: [
-						{
-							id: "a",
-							name: "Big O Notation",
-							grade: 10,
-						},
-						{
-							id: "b",
-							name: "Recursion",
-							grade: 9,
-						},
-						
-					],
-					average: 9.5,
-				},
-				{
-					id: "sect2",
-					name: "Section 2",
-					quizzes: [
-						{
-							id: "d",
-							name: "REspect",
-							grade: 1,
-						},
-						{
-							id: "e",
-							name: "Honesty",
-							grade: 10,
-						},
-						{
-							id: "f",
-							name: "Power",
-							grade: 10,
-						},
-						{
-							id: "g",
-							name: "BANANA",
-							grade: 10,
-						},
-					],
-					average: 7.75,
-				},
-			],
-		},
-		{
-			id: "2",
-			shortName: "Course 2",
-			sections: [
-				{
-					id: "sect3",
-					name: "Course 2 Section 1",
-					quizzes: [
-						{
-							id: "h",
-							name: "Quiz 1",
-							grade: 4.8,
-						},
-						{
-							id: "i",
-							name: "Quizzeriongp",
-							grade: 2.3,
-						},
-					],
-					average: 3.55,
-				},
-			],
-		},
-	],
-}
 
 const emptyCourse: ICourse = {
 	id: "",
@@ -99,6 +23,11 @@ const emptySection: ISection = {
 	name: "",
 	quizzes: [],
 	average: 0,
+}
+export interface IQuiz {
+	id: string
+	name: string
+	grade: number
 }
 
 const StudentStatistics = ({ navigation }: any) => {
@@ -114,15 +43,34 @@ const StudentStatistics = ({ navigation }: any) => {
 
 	const [onlyOneSectionExpanded, setOnlyOneSectionExpanded] = useState(true)
 
+	const quizLabels = section.quizzes.map((quiz) => quiz.name)
+	const quizGrades = section.quizzes.map((quiz) => quiz.grade)
+
+	const { personId } = useUser()
+
+	const [statistics, setStatistics] = useState<ICourse[]>([
+		{
+			id: "",
+			shortName: "",
+			sections: [],
+		},
+	])
+
+	useQuery(
+		["statistics", personId, statistics],
+		() => fetchStudentStatistics(personId),
+		{
+			onSuccess: (data) => setStatistics(data),
+			onError: (error) => console.log(error),
+		}
+	)
+
 	const sectionList: ISection[] = allCourses
-		? constProps.courses.flatMap((course) => course.sections)
+		? statistics.flatMap((course) => course.sections)
 		: course.sections
 
 	const sectionLabels = sectionList.map((section) => section.name)
 	const sectionGrades = sectionList.map((section) => section.average)
-
-	const quizLabels = section.quizzes.map((quiz) => quiz.name)
-	const quizGrades = section.quizzes.map((quiz) => quiz.grade)
 
 	return (
 		<BottomAppbarLayout navigation={navigation}>
@@ -206,9 +154,9 @@ const StudentStatistics = ({ navigation }: any) => {
 									style={listStyles.listItem}
 									titleStyle={listStyles.listItemTitle}
 								/>
-								{constProps.courses.map((course) => (
+								{statistics.map((course) => (
 									<List.Item
-										key={course.id}
+										key={course.id + "course"}
 										title={course.shortName}
 										onPress={() => {
 											setCourse(course)
@@ -257,7 +205,7 @@ const StudentStatistics = ({ navigation }: any) => {
 								/>
 								{sectionList.map((section) => (
 									<List.Item
-										key={section.id}
+										key={section.id + "section"}
 										title={section.name}
 										onPress={() => {
 											setSection(section)
@@ -276,9 +224,9 @@ const StudentStatistics = ({ navigation }: any) => {
 						</View>
 					</HStack>
 					{allSections && (
-						<GradeChart
+						<BlueChart
 							labels={sectionLabels}
-							grades={sectionGrades}
+							values={sectionGrades}
 						/>
 					)}
 					{!allSections && section.name === "" && (
@@ -307,11 +255,11 @@ const StudentStatistics = ({ navigation }: any) => {
 						</View>
 					)}
 					{!allSections && section.name !== "" && (
-						<GradeChart labels={quizLabels} grades={quizGrades} />
+						<BlueChart labels={quizLabels} values={quizGrades} />
 					)}
 					{allCourses && (
 						<>
-							{constProps.courses.map((course) => (
+							{statistics.map((course) => (
 								<BlueListAccordion
 									title={course.shortName}
 									onPress={() => {
@@ -319,7 +267,7 @@ const StudentStatistics = ({ navigation }: any) => {
 										setAllSections(true)
 										setSectionTitle("All Sections")
 									}}
-									key={course.id}
+									key={course.id + "listCourse"}
 									id={course.id}
 									iconPositionOnRight={true}
 								>
@@ -372,7 +320,9 @@ const StudentStatistics = ({ navigation }: any) => {
 												{section.quizzes.map((quiz) => (
 													<>
 														<List.Item
-															key={quiz.id}
+															key={
+																quiz.id + "quiz"
+															}
 															title={quiz.name}
 															style={
 																listStyles.listItem
@@ -434,7 +384,7 @@ const StudentStatistics = ({ navigation }: any) => {
 							{section.quizzes.map((quiz) => (
 								<>
 									<List.Item
-										key={quiz.id}
+										key={quiz.id + "listQuiz"}
 										title={quiz.name}
 										style={listStyles.listItem}
 										titleStyle={listStyles.listItemTitle}
@@ -484,7 +434,7 @@ const StudentStatistics = ({ navigation }: any) => {
 								{section.quizzes.map((quiz) => (
 									<>
 										<List.Item
-											key={quiz.id}
+											key={quiz.id + "lowerQuiz"}
 											title={quiz.name}
 											style={listStyles.listItem}
 											titleStyle={

@@ -21,6 +21,7 @@ import Home from "screens/common/Home"
 import CommonHome from "screens/common/CommonHome"
 import CreateCourse from "screens/Professor/CreateCourse"
 import CreateQuiz from "screens/Professor/CreateQuiz"
+import ProfessorStatistics from "screens/Professor/ProfessorStatistics"
 
 const Stack = createStackNavigator()
 const querryClient = new QueryClient()
@@ -29,6 +30,10 @@ export default function App() {
 	return (
 		<AppContainter>
 			<Stack.Screen name="Login" component={Login} />
+			<Stack.Screen
+				name="ProfessorStatistics"
+				component={ProfessorStatistics}
+			/>
 			<Stack.Screen name="CreateQuiz" component={CreateQuiz} />
 			<Stack.Screen name="Quiz" component={Quiz} />
 			<Stack.Screen name="QuizStart" component={QuizStart} />
