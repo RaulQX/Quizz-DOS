@@ -12,13 +12,13 @@ interface BottomAppbarProps {
 
 const BottomAppbarLayout = ({ navigation, children }: BottomAppbarProps) => {
 	const { role } = useUser()
-
+	const isAdmin = role === ROLES.admin
 	const navigationRoutes: NavigationRoutes = {
 		[ROLES.student]: "StudentStatistics",
 		[ROLES.professor]: "ProfessorStatistics",
 		[ROLES.admin]: "AdminStatistics",
 	}
-	
+
 	return (
 		<Flex justify="between" style={{ height: "100%" }}>
 			{children}
@@ -30,20 +30,32 @@ const BottomAppbarLayout = ({ navigation, children }: BottomAppbarProps) => {
 						iconColor="white"
 						onPress={() => navigation.navigate("Home")}
 					/>
-					<Appbar.Action
-						icon="chart-line"
-						iconColor="white"
-						onPress={() => {
-							if (role in navigationRoutes) {
-								navigation.navigate(navigationRoutes[role])
-							}
-						}}
-					/>
-					<Appbar.Action
-						icon={"bell"}
-						iconColor="white"
-						onPress={() => navigation.navigate("Notifications")}
-					/>
+					{!isAdmin && (
+						<Appbar.Action
+							icon="chart-line"
+							iconColor="white"
+							onPress={() => {
+								if (role in navigationRoutes) {
+									navigation.navigate(navigationRoutes[role])
+								}
+							}}
+						/>
+					)}
+					{isAdmin && (
+						<Appbar.Action
+							icon="account-group"
+							iconColor="white"
+							onPress={() => navigation.navigate("AdminPeople")}
+						/>
+					)}
+
+					{!isAdmin && (
+						<Appbar.Action
+							icon={"bell"}
+							iconColor="white"
+							onPress={() => navigation.navigate("Notifications")}
+						/>
+					)}
 					<Appbar.Action
 						icon="cog"
 						iconColor="white"
