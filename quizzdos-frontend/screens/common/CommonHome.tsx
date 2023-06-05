@@ -54,10 +54,7 @@ const CommonHome = ({ navigation }: any) => {
 				pageSize,
 			}),
 		{
-			getNextPageParam: (lastPage, pages) => {
-				console.log("lp: ", lastPage.page)
-				console.log("lp2: ", lastPage.totalPages)
-				console.log("pages: ", pages)
+			getNextPageParam: (lastPage) => {
 				if (lastPage.page != lastPage.totalPages) {
 					return lastPage.page + 1
 				}

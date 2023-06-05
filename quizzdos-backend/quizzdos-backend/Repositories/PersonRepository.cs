@@ -12,7 +12,6 @@ namespace quizzdos_backend.Repositories
         Task<Person?> GetPersonByUserIdAsync(Guid userId);
         Task<Person> AddPersonAsync(User user);
         Task<Person?> UpdatePersonalDetailsByIdAsync(Guid personId, string firstName, string lastName, EGender gender);
-        Task<Person?> UpdatePersonRoleByIdAsync(Guid personId, ERole role);
         Task<Person?> DeletePersonByIdAsync(Guid personId);
     }
     public class PersonRepository : IPersonRepository
@@ -54,19 +53,7 @@ namespace quizzdos_backend.Repositories
             return person;
         }
 
-        public async Task<Person?> UpdatePersonRoleByIdAsync(Guid personId, ERole role)
-        {
-            var person = await GetPersonByIdAsync(personId);
 
-            if (person == null)
-            {
-                return null;
-            }
-
-            person.Role = role;
-            await _context.SaveChangesAsync();
-            return person;
-        }
         public async Task<Person?> DeletePersonByIdAsync(Guid personId)
         {
             var person = await GetPersonByIdAsync(personId);

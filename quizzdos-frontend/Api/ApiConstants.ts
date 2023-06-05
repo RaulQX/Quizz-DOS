@@ -54,5 +54,7 @@ export const ApiEndpoints = {
 	},
 	Admin: {
 		dashboard: makeRoute(controllers.admin, "dashboard"),
+		people: makeRoute(controllers.admin, "people"),
+		updateRole : controllers.admin,
 	},
 } as const

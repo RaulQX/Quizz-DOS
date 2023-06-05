@@ -12,8 +12,8 @@ using quizzdos_EFCore;
 namespace quizzdos_EFCore.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20230601141328_updated-names")]
-    partial class updatednames
+    [Migration("20230605183104_upn")]
+    partial class upn
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

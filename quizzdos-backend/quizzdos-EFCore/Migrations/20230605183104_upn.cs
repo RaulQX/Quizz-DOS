@@ -5,7 +5,7 @@
 namespace quizzdos_EFCore.Migrations
 {
     /// <inheritdoc />
-    public partial class updatednames : Migration
+    public partial class upn : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
