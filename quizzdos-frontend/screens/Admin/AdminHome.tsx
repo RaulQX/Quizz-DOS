@@ -1,23 +1,23 @@
 import { Flex, HStack, VStack } from "@react-native-material/core"
+import { useQuery } from "@tanstack/react-query"
+import { fetchDashboard } from "Api/Admin/AdminHome"
 import BottomAppbarLayout from "components/common/BottomAppbarLayout"
 import useUser from "contexts/user/UserContext"
 import { COLORS } from "palette/colors"
-import React from "react"
+import React, { useState } from "react"
 import { Text } from "react-native"
 import { Avatar } from "react-native-paper"
-import Icon from "react-native-vector-icons/MaterialCommunityIcons"
 
-const constProps = {
-	totalUsers: 20,
-	totalProfessors: 5,
-	totalStudents: 14,
-	totalAdmins: 1,
-	totalCourses: 10,
-	toatlQuizzes: 50,
-	createdMostCourses: "El Prof",
-	mostQuizzesSolved: "El Studento",
+interface IDashboardItems {
+	totalUsers: number
+	totalProfessors: number
+	totalStudents: number
+	totalAdmins: number
+	totalCourses: number
+	totalQuizzes: number
+	createdMostCourses: string
+	mostQuizzesSolved: string
 }
-
 const DashboardItem = ({ title, value }: { title: string; value: string }) => {
 	return (
 		<Flex
@@ -53,6 +53,22 @@ const DashboardItem = ({ title, value }: { title: string; value: string }) => {
 }
 
 const AdminHome = ({ navigation }: any) => {
+	const [dashboardItems, setDashboardItems] = useState<IDashboardItems>({
+		totalUsers: 0,
+		totalProfessors: 0,
+		totalStudents: 0,
+		totalAdmins: 0,
+		totalCourses: 0,
+		totalQuizzes: 0,
+		createdMostCourses: "",
+		mostQuizzesSolved: "",
+	})
+
+	useQuery(["dashboard", dashboardItems], () => fetchDashboard(), {
+		onSuccess: (data) => setDashboardItems(data),
+		onError: (error) => console.log(error),
+	})
+
 	const { firstName, lastName } = useUser()
 	return (
 		<BottomAppbarLayout navigation={navigation}>
@@ -112,19 +128,19 @@ const AdminHome = ({ navigation }: any) => {
 					<HStack justify="around" wrap={"wrap"}>
 						<DashboardItem
 							title="Users"
-							value={constProps.totalUsers.toString()}
+							value={dashboardItems.totalUsers.toString()}
 						/>
 						<DashboardItem
 							title="Professors"
-							value={constProps.totalProfessors.toString()}
+							value={dashboardItems.totalProfessors.toString()}
 						/>
 						<DashboardItem
 							title="Students"
-							value={constProps.totalStudents.toString()}
+							value={dashboardItems.totalStudents.toString()}
 						/>
 						<DashboardItem
 							title="Admins"
-							value={constProps.totalAdmins.toString()}
+							value={dashboardItems.totalAdmins.toString()}
 						/>
 					</HStack>
 					<Text
@@ -140,11 +156,11 @@ const AdminHome = ({ navigation }: any) => {
 					<HStack justify="around" wrap={"wrap"}>
 						<DashboardItem
 							title="Courses"
-							value={constProps.totalCourses.toString()}
+							value={dashboardItems.totalCourses.toString()}
 						/>
 						<DashboardItem
 							title="Most Created"
-							value={constProps.createdMostCourses}
+							value={dashboardItems.createdMostCourses}
 						/>
 					</HStack>
 
@@ -161,11 +177,11 @@ const AdminHome = ({ navigation }: any) => {
 					<HStack justify="around" wrap={"wrap"}>
 						<DashboardItem
 							title="Quizzes"
-							value={constProps.toatlQuizzes.toString()}
+							value={dashboardItems.totalQuizzes.toString()}
 						/>
 						<DashboardItem
 							title="Most Solved"
-							value={constProps.mostQuizzesSolved}
+							value={dashboardItems.mostQuizzesSolved}
 						/>
 					</HStack>
 				</VStack>

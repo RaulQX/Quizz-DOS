@@ -16,6 +16,7 @@ const controllers = {
 	section: makeRoute(baseUrl, "sections"),
 	quiz: makeRoute(baseUrl, "quizzes"),
 	statistics: makeRoute(baseUrl, "statistics"),
+	admin: makeRoute(baseUrl, "admin"),
 } as const
 
 export const ApiEndpoints = {
@@ -50,5 +51,8 @@ export const ApiEndpoints = {
 	Statistics: {
 		studentStatistics: makeRoute(controllers.statistics, "students"),
 		professorsStatistics: makeRoute(controllers.statistics, "professors"),
-	}
+	},
+	Admin: {
+		dashboard: makeRoute(controllers.admin, "dashboard"),
+	},
 } as const
