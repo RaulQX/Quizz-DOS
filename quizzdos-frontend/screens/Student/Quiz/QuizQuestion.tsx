@@ -1,8 +1,10 @@
 import { Pressable, VStack } from "@react-native-material/core"
 import { COLORS } from "palette/colors"
-import React from "react"
+import React, { useState } from "react"
 import { Text } from "react-native"
 import { IQuestion } from "./Quiz"
+import { IconButton } from "react-native-paper"
+import ButtonModal from "components/common/ButtonModal"
 
 interface QuizQuestionsProps {
 	question: IQuestion
@@ -13,16 +15,30 @@ const QuizQuestion = ({
 	question,
 	handleQuestionAnswer,
 }: QuizQuestionsProps) => {
-	const chosenOptions = question.chosenOptions || [] 
+	const chosenOptions = question.chosenOptions || []
+	const [visible, setVisible] = useState(false)
+	const [modalMessage, setModalMessage] = useState(
+		"300 de cuvinte sa avem saa stim sa avem zile pe lume uzzy ytea bla bla bdaskjqwoi "
+	)
 
 	return (
 		<VStack>
+			{question.tipAllowed && (
+				<IconButton
+					icon="lightbulb-on-outline"
+					iconColor={COLORS.almostWhite}
+					style={{ alignSelf: "flex-end" }}
+					onPress={() => {
+						setVisible(true)
+					}}
+				/>
+			)}
 			<Text
 				style={{
 					fontSize: 20,
 					textAlign: "center",
 					color: COLORS.white,
-					marginTop: 20,
+					marginTop: question.tipAllowed ? 0 : 20,
 					fontWeight: "600",
 				}}
 			>
@@ -65,6 +81,14 @@ const QuizQuestion = ({
 					)
 				})}
 			</VStack>
+			<ButtonModal
+				modalVisible={visible}
+				setModalVisible={setVisible}
+				modalTitle={"Hint"}
+				modalMessage={modalMessage}
+				modalButtonText={"Okay"}
+				onPress={() => setVisible(false)}
+			/>
 		</VStack>
 	)
 }
