@@ -12,18 +12,21 @@ const constProps = {
 			title: "Well done!",
 			text: `You have successfully completed the section 'Introduction'`,
 			dateReceived: "2021-05-01",
+			read: false,
 		},
 		{
 			id: "02",
 			title: "Good Job!",
 			text: `You have successfully completed the quiz 'Big O Notation'`,
 			dateReceived: "2021-05-01",
+			read: false,
 		},
 		{
 			id: "0",
 			title: "Congratulations!",
 			text: `You have successfully completed the course 'CS 101'`,
 			dateReceived: "2021-05-01",
+			read: false,
 		},
 		{
 			id: "1",
@@ -86,9 +89,16 @@ const Notifications = ({ navigation }: any) => {
 								alignSelf: "center",
 							}}
 						>
-							<HStack justify="between" style={{marginBottom: 5, width: '100%'}} >
+							<HStack
+								justify="between"
+								style={{ marginBottom: 5, width: "100%" }}
+							>
 								<Text
-									style={{ fontSize: 18, fontWeight: "bold", width: '80%' }}
+									style={{
+										fontSize: 18,
+										fontWeight: "bold",
+										width: "80%",
+									}}
 								>
 									{notification.title}
 								</Text>

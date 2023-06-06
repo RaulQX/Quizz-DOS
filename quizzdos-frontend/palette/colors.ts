@@ -8,4 +8,5 @@ export const COLORS = {
 	almostWhite: "#fef7e3",
 	paleYellow: "#f0e68c",
 	red: "#AA4A44",
+	otherDark: "#2f2f37",
 }

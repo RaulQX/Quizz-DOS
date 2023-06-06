@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using Microsoft.EntityFrameworkCore;
+using quizzdos_backend.DTOs;
 using quizzdos_EFCore;
 using quizzdos_EFCore.Entities.Users;
 using quizzdos_EFCore.Enums;
@@ -13,6 +14,7 @@ namespace quizzdos_backend.Repositories
         Task<Person> AddPersonAsync(User user);
         Task<Person?> UpdatePersonalDetailsByIdAsync(Guid personId, string firstName, string lastName, EGender gender);
         Task<Person?> DeletePersonByIdAsync(Guid personId);
+        Task<PersonSettingsDTO?> GetPersonSettings(Guid personId);
     }
     public class PersonRepository : IPersonRepository
     {
@@ -52,8 +54,6 @@ namespace quizzdos_backend.Repositories
             await _context.SaveChangesAsync();
             return person;
         }
-
-
         public async Task<Person?> DeletePersonByIdAsync(Guid personId)
         {
             var person = await GetPersonByIdAsync(personId);
@@ -67,5 +67,17 @@ namespace quizzdos_backend.Repositories
             return person;
         }
 
+        public async Task<PersonSettingsDTO?> GetPersonSettings(Guid personId)
+        {
+            var person = await _context.People.Include(p => p.User)
+                .FirstOrDefaultAsync(p => p.Id == personId);
+
+            if (person == null)
+            {
+                return null;
+            }
+
+            return new PersonSettingsDTO { Gender = person.Gender, Email = person.User.Email, FirstName = person.FirstName, LastName = person.LastName, PhoneNumber = person.User.PhoneNumber, Role = person.Role, Username = person.User.Username };
+        }
     }
 }

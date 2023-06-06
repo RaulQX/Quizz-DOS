@@ -174,7 +174,7 @@ const PersonCard = ({
 				style={{
 					width: "90%",
 					alignSelf: "flex-end",
-					backgroundColor: "#2f2f37",
+					backgroundColor: COLORS.otherDark,
 					marginBottom: 5,
 					marginTop: 1,
 					borderRadius: 10,

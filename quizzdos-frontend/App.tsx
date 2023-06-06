@@ -32,6 +32,7 @@ export default function App() {
 	return (
 		<AppContainter>
 			<Stack.Screen name="Login" component={Login} />
+			<Stack.Screen name="Settings" component={Settings} />
 			<Stack.Screen name="AdminPeople" component={AdminPeople} />
 			<Stack.Screen name="AdminHome" component={AdminHome} />
 			<Stack.Screen
@@ -46,7 +47,6 @@ export default function App() {
 			<Stack.Screen name="CommonHome" component={CommonHome} />
 			<Stack.Screen name="Home" component={Home} />
 			<Stack.Screen name="SignUp" component={SignUp} />
-			<Stack.Screen name="Settings" component={Settings} />
 			<Stack.Screen
 				name="StudentStatistics"
 				component={StudentStatistics}

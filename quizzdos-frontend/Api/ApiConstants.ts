@@ -27,6 +27,8 @@ export const ApiEndpoints = {
 	People: {
 		personByUserId: makeRoute(controllers.person, "userId"),
 		personById: controllers.person,
+		personSettings: makeRoute(controllers.person, "settings"),
+		updatePerson: controllers.person,
 	},
 	Users: {
 		currentUser: makeRoute(controllers.user, "current-user"),

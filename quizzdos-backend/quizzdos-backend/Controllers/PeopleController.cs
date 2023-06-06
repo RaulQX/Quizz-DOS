@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using quizzdos_backend.DTOs;
 using quizzdos_backend.Repositories;
 using quizzdos_EFCore.Entities.Users;
 using quizzdos_EFCore.Enums;
@@ -41,7 +42,17 @@ namespace quizzdos_backend.Controllers
             return Ok(updatedPerson);
         }
 
-       
+        [HttpGet("settings/{personId:Guid}")]
+        [ProducesResponseType(typeof(PersonSettingsDTO), 200)]
+        [ProducesResponseType(typeof(string), 404)]
+        public async Task<ActionResult<PersonSettingsDTO>> GetPersonSettings(Guid personId)
+        {
+            var personSettings = await _personRepository.GetPersonSettings(personId);
+            if (personSettings == null)
+                return NotFound($"Cannot find person settings based on personId: {personId}");
+
+            return Ok(personSettings);
+        }
 
     }
 }

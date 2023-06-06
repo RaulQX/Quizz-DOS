@@ -1,19 +1,24 @@
 import { HStack, VStack } from "@react-native-material/core"
+import { Mutation, useMutation, useQuery } from "@tanstack/react-query"
+import { fetchSettings, updateSettings } from "Api/Common/Settings"
+import BlueTextHStack from "components/common/BlueTextHStack"
 import BottomAppbarLayout from "components/common/BottomAppbarLayout"
 import TextButton from "components/common/TextButton"
 import { listStyles } from "components/list/ListStyles"
 import { GENDERS } from "constants/Constants"
+import useUser from "contexts/user/UserContext"
 import AnimatedLottieView from "lottie-react-native"
 import { COLORS } from "palette/colors"
 import React, { useState } from "react"
 import { StyleSheet, Text, TextInput, View } from "react-native"
-import { Divider } from "react-native-flex-layout"
 import { List } from "react-native-paper"
 
 const studentSettingsConstProps = {
 	firstName: "John",
 	lastName: "Doe",
 	email: "john.doe@doe.com",
+	username: "jd123",
+	phoneNumber: "1234567890",
 	role: 0,
 	gender: 1,
 }
@@ -29,8 +34,40 @@ const Settings = ({ navigation }: any) => {
 	const [lastName, setLastName] = useState<string>(
 		studentSettingsConstProps.lastName
 	)
+
+	const [username, setUsername] = useState<string>(
+		studentSettingsConstProps.username
+	)
+	const [phoneNumber, setPhoneNumber] = useState<string>(
+		studentSettingsConstProps.phoneNumber
+	)
 	const [email, setEmail] = useState<string>(studentSettingsConstProps.email)
 	const [role, setRole] = useState<number>(studentSettingsConstProps.role)
+	const { personId } = useUser()
+
+	const updateSettingsMutation = useMutation({
+		mutationFn: (data: any) => updateSettings(data),
+		onSuccess: (_: any) => {
+			navigation.navigate("Home")
+		},
+		onError: ({ response: { data } }) => {
+			console.log(data)
+		},
+	})
+
+	useQuery(["settings", personId], () => fetchSettings(personId), {
+		onSuccess: (data) => {
+			console.log("data", data)
+			setFirstName(data.firstName)
+			setLastName(data.lastName)
+			setUsername(data.username)
+			setPhoneNumber(data.phoneNumber)
+			setEmail(data.email)
+			setGenderValue(data.gender)
+			setRole(data.role)
+		},
+		onError: (error) => console.log(error),
+	})
 
 	const genderMap = new Map<number, string>([
 		[0, "Not Specified"],
@@ -47,7 +84,7 @@ const Settings = ({ navigation }: any) => {
 	return (
 		<BottomAppbarLayout navigation={navigation}>
 			<View>
-				<HStack justify="around" style={{ marginTop: 40 }} spacing={5}>
+				<HStack justify="around" style={{ marginTop: 30 }} spacing={5}>
 					<AnimatedLottieView
 						autoPlay
 						loop
@@ -57,13 +94,10 @@ const Settings = ({ navigation }: any) => {
 				</HStack>
 			</View>
 			<VStack
-				style={{ marginHorizontal: 25, marginTop: 40 }}
+				style={{ marginHorizontal: 25, marginTop: 30 }}
 				spacing={20}
 			>
-				<HStack justify="between">
-					<Text style={{ color: COLORS.blue, fontSize: 20 }}>
-						<Text>First Name</Text>
-					</Text>
+				<BlueTextHStack text="First Name">
 					<TextInput
 						style={styles.textInput}
 						value={firstName}
@@ -71,12 +105,8 @@ const Settings = ({ navigation }: any) => {
 						autoCapitalize="words"
 						textAlign="right"
 					/>
-				</HStack>
-				<Divider />
-				<HStack justify="between">
-					<Text style={{ color: COLORS.blue, fontSize: 20 }}>
-						<Text>Last Name</Text>
-					</Text>
+				</BlueTextHStack>
+				<BlueTextHStack text="Last Name">
 					<TextInput
 						style={styles.textInput}
 						value={lastName}
@@ -84,43 +114,29 @@ const Settings = ({ navigation }: any) => {
 						autoCapitalize="words"
 						textAlign="right"
 					/>
-				</HStack>
-				<Divider />
-				<HStack justify="between">
-					<Text style={{ color: COLORS.blue, fontSize: 20 }}>
-						<Text>Email</Text>
-					</Text>
-					<TextInput
-						style={styles.textInput}
-						value={email}
-						onChangeText={(t) => setLastName(email)}
-						autoCapitalize="none"
-						textAlign="right"
-						inputMode="email"
-					/>
-				</HStack>
-				<Divider />
-				<HStack justify="between">
-					<Text style={{ color: COLORS.blue, fontSize: 20 }}>
-						<Text>Role</Text>
-					</Text>
+				</BlueTextHStack>
+				<BlueTextHStack text="Username">
 					<Text style={{ color: COLORS.gray, fontSize: 20 }}>
-						<Text>
-							{roleMap.get(studentSettingsConstProps.role)}
-						</Text>
+						<Text>{username}</Text>
 					</Text>
-				</HStack>
-				<Divider />
-				<HStack justify="between">
-					<Text
-						style={{
-							color: COLORS.blue,
-							fontSize: 20,
-							marginTop: 5,
-						}}
-					>
-						<Text>Gender</Text>
+				</BlueTextHStack>
+				<BlueTextHStack text="Email">
+					<Text style={{ color: COLORS.gray, fontSize: 20 }}>
+						<Text>{email}</Text>
 					</Text>
+				</BlueTextHStack>
+				<BlueTextHStack text="Phone Number">
+					<Text style={{ color: COLORS.gray, fontSize: 20 }}>
+						<Text>{phoneNumber}</Text>
+					</Text>
+				</BlueTextHStack>
+				<BlueTextHStack text="Role">
+					<Text style={{ color: COLORS.gray, fontSize: 20 }}>
+						<Text>{roleMap.get(role)}</Text>
+					</Text>
+				</BlueTextHStack>
+
+				<BlueTextHStack text="Gender" marginTop={10}>
 					<List.Accordion
 						title={genderMap.get(genderValue)}
 						style={{
@@ -184,9 +200,18 @@ const Settings = ({ navigation }: any) => {
 							titleStyle={listStyles.listItemTitle}
 						/>
 					</List.Accordion>
-				</HStack>
-				<Divider />
-				<TextButton text="Save" onPress={() => {}} />
+				</BlueTextHStack>
+				<TextButton
+					text="Save"
+					onPress={() => {
+						updateSettingsMutation.mutate({
+							personId,
+							firstName,
+							lastName,
+							gender: genderValue,
+						})
+					}}
+				/>
 				<TextButton
 					text="Logout"
 					onPress={() => navigation.navigate("Login")}
