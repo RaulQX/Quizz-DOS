@@ -1,9 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 using quizzdos_backend.DTOs;
 using quizzdos_EFCore;
 using quizzdos_EFCore.Entities.Courses;
 using quizzdos_EFCore.Enums;
 using quizzdos_EFCore.Relations.ManyToMany;
+using System.Text;
 
 namespace quizzdos_backend.Repositories
 {
@@ -17,13 +20,18 @@ namespace quizzdos_backend.Repositories
         public Task<List<QuizQuestionDTO>?> UpdateQuizQuestions(Guid quizzId, List<QuizQuestionDTO> newQuestions);
         public Task<StartQuizDTO?> GetQuizForStudent(Guid quizId, Guid personId);
         public Task<bool?> AddQuizGrade(Guid quizId, Guid personId, double grade);
-             
+        public Task<string?> GetTip(Guid questionId);
     }
+
+
     public class QuizRepository : IQuizRepository
     {
         private readonly Context _context;
-        public QuizRepository(Context context)
+        private readonly string _apiKey;
+
+        public QuizRepository(Context context, IConfiguration config)
         {
+            _apiKey = config.GetValue<string>("ApiKey");
             _context = context;
         }
         public async Task<QuizDTO?> AddQuizAsync(QuizDTO addingQuiz)
@@ -126,6 +134,63 @@ namespace quizzdos_backend.Repositories
                              TipAllowed = question.TipAllowed
                          })
                          .ToListAsync();
+        }
+
+        public async Task<string?> GetTip(Guid questionId)
+        {
+            var question = await _context.Questions.Where(q => q.Id == questionId)
+                .Include(q => q.Options)
+                .Select(q =>
+                    new QuestionWithCorrectAndWrongAnswersDTO
+                    {
+                        Prompt = q.Prompt,
+                        CorrectOptions = q.Options.Where(o => o.ScorePercentage > 0).Select(o => new QuestionOptionDTO { Text = o.Text, ScorePercentage = o.ScorePercentage }).ToList(),
+                        WrongOptions = q.Options.Where(o => o.ScorePercentage == 0).Select(o => new QuestionOptionDTO { Text = o.Text, ScorePercentage = o.ScorePercentage }).ToList()
+                    }).FirstOrDefaultAsync();
+
+
+            if (question == null)
+                return null;
+           
+            string wrongOpts = question.WrongOptions.Aggregate("", (acc, x) => acc + x.Text + "; ");
+            string correctOpts = question.CorrectOptions.Aggregate("", (acc, x) => acc + x.Text + "; ");
+            var apiKey = _apiKey;
+            var prompt =
+                "Pretend you are an automated quiz hint giver. " +
+                "I will write a question and one or more answers. " +
+                "Give a hint of the answers of the question that will be written without giving away the answer. " +
+                "Do not rephrase the question with the answer in it. Do not rephrase the given answer while answering the question. " +
+                "Make it not obvious. Do not write numbers using letters. Do not complete the answers, answer in a separate phrase. " +
+                "If it is a mathematical question, give the formula or how to derive it from known information." +
+                $"This is the question: {question.Prompt} " +
+                "These are the the wrong options:" + wrongOpts +
+                ".This is/are the correct answers:" + correctOpts
+                ;
+            var url = $"https://api.openai.com/v1/completions";
+            using var client = new HttpClient();
+
+            var jsonBody = new JObject
+            {
+                ["model"] = "text-davinci-003",
+                ["prompt"] = prompt,
+                ["temperature"] = 0,
+                ["max_tokens"] = 1000
+            };
+
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", apiKey);
+            var content = new StringContent(jsonBody.ToString(), Encoding.UTF8, "application/json");
+            var response = await client.PostAsync(url, content);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Console.WriteLine("Error with Status Code: " + response.StatusCode);
+                return null;
+            }
+
+            var json = JsonConvert.DeserializeObject<dynamic>(response.Content.ReadAsStringAsync().Result);
+            if (json == null) return null;
+            string completion = json.choices[0].text;
+            return completion.Trim();
         }
 
         public async Task<UpdateQuizDTO?> UpdateQuizAsync(Guid quizId, UpdateQuizDTO updatedQuiz)

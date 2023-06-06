@@ -5,6 +5,8 @@ import { Text } from "react-native"
 import { IQuestion } from "./Quiz"
 import { IconButton } from "react-native-paper"
 import ButtonModal from "components/common/ButtonModal"
+import { useQuery } from "@tanstack/react-query"
+import { fetchTip } from "Api/Student/QuizQuestion"
 
 interface QuizQuestionsProps {
 	question: IQuestion
@@ -17,9 +19,17 @@ const QuizQuestion = ({
 }: QuizQuestionsProps) => {
 	const chosenOptions = question.chosenOptions || []
 	const [visible, setVisible] = useState(false)
-	const [modalMessage, setModalMessage] = useState(
-		"300 de cuvinte sa avem saa stim sa avem zile pe lume uzzy ytea bla bla bdaskjqwoi "
-	)
+	const [modalMessage, setModalMessage] = useState("Loading...")
+
+	useQuery(["tip", question.id], () => fetchTip(question.id), {
+		onSuccess: (data) => {
+			setModalMessage(data)
+		},
+		onError: (error) => {
+			console.log(error)
+			setModalMessage("No tip available")
+		},
+	})
 
 	return (
 		<VStack>

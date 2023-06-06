@@ -114,6 +114,17 @@ namespace quizzdos_backend.Controllers
 
             return Ok(qz);
         }
+        [HttpGet("{questionId}/tip")]
+        public async Task<ActionResult<string>> GetTip(Guid questionId)
+        {
+            var hint = await quizRepository.GetTip(questionId);
+
+            if (hint is null)
+            {
+                return BadRequest("ChatGPT servers are busy.");
+            }
+            return Ok(hint);
+        }
 
     }
 }

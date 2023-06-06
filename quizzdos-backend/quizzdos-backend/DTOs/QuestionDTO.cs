@@ -26,4 +26,11 @@
         public double QuestionScore { get; set; }
     }
 
+    public class QuestionWithCorrectAndWrongAnswersDTO
+    {
+        public string Prompt { get; set; } = string.Empty;
+        public List<QuestionOptionDTO> CorrectOptions { get; set; } = new List<QuestionOptionDTO>();
+        public List<QuestionOptionDTO> WrongOptions { get; set; } = new List<QuestionOptionDTO>();
+    }
+
 }

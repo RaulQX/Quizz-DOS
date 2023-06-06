@@ -49,6 +49,7 @@ export const ApiEndpoints = {
 		putQuizQuestions: controllers.quiz,
 		getQuiz: controllers.quiz,
 		gradeQuiz: controllers.quiz,
+		tip: controllers.quiz,
 	},
 	Statistics: {
 		studentStatistics: makeRoute(controllers.statistics, "students"),
@@ -57,6 +58,6 @@ export const ApiEndpoints = {
 	Admin: {
 		dashboard: makeRoute(controllers.admin, "dashboard"),
 		people: makeRoute(controllers.admin, "people"),
-		updateRole : controllers.admin,
+		updateRole: controllers.admin,
 	},
 } as const
