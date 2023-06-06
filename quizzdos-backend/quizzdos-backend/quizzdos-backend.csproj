@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>quizzdos_backend</RootNamespace>
+    <UserSecretsId>bd8e3cde-bd3d-4580-a572-1d6153fbecfc</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
