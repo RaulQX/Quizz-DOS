@@ -1,10 +1,9 @@
-import { VStack, Flex } from "@react-native-material/core"
+import { VStack } from "@react-native-material/core"
 import PaginatedHorizontalList from "components/common/PaginatedHorizontalList"
-import { COLORS } from "palette/colors"
-import React, { useEffect, useState } from "react"
-import QuizQuestion from "./QuizQuestion"
-import QuizEnd from "./QuizEnd"
 import TopTextInArch from "components/common/TopTextInArch"
+import React, { useState } from "react"
+import QuizEnd from "./QuizEnd"
+import QuizQuestion from "./QuizQuestion"
 import { StartQuestion } from "./QuizStart"
 
 export interface IQuestion {

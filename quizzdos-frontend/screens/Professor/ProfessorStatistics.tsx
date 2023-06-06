@@ -1,19 +1,18 @@
-import { Flex, HStack } from "@react-native-material/core"
-import BottomAppbarLayout from "components/common/BottomAppbarLayout"
-import { COLORS } from "palette/colors"
-import React, { useState } from "react"
-import { ScrollView } from "react-native"
-import { Avatar, IconButton, List, Switch } from "react-native-paper"
-import { Text } from "react-native"
-import BlueChart from "components/chart/BlueChart"
-import BlueListAccordion from "components/list/BlueListAccordion"
-import { listStyles } from "components/list/ListStyles"
+import { HStack } from "@react-native-material/core"
+import { useQuery } from "@tanstack/react-query"
 import {
 	IProfessorsStatisticsCourse,
 	fetchProfessorsStatistics,
 } from "Api/Professor/ProfessorStatistics"
-import { useQuery } from "@tanstack/react-query"
+import BlueChart from "components/chart/BlueChart"
+import BottomAppbarLayout from "components/common/BottomAppbarLayout"
+import BlueListAccordion from "components/list/BlueListAccordion"
+import { listStyles } from "components/list/ListStyles"
 import useUser from "contexts/user/UserContext"
+import { COLORS } from "palette/colors"
+import React, { useState } from "react"
+import { ScrollView, Text } from "react-native"
+import { Avatar, IconButton, List, Switch } from "react-native-paper"
 
 interface IPagedStatistics {
 	data: IProfessorsStatisticsCourse[]

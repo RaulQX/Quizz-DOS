@@ -1,11 +1,13 @@
 import { HStack, VStack } from "@react-native-material/core"
 import { useInfiniteQuery, useMutation } from "@tanstack/react-query"
+import { pageSize } from "Api/ApiConstants"
 import { fetchCreatedCourses } from "Api/Professor/ProfessorHome"
 import { fetchJoinedCourses, joinCourse } from "Api/Student/StudentHome"
 import BottomAppbarLayout from "components/common/BottomAppbarLayout"
 import TextButton from "components/common/TextButton"
 import { ROLES } from "constants/Constants"
 import useUser from "contexts/user/UserContext"
+import * as Clipboard from "expo-clipboard"
 import { IDisplayCourses } from "interfaces/CourseRelated"
 import { COLORS } from "palette/colors"
 import React, { useEffect, useState } from "react"
@@ -19,8 +21,6 @@ import {
 	TextInput,
 	TouchableRipple,
 } from "react-native-paper"
-import * as Clipboard from "expo-clipboard"
-import { pageSize } from "Api/ApiConstants"
 
 const CommonHome = ({ navigation }: any) => {
 	const [courses, setCourses] = useState<IDisplayCourses[]>([])

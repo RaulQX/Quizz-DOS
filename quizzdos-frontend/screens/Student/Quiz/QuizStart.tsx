@@ -12,60 +12,6 @@ import React, { useState } from "react"
 import { Text } from "react-native"
 import { Divider, Surface } from "react-native-paper"
 
-const constProps = {
-	quiz: {
-		title: "Big O Notation",
-		status: QUIZ_STATUS.unopened,
-		sectionName: "Introduction",
-		questionsNumber: 3,
-		grade: 0,
-		questions: [
-			{
-				id: "01",
-				prompt: "What is the capital of France?",
-				questionScore: 4,
-				tipAllowed: true,
-				options: [
-					{ id: "a", text: "Paris", optionScore: 4 },
-					{
-						id: "b",
-						text: "London",
-						optionScore: 0,
-					},
-					{ id: "c", text: "Rome", optionScore: 0 },
-					{
-						id: "d",
-						text: "Madrid",
-						optionScore: 0,
-					},
-				],
-			},
-			{
-				id: "02",
-				prompt: "What is the answer to x^2 - 1 = 0?",
-				questionScore: 4,
-				tipAllowed: true,
-				options: [
-					{ id: "a", text: "1", optionScore: 2 },
-					{ id: "b", text: "2", optionScore: 0 },
-					{ id: "c", text: "0", optionScore: 0 },
-					{ id: "d", text: "-1", optionScore: 2 },
-				],
-			},
-			{
-				id: "03",
-				prompt: "Is this a question?",
-				questionScore: 2,
-				tipAllowed: false,
-				options: [
-					{ id: "a", text: "Yes", optionScore: 2 },
-					{ id: "b", text: "No", optionScore: 0 },
-				],
-			},
-		],
-	},
-}
-
 interface StartQuiz {
 	title: string
 	status: number

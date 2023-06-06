@@ -1,9 +1,7 @@
-import { Flex, HStack, Pressable, VStack } from "@react-native-material/core"
-import PaginatedHorizontalList from "components/common/PaginatedHorizontalList"
+import { Pressable, VStack } from "@react-native-material/core"
 import { COLORS } from "palette/colors"
-import React, { useState } from "react"
-import { Text, View } from "react-native"
-import { Button, IconButton } from "react-native-paper"
+import React from "react"
+import { Text } from "react-native"
 import { IQuestion } from "./Quiz"
 
 interface QuizQuestionsProps {
@@ -15,7 +13,7 @@ const QuizQuestion = ({
 	question,
 	handleQuestionAnswer,
 }: QuizQuestionsProps) => {
-	const chosenOptions = question.chosenOptions || [] // Null check and initialize as empty array
+	const chosenOptions = question.chosenOptions || [] 
 
 	return (
 		<VStack>

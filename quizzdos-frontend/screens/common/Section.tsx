@@ -1,12 +1,12 @@
-import { COLORS } from "palette/colors"
-import React, { useState } from "react"
-import { Button, IconButton, List, Modal, TextInput } from "react-native-paper"
-import { Text } from "react-native"
-import useUser from "contexts/user/UserContext"
-import { ROLES } from "constants/Constants"
-import { HStack, VStack } from "@react-native-material/core"
+import { HStack } from "@react-native-material/core"
 import { useMutation } from "@tanstack/react-query"
 import { createQuiz } from "Api/Professor/Section"
+import { ROLES } from "constants/Constants"
+import useUser from "contexts/user/UserContext"
+import { COLORS } from "palette/colors"
+import React, { useState } from "react"
+import { Text } from "react-native"
+import { Button, IconButton, List, TextInput } from "react-native-paper"
 
 
 export interface SectionProps {

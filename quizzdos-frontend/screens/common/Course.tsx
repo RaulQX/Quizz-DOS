@@ -1,5 +1,11 @@
-import { VStack, HStack } from "@react-native-material/core"
-import Section from "screens/common/Section"
+import { HStack, VStack } from "@react-native-material/core"
+import { useMutation, useQuery } from "@tanstack/react-query"
+import { ICourse, createSection, fetchCourse } from "Api/Professor/Course"
+import BottomAppbarLayout from "components/common/BottomAppbarLayout"
+import TextButton from "components/common/TextButton"
+import TopTextInArch from "components/common/TopTextInArch"
+import { ROLES } from "constants/Constants"
+import useUser from "contexts/user/UserContext"
 import { COLORS } from "palette/colors"
 import React, { useState } from "react"
 import { Linking, ScrollView, Text, View } from "react-native"
@@ -13,13 +19,7 @@ import {
 	TextInput,
 } from "react-native-paper"
 import Icon from "react-native-vector-icons/Feather"
-import BottomAppbarLayout from "components/common/BottomAppbarLayout"
-import TopTextInArch from "components/common/TopTextInArch"
-import TextButton from "components/common/TextButton"
-import { useMutation, useQuery } from "@tanstack/react-query"
-import { ICourse, createSection, fetchCourse } from "Api/Professor/Course"
-import useUser from "contexts/user/UserContext"
-import { ROLES } from "constants/Constants"
+import Section from "screens/common/Section"
 
 const Course = ({ route, navigation }: any) => {
 	const { courseId } = route.params

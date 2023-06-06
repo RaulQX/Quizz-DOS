@@ -1,3 +1,6 @@
+import { HStack } from "@react-native-material/core"
+import { IOption, IQuestion } from "interfaces/CourseRelated"
+import { COLORS } from "palette/colors"
 import React, { useEffect, useRef, useState } from "react"
 import {
 	Dimensions,
@@ -13,10 +16,6 @@ import {
 	IconButton,
 	TextInput,
 } from "react-native-paper"
-import { IOption, IQuestion } from "interfaces/CourseRelated"
-import { COLORS } from "palette/colors"
-import { HStack } from "@react-native-material/core"
-import TextButton from "components/common/TextButton"
 
 interface CreateQuestionProps {
 	question: IQuestion

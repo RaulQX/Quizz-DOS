@@ -6,9 +6,9 @@ import { GENDERS } from "constants/Constants"
 import AnimatedLottieView from "lottie-react-native"
 import { COLORS } from "palette/colors"
 import React, { useState } from "react"
-import { Text, View, StyleSheet, TextInput } from "react-native"
+import { StyleSheet, Text, TextInput, View } from "react-native"
 import { Divider } from "react-native-flex-layout"
-import { Avatar, List } from "react-native-paper"
+import { List } from "react-native-paper"
 
 const studentSettingsConstProps = {
 	firstName: "John",
@@ -18,7 +18,7 @@ const studentSettingsConstProps = {
 	gender: 1,
 }
 
-const StudentSettings = ({ navigation }: any) => {
+const Settings = ({ navigation }: any) => {
 	const [genderVisible, setGenderVisible] = useState(false)
 	const [genderValue, setGenderValue] = useState<number>(
 		studentSettingsConstProps.gender
@@ -187,7 +187,10 @@ const StudentSettings = ({ navigation }: any) => {
 				</HStack>
 				<Divider />
 				<TextButton text="Save" onPress={() => {}} />
-				<TextButton text="Logout" onPress={() => navigation.navigate('Login')} />
+				<TextButton
+					text="Logout"
+					onPress={() => navigation.navigate("Login")}
+				/>
 			</VStack>
 		</BottomAppbarLayout>
 	)
@@ -202,4 +205,4 @@ const styles = StyleSheet.create({
 	},
 })
 
-export default StudentSettings
+export default Settings

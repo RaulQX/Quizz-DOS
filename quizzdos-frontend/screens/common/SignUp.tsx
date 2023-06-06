@@ -4,11 +4,10 @@ import { findFirstError, registerUser } from "Api/Auth/Register"
 import ButtonModal from "components/common/ButtonModal"
 import FormEnd from "components/common/FormEnd"
 import FormIntro from "components/common/FormIntro"
-import TextButton from "components/common/TextButton"
 import { COLORS } from "palette/colors"
 import React, { useState } from "react"
-import { ScrollView, KeyboardAvoidingView, Text } from "react-native"
-import { Divider, Modal, TextInput } from "react-native-paper"
+import { KeyboardAvoidingView, ScrollView, Text } from "react-native"
+import { Divider, TextInput } from "react-native-paper"
 
 const SignUp = ({ navigation }: any) => {
 	const [mobileNumber, setMobileNumber] = useState("")

@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react"
-import { IQuestion } from "./Quiz"
-import { Surface } from "react-native-paper"
-import { COLORS } from "palette/colors"
-import { Dimensions, Text } from "react-native"
 import { VStack } from "@react-native-material/core"
 import TextButton from "components/common/TextButton"
 import AnimatedLottieView from "lottie-react-native"
+import { COLORS } from "palette/colors"
+import React from "react"
+import { Dimensions, Text } from "react-native"
+import { Surface } from "react-native-paper"
+import { IQuestion } from "./Quiz"
 
 interface QuizEndProps {
 	navigation: any

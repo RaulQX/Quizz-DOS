@@ -16,7 +16,6 @@ const BottomAppbarLayout = ({ navigation, children }: BottomAppbarProps) => {
 	const navigationRoutes: NavigationRoutes = {
 		[ROLES.student]: "StudentStatistics",
 		[ROLES.professor]: "ProfessorStatistics",
-		[ROLES.admin]: "AdminStatistics",
 	}
 
 	return (
@@ -59,7 +58,7 @@ const BottomAppbarLayout = ({ navigation, children }: BottomAppbarProps) => {
 					<Appbar.Action
 						icon="cog"
 						iconColor="white"
-						onPress={() => navigation.navigate("StudentSettings")}
+						onPress={() => navigation.navigate("Settings")}
 					/>
 				</Appbar>
 			</View>

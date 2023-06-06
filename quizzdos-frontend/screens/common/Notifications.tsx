@@ -2,9 +2,8 @@ import { HStack, VStack } from "@react-native-material/core"
 import BottomAppbarLayout from "components/common/BottomAppbarLayout"
 import { COLORS } from "palette/colors"
 import React from "react"
-import { ScrollView } from "react-native"
-import { View, Text } from "react-native"
-import { Divider, Surface } from "react-native-paper"
+import { ScrollView, Text, View } from "react-native"
+import { Surface } from "react-native-paper"
 
 const constProps = {
 	notifications: [
