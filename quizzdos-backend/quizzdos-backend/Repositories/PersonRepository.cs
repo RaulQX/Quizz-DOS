@@ -19,9 +19,12 @@ namespace quizzdos_backend.Repositories
     public class PersonRepository : IPersonRepository
     {
         private readonly Context _context;
+        private readonly INotificationRepository _notificationRepository;
+
         public PersonRepository(Context context)
         {
             _context = context;
+            _notificationRepository = new NotificationRepository(context);
         }
 
         public async Task<Person?> GetPersonByUserIdAsync(Guid userId)
@@ -52,6 +55,13 @@ namespace quizzdos_backend.Repositories
             person.FirstName = firstName;
             person.LastName = LastName;
             await _context.SaveChangesAsync();
+
+            await _notificationRepository.AddNotification(
+                title: "Personal details updated successfully",
+                text: "Your personal details have been updated successfully",
+                personId: personId
+                );
+
             return person;
         }
         public async Task<Person?> DeletePersonByIdAsync(Guid personId)

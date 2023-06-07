@@ -63,6 +63,7 @@ builder.Services.AddScoped<ISectionRepository, SectionRepository>();
 builder.Services.AddScoped<IQuizRepository, QuizRepository>();
 builder.Services.AddScoped<IStatisticsRepository, StatisticsRepository>();
 builder.Services.AddScoped<IAdminRepository, AdminRepository>();
+builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddCors(options =>

@@ -20,6 +20,7 @@ namespace quizzdos_EFCore.Entities.Notifications
             this.Title = title;
             this.Text = text;
             this.DateReceived = DateTime.Now;
+            this.Read = false;
         }
 
         [Required]

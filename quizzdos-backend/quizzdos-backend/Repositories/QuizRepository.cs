@@ -28,11 +28,13 @@ namespace quizzdos_backend.Repositories
     {
         private readonly Context _context;
         private readonly string _apiKey;
+        private readonly INotificationRepository _notificationRepository;
 
-        public QuizRepository(Context context, IConfiguration config)
+        public QuizRepository(Context context, IConfiguration config, INotificationRepository notificationRepository)
         {
             _apiKey = config.GetValue<string>("ApiKey");
             _context = context;
+            _notificationRepository = notificationRepository;
         }
         public async Task<QuizDTO?> AddQuizAsync(QuizDTO addingQuiz)
         {
@@ -43,6 +45,16 @@ namespace quizzdos_backend.Repositories
 
             await _context.AddAsync(quiz);
             await _context.SaveChangesAsync();
+
+            var savedQuiz = await GetFullQuizDetails(quiz.Id);
+            if (savedQuiz == null)
+                return null;
+
+            await _notificationRepository.AddNotification(
+                title: $"Quiz {quiz.Name} added successfully!",
+                text: $"Quiz {quiz.Name} was added to section {section.Name}!",
+                personId: savedQuiz.Section.Course.CreatorId
+                );
 
             return addingQuiz;
         }
@@ -63,6 +75,12 @@ namespace quizzdos_backend.Repositories
             var addingGrade = new Grade { GradeValue = Convert.ToDouble(String.Format("{0:0.00}", grade)), PersonId = personId, QuizId = quizId }; 
             await _context.Grades.AddAsync(addingGrade);
             await _context.SaveChangesAsync();
+
+            await _notificationRepository.AddNotification(
+                title: $"Quiz graded!",
+                text: $"The quiz '{quiz.Name}' was graded with {grade}!",
+                personId: personId
+                );
 
             return true;
         }
@@ -192,22 +210,49 @@ namespace quizzdos_backend.Repositories
             string completion = json.choices[0].text;
             return completion.Trim();
         }
+        public async Task<Quiz?> GetFullQuizDetails(Guid quizId)
+        {
+            return await _context.Quizzes
+                .Include(q => q.Section)
+                .ThenInclude(q => q.Course)
+                .FirstOrDefaultAsync(q => q.Id == quizId);
+                
+        }
+        public async Task<List<Guid>> GetCourseParticipantsAndProfessor(Quiz quiz)
+        {
+            var courseId = quiz.Section.CourseId;
+            var studentsIds = await _context.CourseAppartenences.Where(ca => ca.CourseId == courseId).Select(ca => ca.PersonId).ToListAsync();
+            var peopleIds = studentsIds.Where(id => id != null).Select(id => id.Value).ToList();
+            peopleIds.Add(quiz.Section.Course.CreatorId);
 
+            return peopleIds;
+        }
         public async Task<UpdateQuizDTO?> UpdateQuizAsync(Guid quizId, UpdateQuizDTO updatedQuiz)
         {
-            var quiz = await _context.Quizzes.FindAsync(quizId);
+            var quiz = await GetFullQuizDetails(quizId);
             if (quiz == null)
                 return null;
 
             quiz.Name = updatedQuiz.Name;
             quiz.Status = updatedQuiz.Status;
             await _context.SaveChangesAsync();
+
+           var peopleIds = await GetCourseParticipantsAndProfessor(quiz);
+
+            await _notificationRepository.BulkAddNotification(
+                title: "Quiz Updated",
+                text: $"The quiz '{quiz.Name}' has been updated",
+                personIds: peopleIds
+                );
+
             return updatedQuiz;
         }
 
         public async Task<List<QuizQuestionDTO>?> UpdateQuizQuestions(Guid quizId, List<QuizQuestionDTO> updatedQuestions)
         {
             var quiz = await _context.Quizzes
+                .Include(q => q.Section)
+                .ThenInclude(s => s.Course)
                 .Include(q => q.Questions)
                 .ThenInclude(q => q.Options)
                 .FirstOrDefaultAsync(q => q.Id == quizId);
@@ -270,6 +315,14 @@ namespace quizzdos_backend.Repositories
                
             }
             await _context.SaveChangesAsync();
+
+            var peopleIds = await GetCourseParticipantsAndProfessor(quiz);
+            await _notificationRepository.BulkAddNotification(
+                               title: "Quiz Updated",
+                               text: $"The quiz '{quiz.Name}' has been updated",
+                               personIds: peopleIds
+                               );
+
             return updatedQuestions;
         }
     

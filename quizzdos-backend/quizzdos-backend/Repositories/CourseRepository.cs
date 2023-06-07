@@ -22,9 +22,11 @@ namespace quizzdos_backend.Repositories
     public class CourseRepository : ICourseRepository
     {
         private readonly Context _context;
+        private readonly INotificationRepository _notificationRepository;
         public CourseRepository(Context context)
         {
             _context = context;
+            _notificationRepository = new NotificationRepository(context);
         }
 
         public async Task<Course?> AddCourseAsync(CourseDTO addingCourse)
@@ -49,6 +51,13 @@ namespace quizzdos_backend.Repositories
 
             await _context.Courses.AddAsync(newCourse);
             await _context.SaveChangesAsync();
+
+            await _notificationRepository
+                .AddNotification(
+                title: "Course created successfully",
+                text: $"Course {newCourse.Name} was created successfully",
+                personId: creator.Id);
+
             return newCourse;
         }
 
@@ -79,6 +88,13 @@ namespace quizzdos_backend.Repositories
             course.Icon = updatedCourse.Icon;
 
             await _context.SaveChangesAsync();
+
+            await _notificationRepository.AddNotification(
+                  title: "Course updated successfully",
+                  text: $"Course '{course.Name}''s details were added successfully!",
+                  personId: course.CreatorId);
+
+
             return course;
         }
 
@@ -131,6 +147,12 @@ namespace quizzdos_backend.Repositories
 
             await _context.CourseAppartenences.AddAsync(courseAppartenence);
             await _context.SaveChangesAsync();
+
+            await _notificationRepository.AddNotification(
+                  title: "Course joined successfully",
+                  text: $"You have joined course '{course.Name}' successfully!",
+                  personId: person.Id);
+
             return true;
         }
 
