@@ -134,24 +134,24 @@ namespace quizzdos_backend.Repositories
         public async Task<List<QuestionDTO>> GetQuizQuestions(Guid quizzId)
         {
             return  await _context.Questions
-                         .Where(q => q.QuizId == quizzId)
-                         .Select(question => new QuestionDTO
-                         {
-                             Id = question.Id,
-                             Options = _context.Options
-                                 .Where(o => o.QuestionId == question.Id)
-                                 .Select(option => new OptionDTO
-                                 {
-                                     Id = option.Id,
-                                     Text = option.Text,
-                                     ScorePercentage = option.ScorePercentage
-                                 })
-                                 .ToList(),
-                             Prompt = question.Prompt,
-                             QuestionScore = question.QuestionScore,
-                             TipAllowed = question.TipAllowed
-                         })
-                         .ToListAsync();
+                        .Where(q => q.QuizId == quizzId)
+                        .Select(question => new QuestionDTO
+                        {
+                            Id = question.Id,
+                            Options = _context.Options
+                                .Where(o => o.QuestionId == question.Id)
+                                .Select(option => new OptionDTO
+                                {
+                                    Id = option.Id,
+                                    Text = option.Text,
+                                    ScorePercentage = option.ScorePercentage
+                                })
+                                .ToList(),
+                            Prompt = question.Prompt,
+                            QuestionScore = question.QuestionScore,
+                            TipAllowed = question.TipAllowed
+                        })
+                        .ToListAsync();
         }
 
         public async Task<string?> GetTip(Guid questionId)
