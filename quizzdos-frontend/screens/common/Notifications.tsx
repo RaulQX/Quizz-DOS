@@ -1,9 +1,10 @@
 import { HStack, VStack } from "@react-native-material/core"
-import { useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
+import { fetchNotifications, markAsRead } from "Api/Common/Notifications"
 import BottomAppbarLayout from "components/common/BottomAppbarLayout"
-import { NotificationContext } from "contexts/user/NotificationContext"
+import useUser from "contexts/user/UserContext"
 import { COLORS } from "palette/colors"
-import React, { useContext, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { ScrollView, Text, View } from "react-native"
 import { Surface } from "react-native-paper"
 
@@ -15,8 +16,32 @@ export interface INotification {
 	read: boolean
 }
 
-const Notifications = ({  navigation }: any) => {
-	const notifications = useContext(NotificationContext);
+const Notifications = ({ navigation }: any) => {
+	const { personId } = useUser()
+	const [notifications, setNotifications] = useState<INotification[]>([])
+
+	const markAsReadMutation = useMutation({
+		mutationFn: (notificationsIds: string[]) =>
+			markAsRead(notificationsIds),
+		onError: (error) => console.log(error),
+	})
+
+	useQuery(["notificationz", personId], () => fetchNotifications(personId), {
+		onSuccess: (data) => {
+			setNotifications(data)
+		},
+		onError: (error) => console.log(error),
+	})
+
+	useEffect(() => {
+		if (notifications.length > 0) {
+			const notificationIds = notifications.map(
+				(notification) => notification.id
+			)
+			markAsReadMutation.mutate(notificationIds)
+		}
+	}, [notifications])
+
 	return (
 		<BottomAppbarLayout navigation={navigation}>
 			<ScrollView>

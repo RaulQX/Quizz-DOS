@@ -64,5 +64,6 @@ export const ApiEndpoints = {
 	Notifications: {
 		getNotifications: controllers.notifications,
 		markAsRead: controllers.notifications,
+		hasUnreadNotifications: controllers.notifications,
 	},
 } as const

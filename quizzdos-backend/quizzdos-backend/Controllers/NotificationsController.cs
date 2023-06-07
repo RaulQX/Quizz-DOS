@@ -32,13 +32,26 @@ namespace quizzdos_backend.Controllers
         [HttpPut]
         [ProducesResponseType(typeof(bool), 200)]
         [ProducesResponseType(typeof(string), 400)]
-        public async Task<ActionResult> UpdateNotification(List<Guid> notificationIds)
+        public async Task<ActionResult> UpdateNotification(List<string> notificationIds)
         {
-            var successfulUpdated = await _notificationRepository.MarkAsRead(notificationIds);
+            var guidNotificationIds = notificationIds.Select(Guid.Parse).ToList();
+
+            var successfulUpdated = await _notificationRepository.MarkAsRead(guidNotificationIds);
             if (!successfulUpdated)
                 return BadRequest($"Could not update notifications!");
 
             return Ok(successfulUpdated);
+        }
+        [HttpGet("{personId:Guid}/unread")]
+        [ProducesResponseType(typeof(bool), 200)]
+        [ProducesResponseType(typeof(string), 404)]
+        public async Task<ActionResult> GetUnreadNotifications(Guid personId)
+        {
+            var unreadNotifications = await _notificationRepository.HasUnreadNotifications(personId);
+            if (unreadNotifications == null)
+                return NotFound($"Notifications for person: {personId} was not found!");
+
+            return Ok(unreadNotifications);
         }
     }
 }

@@ -1,14 +1,13 @@
+import { Flex } from "@react-native-material/core"
+import { useQuery } from "@tanstack/react-query"
+import { fetchHasUnreadNotifications } from "Api/Common/Notifications"
+import { ROLES } from "constants/Constants"
+import useUser from "contexts/user/UserContext"
 import { COLORS } from "palette/colors"
 import React, { useState } from "react"
-import { Appbar } from "react-native-paper"
 import { StyleSheet, View } from "react-native"
-import { Flex } from "@react-native-material/core"
-import useUser from "contexts/user/UserContext"
-import { ROLES } from "constants/Constants"
-import { useQuery } from "@tanstack/react-query"
-import { fetchNotifications } from "Api/Common/Notifications"
-import { INotification } from "screens/common/Notifications"
-import { NotificationContext } from "contexts/user/NotificationContext"
+import { Appbar } from "react-native-paper"
+
 interface BottomAppbarProps {
 	navigation: any
 	children: React.ReactNode
@@ -22,76 +21,67 @@ const BottomAppbarLayout = ({ navigation, children }: BottomAppbarProps) => {
 		[ROLES.professor]: "ProfessorStatistics",
 	}
 
-	const [notifications, setNotifications] = useState<INotification[]>([])
+	const [hasUnreadNotifications, setHasUnreadNotifications] = useState(false)
 
-	useQuery(["notifications", personId], () => fetchNotifications(personId), {
-		onSuccess: (data) => {
-			setNotifications(data)
-		},
-		onError: (error) => console.log(error),
-		refetchInterval: 30000,
-	})
+	useQuery(
+		["notifications", personId],
+		() => fetchHasUnreadNotifications(personId),
+		{
+			onSuccess: (data) => {
+				setHasUnreadNotifications(data)
+			},
+			onError: (error) => console.log(error),
+			refetchInterval: 2000,
+		}
+	)
 
 	return (
-		<NotificationContext.Provider value={notifications}>
-			<Flex justify="between" style={{ height: "100%" }}>
-				{children}
-				<View style={{ height: 0 }} />
-				<View style={{ marginTop: 64 }}>
-					<Appbar style={[styles.AppBar]} elevated={true}>
+		<Flex justify="between" style={{ height: "100%" }}>
+			{children}
+			<View style={{ height: 0 }} />
+			<View style={{ marginTop: 64 }}>
+				<Appbar style={[styles.AppBar]} elevated={true}>
+					<Appbar.Action
+						icon="home"
+						iconColor="white"
+						onPress={() => navigation.navigate("Home")}
+					/>
+					{!isAdmin && (
 						<Appbar.Action
-							icon="home"
+							icon="chart-line"
 							iconColor="white"
-							onPress={() => navigation.navigate("Home")}
-						/>
-						{!isAdmin && (
-							<Appbar.Action
-								icon="chart-line"
-								iconColor="white"
-								onPress={() => {
-									if (role in navigationRoutes) {
-										navigation.navigate(
-											navigationRoutes[role]
-										)
-									}
-								}}
-							/>
-						)}
-						{isAdmin && (
-							<Appbar.Action
-								icon="account-group"
-								iconColor="white"
-								onPress={() =>
-									navigation.navigate("AdminPeople")
+							onPress={() => {
+								if (role in navigationRoutes) {
+									navigation.navigate(navigationRoutes[role])
 								}
-							/>
-						)}
+							}}
+						/>
+					)}
+					{isAdmin && (
+						<Appbar.Action
+							icon="account-group"
+							iconColor="white"
+							onPress={() => navigation.navigate("AdminPeople")}
+						/>
+					)}
 
-						{!isAdmin && (
-							<Appbar.Action
-								icon={
-									notifications.every(
-										(notification) =>
-											notification.read === true
-									)
-										? "bell"
-										: "bell-badge"
-								}
-								iconColor="white"
-								onPress={() =>
-									navigation.navigate("Notifications")
-								}
-							/>
-						)}
+					{!isAdmin && (
 						<Appbar.Action
-							icon="cog"
+							icon={
+								!hasUnreadNotifications ? "bell" : "bell-badge"
+							}
 							iconColor="white"
-							onPress={() => navigation.navigate("Settings")}
+							onPress={() => navigation.navigate("Notifications")}
 						/>
-					</Appbar>
-				</View>
-			</Flex>
-		</NotificationContext.Provider>
+					)}
+					<Appbar.Action
+						icon="cog"
+						iconColor="white"
+						onPress={() => navigation.navigate("Settings")}
+					/>
+				</Appbar>
+			</View>
+		</Flex>
 	)
 }
 

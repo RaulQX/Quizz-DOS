@@ -11,6 +11,8 @@ namespace quizzdos_backend.Repositories
         public Task<bool> AddNotification(string title, string text, Guid personId);
         public Task<bool> BulkAddNotification(string title, string text, List<Guid> personIds);
         public Task<bool> MarkAsRead(List<Guid> notificationsIds);
+        public Task<bool?> HasUnreadNotifications(Guid personId);
+
     }
     public class NotificationRepository : INotificationRepository
     {
@@ -73,6 +75,14 @@ namespace quizzdos_backend.Repositories
                 return null;
 
             return notifications;
+        }
+
+        public async Task<bool?> HasUnreadNotifications(Guid personId)
+        {
+            var person = await _context.People.FirstOrDefaultAsync(p => p.Id == personId);
+            if (person == null)
+                return null;
+            return await _context.Notifications.AnyAsync(n => n.PersonId == personId && !n.Read);
         }
 
         public async Task<bool> MarkAsRead(List<Guid> notificationsIds)
