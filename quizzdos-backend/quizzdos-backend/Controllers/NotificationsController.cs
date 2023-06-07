@@ -7,11 +7,11 @@ namespace quizzdos_backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class NotificationController : ControllerBase
+    public class NotificationsController : ControllerBase
     {
         private readonly INotificationRepository _notificationRepository;
 
-        public NotificationController(INotificationRepository notificationRepository)
+        public NotificationsController(INotificationRepository notificationRepository)
         {
             _notificationRepository = notificationRepository;
         }
