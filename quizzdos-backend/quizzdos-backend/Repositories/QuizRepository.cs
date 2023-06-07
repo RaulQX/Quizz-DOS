@@ -91,7 +91,7 @@ namespace quizzdos_backend.Repositories
 
             return new StartQuizDTO
                 {
-                    Grade = quiz.Grades.FirstOrDefault(g => g.PersonId == personId)?.GradeValue ?? 0,
+                    Grade = quiz.Grades.OrderByDescending(g => g.GradeValue).FirstOrDefault(g => g.PersonId == personId)?.GradeValue ?? 0,
                     QuestionsNumber = (uint)quiz.Questions.Count,
                     SectionName = quiz.Section.Name,
                     Status = quiz.Status,
