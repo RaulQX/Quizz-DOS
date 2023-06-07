@@ -17,6 +17,7 @@ const controllers = {
 	quiz: makeRoute(baseUrl, "quizzes"),
 	statistics: makeRoute(baseUrl, "statistics"),
 	admin: makeRoute(baseUrl, "admin"),
+	notifications: makeRoute(baseUrl, "notifications"),
 } as const
 
 export const ApiEndpoints = {
@@ -59,5 +60,9 @@ export const ApiEndpoints = {
 		dashboard: makeRoute(controllers.admin, "dashboard"),
 		people: makeRoute(controllers.admin, "people"),
 		updateRole: controllers.admin,
+	},
+	Notifications: {
+		getNotifications: controllers.notifications,
+		markAsRead: controllers.notifications,
 	},
 } as const

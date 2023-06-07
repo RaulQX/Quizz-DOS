@@ -58,14 +58,16 @@ namespace quizzdos_backend.Repositories
             var notifications = await 
                 _context.Notifications
                 .Where(n => n.PersonId == personId)
+                .OrderByDescending(n => n.DateReceived)
                 .Select(n => new NotificationDTO
                 {
-                    DateReceived = n.DateReceived,
+                    DateReceived = n.DateReceived.ToShortDateString(),
                     Id = n.Id,
                     Read = n.Read,
                     Text = n.Text,
                     Title = n.Title
-                }).ToListAsync();
+                })
+                .ToListAsync();
 
             if (notifications == null)
                 return null;

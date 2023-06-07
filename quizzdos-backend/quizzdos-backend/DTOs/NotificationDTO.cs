@@ -5,7 +5,7 @@
         public Guid Id { get; set; }
         public string Title { get; set; } = String.Empty;
         public string Text { get; set; } = String.Empty;
-        public DateTime DateReceived { get; set; } = DateTime.Now;
+        public string DateReceived { get; set; } = string.Empty;
         public bool Read { get; set; } = false;
     }
 }

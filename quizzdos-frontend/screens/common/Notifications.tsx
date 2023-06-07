@@ -1,72 +1,22 @@
 import { HStack, VStack } from "@react-native-material/core"
+import { useQuery } from "@tanstack/react-query"
 import BottomAppbarLayout from "components/common/BottomAppbarLayout"
+import { NotificationContext } from "contexts/user/NotificationContext"
 import { COLORS } from "palette/colors"
-import React from "react"
+import React, { useContext, useState } from "react"
 import { ScrollView, Text, View } from "react-native"
 import { Surface } from "react-native-paper"
 
-const constProps = {
-	notifications: [
-		{
-			id: "01",
-			title: "Well done!",
-			text: `You have successfully completed the section 'Introduction'`,
-			dateReceived: "2021-05-01",
-			read: false,
-		},
-		{
-			id: "02",
-			title: "Good Job!",
-			text: `You have successfully completed the quiz 'Big O Notation'`,
-			dateReceived: "2021-05-01",
-			read: false,
-		},
-		{
-			id: "0",
-			title: "Congratulations!",
-			text: `You have successfully completed the course 'CS 101'`,
-			dateReceived: "2021-05-01",
-			read: false,
-		},
-		{
-			id: "1",
-			title: "New Quiz Available",
-			text: `A new quiz has been added to the 'Section 1' of the course 'CS 101'`,
-			dateReceived: "2021-04-01",
-			read: false,
-		},
-		{
-			id: "2",
-			title: "New Quiz Available",
-			text: `A new quiz has been added to the 'Section 1' of the course 'CS 101'`,
-			dateReceived: "2021-03-01",
-			read: false,
-		},
-		{
-			id: "3",
-			title: "New Quiz Available",
-			text: `A new quiz has been added to the 'Section 1' of the course 'CS 101'`,
-			dateReceived: "2021-02-01",
-			read: false,
-		},
-		{
-			id: "4",
-			title: "New Section Available",
-			text: `A new section has been added to the course 'CS 101'`,
-			dateReceived: "2021-01-01",
-			read: true,
-		},
-		{
-			id: "5",
-			title: "You successfully joined the course 'CS 101'",
-			text: `You have been added to the course 'CS 101'`,
-			dateReceived: "2021-01-01",
-			read: true,
-		},
-	],
+export interface INotification {
+	id: string
+	title: string
+	text: string
+	dateReceived: string
+	read: boolean
 }
 
-const Notifications = ({ navigation }: any) => {
+const Notifications = ({  navigation }: any) => {
+	const notifications = useContext(NotificationContext);
 	return (
 		<BottomAppbarLayout navigation={navigation}>
 			<ScrollView>
@@ -76,7 +26,7 @@ const Notifications = ({ navigation }: any) => {
 					</Text>
 				</View>
 				<VStack style={{ marginTop: 30 }}>
-					{constProps.notifications.map((notification) => (
+					{notifications.map((notification: INotification) => (
 						<Surface
 							key={notification.id}
 							style={{
