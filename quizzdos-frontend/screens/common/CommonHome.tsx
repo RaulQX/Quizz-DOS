@@ -251,17 +251,22 @@ const CommonHome = ({ navigation }: any) => {
 												textAlign: "center",
 											}}
 										>
-											{course.sectionsNumber} sections
+											{course.sectionsNumber}{" "}
+											{course.sectionsNumber === 1
+												? "section"
+												: "sections"}
 										</Text>
-										<ProgressBar
-											progress={course.progress}
-											style={{
-												width: "80%",
-												alignSelf: "center",
-												marginTop: 6,
-												borderRadius: 20,
-											}}
-										/>
+										{isStudent && (
+											<ProgressBar
+												progress={course.progress}
+												style={{
+													width: "80%",
+													alignSelf: "center",
+													marginTop: 6,
+													borderRadius: 20,
+												}}
+											/>
+										)}
 									</VStack>
 								</TouchableRipple>
 							))}

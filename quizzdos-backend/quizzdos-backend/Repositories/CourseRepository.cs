@@ -108,7 +108,7 @@ namespace quizzdos_backend.Repositories
             page = (page < 1) ? 1 : page; 
             pageSize = (pageSize < 1) ? 1 : pageSize;
 
-            var courses = await _context.Courses.Where(c => c.CreatorId == creatorId).Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+            var courses = await _context.Courses.Include(c => c.Sections).Where(c => c.CreatorId == creatorId).Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
             var coursesDTO = courses.Select(c => new DiplayCourseDTO
             {
                 ShortName = c.ShortName,
@@ -116,8 +116,7 @@ namespace quizzdos_backend.Repositories
                 Code = c.Code,
                 Id = c.Id,
                 SectionsNumber = c.Sections.Count,
-                Progress = c.Sections.Count == 0 ? 0 : 
-                c.Sections.Select(s => s.Quizzes.Count(q => q.Status == EQuizStatus.Done)).Sum() / (double)c.Sections.Select(s => s.Quizzes.Count).Sum()
+                Progress = 0
             }).ToList();
             var totalCourses = await _context.Courses.Where(c => c.CreatorId == creatorId).CountAsync();
 

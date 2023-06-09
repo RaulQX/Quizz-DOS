@@ -155,26 +155,6 @@ const QuizStart = ({ route, navigation }: any) => {
 									{quiz.questionsNumber}
 								</Text>
 							</HStack>
-							<HStack style={{ justifyContent: "space-between" }}>
-								<Text
-									style={{
-										color: COLORS.white,
-										fontSize: 15,
-										textAlign: "center",
-									}}
-								>
-									Grade
-								</Text>
-								<Text
-									style={{
-										color: COLORS.white,
-										fontSize: 15,
-										textAlign: "center",
-									}}
-								>
-									{quiz.grade}/10
-								</Text>
-							</HStack>
 						</Surface>
 					</Flex>
 
