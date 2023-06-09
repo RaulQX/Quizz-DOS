@@ -21,6 +21,14 @@ export const updateSettings = async ({
 	lastName,
 	gender,
 }: IUpdateSettings) => {
+	console.log(
+		personId,
+		firstName,
+		lastName,
+		gender,
+		ApiEndpoints.People.updatePerson
+	)
+
 	const respone = await axios.put(
 		`${ApiEndpoints.People.updatePerson}/${personId}`,
 		null,

@@ -12,4 +12,10 @@ namespace quizzdos_backend.DTOs
         public ERole Role { get; set; }
         public EGender Gender { get; set; }
     }
+    public class UpdatedDetailsPersonDTO
+    {
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
+        public EGender Gender { get; set;}
+    }
 }

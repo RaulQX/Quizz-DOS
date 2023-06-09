@@ -13,7 +13,7 @@ import { createCourse } from "Api/Professor/CreateCourse"
 import useUser from "contexts/user/UserContext"
 
 const CreateCourse = ({ route, navigation }: any) => {
-	const { refreshCourses, setRefreshCourses } = route.params
+	const { refetch } = route.params
 
 	const { personId } = useUser()
 	const [courseName, setCourseName] = useState("")
@@ -34,7 +34,9 @@ const CreateCourse = ({ route, navigation }: any) => {
 		mutationFn: (data: any) => createCourse(data),
 		onSuccess: (_: any) => {
 			console.log("Course created successfully!")
+
 			navigation.navigate("Home")
+			refetch()
 		},
 		onError: ({ response: { data } }) => {
 			console.log(data)
@@ -71,8 +73,6 @@ const CreateCourse = ({ route, navigation }: any) => {
 				materialsUrl: courseMaterialsUrl,
 				icon: courseIcon,
 			})
-
-		setRefreshCourses(!refreshCourses)
 	}
 
 	return (

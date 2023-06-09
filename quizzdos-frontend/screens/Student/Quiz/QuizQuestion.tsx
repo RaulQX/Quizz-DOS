@@ -68,7 +68,7 @@ const QuizQuestion = ({
 									: COLORS.white,
 								borderRadius: 10,
 								width: 300,
-								height: 50,
+								height: option.text.length > 50 ? 100 : 50,
 								justifyContent: "center",
 								alignItems: "center",
 								alignSelf: "center",

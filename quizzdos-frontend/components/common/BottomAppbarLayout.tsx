@@ -31,7 +31,7 @@ const BottomAppbarLayout = ({ navigation, children }: BottomAppbarProps) => {
 				setHasUnreadNotifications(data)
 			},
 			onError: (error) => console.log(error),
-			refetchInterval: 2000,
+			refetchInterval: 25000,
 		}
 	)
 

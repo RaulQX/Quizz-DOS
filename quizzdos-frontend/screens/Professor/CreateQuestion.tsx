@@ -159,6 +159,7 @@ const CreateQuestion = ({
 						placeholderTextColor={COLORS.gray}
 						error={questionScore == "0"}
 						disabled={autoScore}
+						maxLength={200}
 					/>
 
 					<HStack
@@ -249,6 +250,7 @@ const CreateQuestion = ({
 								value={option.text}
 								textColor="white"
 								error={option.text == ""}
+								maxLength={100}
 							/>
 							<TextInput
 								style={{

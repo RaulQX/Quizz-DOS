@@ -12,7 +12,7 @@ namespace quizzdos_backend.Repositories
         Task<Person?> GetPersonByIdAsync(Guid id);
         Task<Person?> GetPersonByUserIdAsync(Guid userId);
         Task<Person> AddPersonAsync(User user);
-        Task<Person?> UpdatePersonalDetailsByIdAsync(Guid personId, string firstName, string lastName, EGender gender);
+        Task<UpdatedDetailsPersonDTO?> UpdatePersonalDetailsByIdAsync(Guid personId, string firstName, string lastName, EGender gender);
         Task<Person?> DeletePersonByIdAsync(Guid personId);
         Task<PersonSettingsDTO?> GetPersonSettings(Guid personId);
     }
@@ -43,7 +43,7 @@ namespace quizzdos_backend.Repositories
 
             return person;
         }
-        public async Task<Person?> UpdatePersonalDetailsByIdAsync(Guid personId, string firstName, string LastName, EGender gender)
+        public async Task<UpdatedDetailsPersonDTO?> UpdatePersonalDetailsByIdAsync(Guid personId, string firstName, string lastName, EGender gender)
         {
             var person = await GetPersonByIdAsync(personId);
 
@@ -53,7 +53,7 @@ namespace quizzdos_backend.Repositories
             }
             person.Gender = gender;
             person.FirstName = firstName;
-            person.LastName = LastName;
+            person.LastName = lastName;
             await _context.SaveChangesAsync();
 
             await _notificationRepository.AddNotification(
@@ -62,7 +62,7 @@ namespace quizzdos_backend.Repositories
                 personId: personId
                 );
 
-            return person;
+            return new UpdatedDetailsPersonDTO { Gender = gender, FirstName = firstName, LastName = lastName};
         }
         public async Task<Person?> DeletePersonByIdAsync(Guid personId)
         {

@@ -163,6 +163,7 @@ namespace quizzdos_backend.Repositories
                .ThenInclude(ca => ca.Course)
                .ThenInclude(c => c.Sections)
                .ThenInclude(s => s.Quizzes)
+               .ThenInclude(q => q.Grades)
                .FirstOrDefaultAsync(p => p.Id == personId);
 
             if (person == null)
@@ -174,7 +175,7 @@ namespace quizzdos_backend.Repositories
                      Id = ca.CourseId.GetValueOrDefault(),
                      ShortName = ca.Course.ShortName,
                      SectionsNumber = ca.Course.Sections.Count,
-                     Progress = GetSectionProgress(ca.Course),
+                     Progress = GetSectionProgress(ca.Course, personId),
                      Icon = ca.Course.Icon,
                      Code = ca.Course.Code
                  })
@@ -186,12 +187,12 @@ namespace quizzdos_backend.Repositories
 
             return new PaginatedResponse<DiplayCourseDTO>(page, pageSize, totalJoinedCourses, joinedCourses);
         }
-        private static double GetSectionProgress(Course course)
+        private static double GetSectionProgress(Course course, Guid personId)
         {
 
             double totalSections = course.Sections.Count;
             double completedSections = course.Sections
-                .Where(section => section.Quizzes.All(quiz => quiz.Status == EQuizStatus.Done))
+                .Where(section => section.Quizzes.All(quiz => GetQuizStatus(quiz, personId) == EQuizStatus.Done))
                 .Count();
 
             return totalSections == 0 ? 0 : completedSections / totalSections;

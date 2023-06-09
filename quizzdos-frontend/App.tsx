@@ -33,6 +33,7 @@ export default function App() {
 	LogBox.ignoreLogs(["Warning: ..."])
 	return (
 		<AppContainter>
+			<Stack.Screen name="Welcome" component={Welcome} />
 			<Stack.Screen name="Login" component={Login} />
 			<Stack.Screen name="Settings" component={Settings} />
 			<Stack.Screen name="AdminPeople" component={AdminPeople} />
@@ -43,7 +44,6 @@ export default function App() {
 			/>
 			<Stack.Screen name="Quiz" component={Quiz} />
 			<Stack.Screen name="QuizStart" component={QuizStart} />
-			<Stack.Screen name="Welcome" component={Welcome} />
 			<Stack.Screen name="Course" component={Course} />
 			<Stack.Screen name="CreateCourse" component={CreateCourse} />
 			<Stack.Screen name="CommonHome" component={CommonHome} />
@@ -67,7 +67,6 @@ interface AppContainerProps {
 }
 
 const AppContainter = ({ children }: AppContainerProps) => {
-	
 	return (
 		<UserProvider>
 			<QueryClientProvider client={querryClient}>

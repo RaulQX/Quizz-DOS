@@ -38,14 +38,14 @@ const CommonHome = ({ navigation }: any) => {
 
 	const isStudent = role === ROLES.student
 	const fetchFunction = isStudent ? fetchJoinedCourses : fetchCreatedCourses
-	const [refreshCourses, setRefreshCourses] = useState(false)
 
 	const {
+		refetch,
 		data: pages,
 		fetchNextPage,
 		hasNextPage,
 	} = useInfiniteQuery(
-		["courses", refreshCourses, personId, pageSize],
+		["courses", personId, pageSize],
 		({ pageParam = 1 }) =>
 			fetchFunction({
 				personId,
@@ -66,7 +66,6 @@ const CommonHome = ({ navigation }: any) => {
 	)
 
 	useEffect(() => {
-		console.log("pages", pages?.pages)
 		if (pages) {
 			const newCourses = pages.pages.flatMap((page) => page.data)
 			setCourses(newCourses)
@@ -77,7 +76,7 @@ const CommonHome = ({ navigation }: any) => {
 		mutationFn: (data: any) => joinCourse(data),
 		onSuccess: () => {
 			setJoinCourseModalVisible(false)
-			setRefreshCourses(!refreshCourses)
+			refetch()
 		},
 		onError: (data) => {
 			setJoinCourseModalError(true)
@@ -350,15 +349,16 @@ const CommonHome = ({ navigation }: any) => {
 						<TextButton
 							onPress={() => {
 								navigation.navigate("CreateCourse", {
-									setRefreshCourses: setRefreshCourses,
-									refreshCourses: refreshCourses,
+									refetch: refetch,
 								})
 								setCreateCourseModalVisible(false)
 							}}
 							text="Yes"
 						/>
 						<TextButton
-							onPress={() => setCreateCourseModalVisible(false)}
+							onPress={() => {
+								setCreateCourseModalVisible(false)
+							}}
 							text="Cancel"
 							style={{ backgroundColor: COLORS.gray }}
 						/>

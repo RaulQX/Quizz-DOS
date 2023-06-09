@@ -31,9 +31,9 @@ namespace quizzdos_backend.Controllers
         }
 
         [HttpPut("{personId:Guid}")]
-        [ProducesResponseType(typeof(Person), 200)]
+        [ProducesResponseType(typeof(UpdatedDetailsPersonDTO), 200)]
         [ProducesResponseType(typeof(string), 400)]
-        public async Task<ActionResult<Person>> UpdatePerson(Guid personId, string firstName, string lastName, EGender gender)
+        public async Task<ActionResult<UpdatedDetailsPersonDTO>> UpdatePerson(Guid personId, string firstName, string lastName, EGender gender)
         {
             var updatedPerson = await _personRepository.UpdatePersonalDetailsByIdAsync(personId, firstName, lastName, gender);
             if (updatedPerson == null)
