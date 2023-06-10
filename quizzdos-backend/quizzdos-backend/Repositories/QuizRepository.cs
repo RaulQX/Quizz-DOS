@@ -15,7 +15,6 @@ namespace quizzdos_backend.Repositories
         public Task<QuizDTO?> AddQuizAsync(QuizDTO addingQuiz);
         public Task<Quiz?> DeleteQuizAsync(Guid quizId);
         public Task<UpdateQuizDTO?> UpdateQuizAsync(Guid quizId, UpdateQuizDTO updatedQuiz);
-        public Task<AccessedQuizDTO?> UpdateQuizStatus(Guid quizId, EQuizStatus status);
         public Task<List<QuestionDTO>> GetQuizQuestions(Guid quizzId);
         public Task<List<QuizQuestionDTO>?> UpdateQuizQuestions(Guid quizzId, List<QuizQuestionDTO> newQuestions);
         public Task<StartQuizDTO?> GetQuizForStudent(Guid quizId, Guid personId);

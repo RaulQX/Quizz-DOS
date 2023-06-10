@@ -172,7 +172,7 @@ namespace quizzdos_backend.Repositories
                      Id = ca.CourseId.GetValueOrDefault(),
                      ShortName = ca.Course.ShortName,
                      SectionsNumber = ca.Course.Sections.Count,
-                     Progress = GetSectionProgress(ca.Course, personId),
+                     Progress = GetCourseProgress(ca.Course, personId),
                      Icon = ca.Course.Icon,
                      Code = ca.Course.Code
                  })
@@ -184,7 +184,7 @@ namespace quizzdos_backend.Repositories
 
             return new PaginatedResponse<DiplayCourseDTO>(page, pageSize, totalJoinedCourses, joinedCourses);
         }
-        private static double GetSectionProgress(Course course, Guid personId)
+        private static double GetCourseProgress(Course course, Guid personId)
         {
 
             double totalSections = course.Sections.Count;
@@ -203,7 +203,6 @@ namespace quizzdos_backend.Repositories
                 .ThenInclude(q => q.Grades)
                 .FirstOrDefaultAsync(c => c.Id == courseId);
 
-
             if (course == null)
                 return null;
 
@@ -220,7 +219,7 @@ namespace quizzdos_backend.Repositories
                     Id = s.Id,
                     Name = s.Name,
                     Summary = s.Summary,
-                    Progress = CalculateSectionProgress(s.Quizzes.ToList()),
+                    Progress = CalculateSectionProgress(s.Quizzes.ToList(), personId),
                     Quizzes = s.Quizzes.Select(q => new AccessedQuizDTO
                     {
                         Id = q.Id,
@@ -233,10 +232,10 @@ namespace quizzdos_backend.Repositories
             return accessedCourse;
         }
 
-        private static double CalculateSectionProgress(List<Quiz> quizzes)
+        private static double CalculateSectionProgress(List<Quiz> quizzes, Guid personId)
         {
             double totalQuizzes = quizzes.Count;
-            double completedQuizzes = quizzes.Count(q => q.Status == EQuizStatus.Done);
+            double completedQuizzes = quizzes.Count(q => GetQuizStatus(q, personId) == EQuizStatus.Done);
             return totalQuizzes == 0 ? 0 : completedQuizzes / totalQuizzes;
         }
 

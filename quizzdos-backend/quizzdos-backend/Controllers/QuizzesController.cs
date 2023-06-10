@@ -70,17 +70,6 @@ namespace quizzdos_backend.Controllers
             return Ok(qz);
         }
 
-        [HttpPut("{quizId:Guid}/{status:int}")]
-        [ProducesResponseType(typeof(AccessedQuizDTO), 200)]
-        [ProducesResponseType(typeof(string), 404)]
-        public async Task<ActionResult> UpdateQuizStatus(Guid quizId, EQuizStatus status)
-        {
-            var qz = await quizRepository.UpdateQuizStatus(quizId, status);
-            if (qz == null)
-                return NotFound($"Quiz: {quizId} was not found!");
-            return Ok(qz);
-        }
-
         [HttpPut("{quizId:Guid}/questions")]
         [ProducesResponseType(typeof(List<QuizQuestionDTO>), 200)]
         [ProducesResponseType(typeof(string), 404)]
