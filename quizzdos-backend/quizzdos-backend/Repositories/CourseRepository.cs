@@ -61,8 +61,6 @@ namespace quizzdos_backend.Repositories
             return newCourse;
         }
 
-       
-
         public async Task<Course?> DeleteCourseAsync(Guid courseId)
         {
             var course = await FindCourseByIdAsync(courseId);

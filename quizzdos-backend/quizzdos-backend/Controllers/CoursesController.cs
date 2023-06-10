@@ -43,7 +43,7 @@ namespace quizzdos_backend.Controllers
 
         [HttpDelete]
         [ProducesResponseType(typeof(Course), 200)]
-        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(typeof(string), 404)]
         public async Task<ActionResult> DeleteCourse(Guid courseId)
         {
            var course = await _courseRepository.DeleteCourseAsync(courseId);
@@ -54,7 +54,7 @@ namespace quizzdos_backend.Controllers
 
         [HttpPut]
         [ProducesResponseType(typeof(Course), 200)]
-        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(typeof(string), 404)]
         public async Task<ActionResult> UpdateCourse(Guid courseId, CourseDTO course)
         {
             var crs = await _courseRepository.UpdateCourseAsync(courseId, course);
