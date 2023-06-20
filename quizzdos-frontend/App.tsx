@@ -27,10 +27,8 @@ import Welcome from "./screens/common/Welcome"
 
 const Stack = createStackNavigator()
 const querryClient = new QueryClient()
-import { LogBox } from "react-native"
 
 export default function App() {
-	LogBox.ignoreLogs(["Warning: ..."])
 	return (
 		<AppContainter>
 			<Stack.Screen name="Welcome" component={Welcome} />

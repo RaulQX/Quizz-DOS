@@ -120,7 +120,7 @@ const CommonHome = ({ navigation }: any) => {
 						/>
 						<Avatar.Icon
 							size={40}
-							icon="account" // adauga gender-wide icon
+							icon="account"
 							color={COLORS.white}
 							style={{
 								alignSelf: "center",

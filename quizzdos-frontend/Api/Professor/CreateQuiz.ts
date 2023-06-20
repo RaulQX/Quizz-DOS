@@ -27,11 +27,6 @@ export interface IUpdateQuiz {
 }
 
 export const putQuizQuestions = async (quiz: IUpdateQuiz) => {
-	console.log(quiz.questions)
-	for (let i = 0; i < quiz.questions.length; i++) {
-		console.log(quiz.questions[i].options)
-	}
-
 	const response = await axios.put(
 		`${ApiEndpoints.Quizzes.putQuizQuestions}/${quiz.quizId}/questions`,
 		quiz.questions

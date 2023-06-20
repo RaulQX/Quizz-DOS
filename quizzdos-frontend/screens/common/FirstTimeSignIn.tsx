@@ -31,7 +31,7 @@ const FirstTimeSignIn = ({ navigation }: FirstTimeSignInProps) => {
 
 		onSuccess: (data) => {
 			updateProfile(data)
-			navigation.navigate("StudentHome")
+			navigation.navigate("Home")
 		},
 		onError: (error) => {
 			console.log(error)

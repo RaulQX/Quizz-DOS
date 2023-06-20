@@ -136,6 +136,7 @@ namespace quizzdos_backend.Repositories
             };
 
             bool hasPersonJoinedCourse = await _context.CourseAppartenences
+                .Where(ca => ca.PersonId == personId)
                 .Include(ca => ca.Course)
                 .AnyAsync(ca => ca.Course.Code == code);
 

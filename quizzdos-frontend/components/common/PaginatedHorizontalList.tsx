@@ -4,12 +4,10 @@ import React, {
 	FC,
 	useImperativeHandle,
 	forwardRef,
-	useEffect,
 } from "react"
-import { View, Text, StyleSheet, ScrollView, Pressable } from "react-native"
+import { View, StyleSheet, ScrollView, Pressable } from "react-native"
 import { COLORS } from "palette/colors"
 import { Dimensions } from "react-native"
-import { ActivityIndicator } from "react-native-paper"
 
 interface MenuItemProps {
 	children: JSX.Element

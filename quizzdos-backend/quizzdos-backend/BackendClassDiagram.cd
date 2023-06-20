@@ -1,0 +1,241 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="quizzdos_backend.Controllers.AdminController">
+    <Position X="0.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAIAI=</HashCode>
+      <FileName>Controllers\AdminController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="quizzdos_backend.Controllers.AuthController">
+    <Position X="5.75" Y="0.75" Width="1.5" />
+    <InheritanceLine Type="Microsoft.AspNetCore.Mvc.ControllerBase" ManuallyRouted="true">
+      <Path>
+        <Point X="8.25" Y="4.75" />
+        <Point X="8.25" Y="4.08" />
+        <Point X="6.5" Y="4.08" />
+        <Point X="6.5" Y="3.204" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAEAAAAgAAAAAAAAAAAAAAAAAAABAAAEAAAQAAAAAAA=</HashCode>
+      <FileName>Controllers\AuthController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="quizzdos_backend.Controllers.CoursesController">
+    <Position X="11" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAYAABAAAAAACCAgAAAAAIAAABAA=</HashCode>
+      <FileName>Controllers\CoursesController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="quizzdos_backend.Controllers.NotificationsController">
+    <Position X="2.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAQAAAAAIA=</HashCode>
+      <FileName>Controllers\NotificationsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="quizzdos_backend.Controllers.PeopleController">
+    <Position X="7.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AASAAAAAAAAAAAAAAAAACAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\PeopleController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="quizzdos_backend.Controllers.QuizzesController">
+    <Position X="12.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>YAAIAABAAAAEAAAAAAAAQAAAAAAAAAAAAAAYIAAAAAA=</HashCode>
+      <FileName>Controllers\QuizzesController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="quizzdos_backend.Controllers.SectionsController">
+    <Position X="4" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAgQAACAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\SectionsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="quizzdos_backend.Controllers.StatisticsController">
+    <Position X="9.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAFBAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\StatisticsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="quizzdos_backend.Controllers.UsersController">
+    <Position X="14.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\UsersController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.AspNetCore.Mvc.ControllerBase" Collapsed="true">
+    <Position X="7.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="quizzdos_backend.Repositories.AdminRepository">
+    <Position X="6.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAABAAAAAAAAAAAACAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Repositories\AdminRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="quizzdos_backend.Repositories.AuthRepository" BaseTypeListCollapsed="true">
+    <Position X="8" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAMgAAAABAAAAAAICAAAAAABAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Repositories\AuthRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="quizzdos_backend.Repositories.CourseRepository" BaseTypeListCollapsed="true">
+    <Position X="9.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAACAACAEABAAAAQAAAAQABAAAAAkAAAEAQAAIAAA=</HashCode>
+      <FileName>Repositories\CourseRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="quizzdos_backend.Repositories.NotificationRepository" BaseTypeListCollapsed="true">
+    <Position X="11.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABgAAAAAgAAAAAAAAAACAgAAAACAAAAA=</HashCode>
+      <FileName>Repositories\NotificationRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="quizzdos_backend.Repositories.PersonRepository" BaseTypeListCollapsed="true">
+    <Position X="13.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEQIAAGAAAAABAAAAAAAAAEAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Repositories\PersonRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="quizzdos_backend.Repositories.QuizRepository" BaseTypeListCollapsed="true">
+    <Position X="15" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAgBAAJAABAEAAAAAQAAEAAAAQCAAAAgAIAgAAAA=</HashCode>
+      <FileName>Repositories\QuizRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="quizzdos_backend.Repositories.SectionRepository" BaseTypeListCollapsed="true">
+    <Position X="16.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAIAAIABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Repositories\SectionRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="quizzdos_backend.Repositories.StatisticsRepository" BaseTypeListCollapsed="true">
+    <Position X="22" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAACAAEAAAABAAEAAAAAAAAAAAAAAAAAAIAACAAAAE=</HashCode>
+      <FileName>Repositories\StatisticsRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="quizzdos_backend.Repositories.UserRepository" BaseTypeListCollapsed="true">
+    <Position X="20.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAABAABAAAAAAAAAAAAAAAAQAAEAAAAAAAAAA=</HashCode>
+      <FileName>Repositories\UserRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="quizzdos_backend.Repositories.ValidationRepository" BaseTypeListCollapsed="true">
+    <Position X="18.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAQAABAAAAAAAAgAAAAAAAAACAAAAAIAAAAA=</HashCode>
+      <FileName>Repositories\ValidationRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="quizzdos_EFCore.Entities.BaseEntities.BaseEntity">
+    <Position X="17.25" Y="14" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="quizzdos_EFCore.Entities.Courses.Course" Collapsed="true">
+    <Position X="20.75" Y="15.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="quizzdos_EFCore.Entities.Users.Person" Collapsed="true">
+    <Position X="13.5" Y="14" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Interface Name="quizzdos_backend.Repositories.ICourseRepository" Collapsed="true">
+    <Position X="9.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAACAAAAAAAAQAAAAQABAAAAAkAAAAAAAAAAAA=</HashCode>
+      <FileName>Repositories\CourseRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="quizzdos_backend.Repositories.IAdminRepository" Collapsed="true">
+    <Position X="6.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAAAAAAAAACAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Repositories\AdminRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="quizzdos_backend.Repositories.IAuthRepository" Collapsed="true">
+    <Position X="8" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAMAAAAAAAAAAAAIAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Repositories\AuthRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="quizzdos_backend.Repositories.INotificationRepository" Collapsed="true">
+    <Position X="11.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAgAAAAAAAAAACAgAAAACAAAAA=</HashCode>
+      <FileName>Repositories\NotificationRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="quizzdos_backend.Repositories.IPersonRepository" Collapsed="true">
+    <Position X="13.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQIAAGAAAAAAAAAAAAAAAEAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Repositories\PersonRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="quizzdos_backend.Repositories.IQuizRepository" Collapsed="true">
+    <Position X="15" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAJAAAAEAAAAAQAAEAAAAAAAAAAAAIAgAAAA=</HashCode>
+      <FileName>Repositories\QuizRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="quizzdos_backend.Repositories.ISectionRepository" Collapsed="true">
+    <Position X="16.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAIAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Repositories\SectionRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="quizzdos_backend.Repositories.IValidationRepository" Collapsed="true">
+    <Position X="18.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAQAAAAAAAAAAAgAAAAAAAAACAAAAAIAAAAA=</HashCode>
+      <FileName>Repositories\ValidationRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="quizzdos_backend.Repositories.IUserRepository" Collapsed="true">
+    <Position X="20.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAQAAEAAAAAAAAAA=</HashCode>
+      <FileName>Repositories\UserRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="quizzdos_backend.Repositories.IStatisticsRepository" Collapsed="true">
+    <Position X="22" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Repositories\StatisticsRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
